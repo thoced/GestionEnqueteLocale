@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="mainView" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestionenquetelocale.MainViewController">
+   <children>
+      <MenuBar layoutX="398.0" layoutY="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Fermer l'application" />
+               </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Gestion des dossiers">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#handleVoirDossiers" text="Voir les dossiers" />
+                  <SeparatorMenuItem mnemonicParsing="false" text="Créer un dossier" />
+              </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Dossier en cours">
+            <items>
+                  <MenuItem mnemonicParsing="false" text="Documents" />
+                  <MenuItem mnemonicParsing="false" text="Annexes" />
+                  <MenuItem mnemonicParsing="false" text="Apostilles" />
+                  <MenuItem mnemonicParsing="false" text="Suivi d'enquête" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleEntityPersonne" text="Personnes" />
+                  <MenuItem mnemonicParsing="false" text="Numero" />
+                  <MenuItem mnemonicParsing="false" text="Mtp" />
+                  <MenuItem mnemonicParsing="false" text="Lieux" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
