@@ -23,8 +23,8 @@ public class ConnectionSQL
     private static Connection con;
     
     private static String url = "jdbc:mysql://localhost:3306/db_gel";
-    private static String user = "root";
-    private static String password = "19868tt5425";
+    private static String user = "test";
+    private static String password = "test";
     
     public ConnectionSQL() throws SQLException, ClassNotFoundException, FileNotFoundException, IOException
     {
