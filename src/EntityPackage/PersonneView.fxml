@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -7,23 +8,22 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EntityPackage.PersonneViewController">
    <top>
-      <TableView prefHeight="320.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tablePersonnes" onMousePressed="#handleSelect" prefHeight="320.0" prefWidth="800.0" style="-fx-border-radius: 8; -fx-border-color: lightblue;" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="118.0" text="Nom" />
-          <TableColumn prefWidth="116.0" text="Prenom" />
-            <TableColumn prefWidth="199.0" text="Date de Naissance" />
-            <TableColumn prefWidth="205.0" text="Adresse" />
-            <TableColumn prefWidth="160.0" text="Qualité" />
+          <TableColumn fx:id="columnNom" prefWidth="118.0" text="Nom" />
+          <TableColumn fx:id="columnPrenom" prefWidth="116.0" text="Prenom" />
+            <TableColumn fx:id="columnDateNaissance" prefWidth="199.0" text="Date de Naissance" />
+            <TableColumn fx:id="columnAdresse" prefWidth="205.0" text="Adresse" />
+            <TableColumn fx:id="columnQualite" prefWidth="160.0" text="Qualité" />
         </columns>
       </TableView>
    </top>
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <GridPane alignment="CENTER" layoutX="300.0" layoutY="55.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <GridPane alignment="CENTER" layoutX="300.0" layoutY="55.0" onMousePressed="#handleNew" style="-fx-border-radius: 8; -fx-border-color: lightblue;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="395.0" minWidth="10.0" prefWidth="137.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="695.0" minWidth="10.0" prefWidth="663.0" />
@@ -41,25 +41,50 @@
                   <Label text="Date de Naissance" GridPane.rowIndex="3" />
                   <Label text="Adresse" GridPane.rowIndex="4" />
                   <Label alignment="CENTER" text="Qualité" />
-                  <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <ComboBox fx:id="comboQualite" prefHeight="25.0" prefWidth="187.0" GridPane.columnIndex="1" />
+                  <DatePicker fx:id="dateField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="nomField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="prenomField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="adresseField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <ComboBox fx:id="comboQualite" disable="true" prefHeight="25.0" prefWidth="187.0" GridPane.columnIndex="1" />
                </children>
             </GridPane>
          </children>
       </AnchorPane>
    </center>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="64.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="800.0" style="-fx-border-radius: 8; -fx-border-color: lightblue;" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Ajouter">
+            <Button mnemonicParsing="false" onAction="#handleNew" text="New">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Supprimer" />
+            <Button mnemonicParsing="false" onAction="#handleAdd" text="Add">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#handleDelete" text="Del">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin></Button>
+            <Button fx:id="buttonModif" disable="true" mnemonicParsing="false" onAction="#handleModif" text="Modifier">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
          </children>
          <BorderPane.margin>
             <Insets />

@@ -13,4 +13,5 @@ public interface IController
 {
     public void setModelDossier(ModelDossier currentDossier);
     public ModelDossier getModelDossier();
+    public void loadModel(ModelDossier currentDossier);
 }

@@ -114,5 +114,10 @@ public class ListDossiersViewController implements Initializable,IController {
     {
         return this.currentDossier;
     }
+
+    @Override
+    public void loadModel(ModelDossier currentDossier) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

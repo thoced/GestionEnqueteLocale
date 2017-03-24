@@ -52,6 +52,8 @@ public class MainViewController implements Initializable {
         // Personne
         FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/EntityPackage/PersonneView.fxml"));
         BorderPane panePersonne = loaderPersonne.load();
+        IController controller = loaderPersonne.getController();
+        controller.loadModel(currentDossier);
         pane.setCenter(panePersonne);
         
         stage.setResizable(false);
