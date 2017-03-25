@@ -29,7 +29,7 @@
                   <MenuItem mnemonicParsing="false" text="Suivi d'enquête" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#handleEntityPersonne" text="Personnes" />
-                  <MenuItem mnemonicParsing="false" text="Numero" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleEntityNumero" text="Numero" />
                   <MenuItem mnemonicParsing="false" text="Mtp" />
                   <MenuItem mnemonicParsing="false" text="Lieux" />
             </items>

@@ -7,7 +7,10 @@ package EntityPackage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.BorderPane;
 
 /**
  * FXML Controller class
@@ -16,12 +19,19 @@ import javafx.fxml.Initializable;
  */
 public class EntityBaseViewController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    private BorderPane pane;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    
+    @FXML
+    public void handleFermer(ActionEvent event)
+    {
+        pane.getScene().getWindow().hide();
+    }
+    
     
 }

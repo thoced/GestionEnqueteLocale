@@ -8,15 +8,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EntityPackage.PersonneViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EntityPackage.NumeroViewController">
    <top>
-      <TableView fx:id="tablePersonnes" onMouseClicked="#handleSelect" prefHeight="320.0" prefWidth="800.0" style="-fx-border-color: lightblue;" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableNumeros" onMouseClicked="#handleSelect" prefHeight="320.0" prefWidth="483.0" style="-fx-border-color: lightblue;" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="columnNom" prefWidth="118.0" text="Nom" />
-          <TableColumn fx:id="columnPrenom" prefWidth="116.0" text="Prenom" />
-            <TableColumn fx:id="columnDateNaissance" prefWidth="199.0" text="Date de Naissance" />
-            <TableColumn fx:id="columnAdresse" prefWidth="205.0" text="Adresse" />
-            <TableColumn fx:id="columnQualite" prefWidth="160.0" text="Qualité" />
+          <TableColumn fx:id="columnType" prefWidth="165.0" text="Type" />
+          <TableColumn fx:id="columnNumero" prefWidth="249.0" text="Numero" />
+            <TableColumn fx:id="columnNationalite" prefWidth="180.0" text="Nationalite" />
+            <TableColumn fx:id="columnOwner" prefWidth="204.0" text="Propriétaire" />
         </columns>
       </TableView>
    </top>
@@ -36,16 +35,14 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Nom" GridPane.rowIndex="1" />
-                  <Label text="Prenom" GridPane.rowIndex="2" />
-                  <Label text="Date de Naissance" GridPane.rowIndex="3" />
-                  <Label text="Adresse" GridPane.rowIndex="4" />
-                  <Label alignment="CENTER" text="Qualité" />
-                  <DatePicker fx:id="dateField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <TextField fx:id="nomField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="prenomField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextField fx:id="adresseField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <ComboBox fx:id="comboQualite" disable="true" prefHeight="25.0" prefWidth="187.0" GridPane.columnIndex="1" />
+                  <Label text="Numero" GridPane.rowIndex="1" />
+                  <Label text="Nationalite" GridPane.rowIndex="2" />
+                  <Label alignment="CENTER" text="Type" />
+                  <TextField fx:id="numeroField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="nationaliteField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="comboType" disable="true" prefHeight="25.0" prefWidth="187.0" GridPane.columnIndex="1" />
+                  <Label text="Propriétaire" GridPane.rowIndex="3" />
+                  <TextField fx:id="ownerField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
          </children>

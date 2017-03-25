@@ -8,6 +8,7 @@ package EntityPackage;
 import ModelPackage.ConnectionSQL;
 import ModelPackage.IController;
 import ModelPackage.ModelDossier;
+import ModelPackage.ModelNumero;
 import ModelPackage.ModelPersonne;
 import java.net.URL;
 import java.sql.Date;
@@ -42,31 +43,28 @@ import javafx.scene.layout.GridPane;
  *
  * @author Thonon
  */
-public class PersonneViewController implements Initializable,IController,ListChangeListener {
+public class NumeroViewController implements Initializable,IController,ListChangeListener {
 
     @FXML
-    private TableView tablePersonnes;
+    private TableView tableNumeros;
     @FXML
-    private TableColumn<ModelPersonne,String> columnNom;
+    private TableColumn<ModelNumero,String> columnType;
      @FXML
-    private TableColumn<ModelPersonne,String> columnPrenom;
+    private TableColumn<ModelNumero,String> columnNumero;
     @FXML
-    private TableColumn<ModelPersonne,String> columnAdresse;
+    private TableColumn<ModelNumero,String> columnNationalite;
     @FXML
-    private TableColumn<ModelPersonne,LocalDate> columnDateNaissance;
+    private TableColumn<ModelNumero,String> columnOwner;
+   
     @FXML
-    private TableColumn<ModelPersonne,String> columnQualite;
+    private ComboBox comboType;
     @FXML
-    private ComboBox comboQualite;
+    private TextField numeroField;
     @FXML
-    private TextField nomField;
+    private TextField nationaliteField;
     @FXML
-    private TextField prenomField;
-    @FXML
-    private TextField adresseField;
-    @FXML
-    private DatePicker dateField;
-    
+    private TextField ownerField;
+       
     
     @FXML
     private Button buttonModif;
@@ -76,9 +74,9 @@ public class PersonneViewController implements Initializable,IController,ListCha
     private Button buttonDel;
     
     // initi comboQualite
-    private ObservableList<String> oQualite = FXCollections.observableArrayList();
+    private ObservableList<String> oType = FXCollections.observableArrayList();
     // list de Personne
-    private ObservableList<ModelPersonne> oPersonnes = FXCollections.observableArrayList();
+    private ObservableList<ModelNumero> oNumeros = FXCollections.observableArrayList();
     
     private ModelDossier currentDossier;
      
@@ -90,32 +88,31 @@ public class PersonneViewController implements Initializable,IController,ListCha
         // ajout des event
 
             // initi
-            oQualite.add("Victime");
-            oQualite.add("Suspect");
-            oQualite.add("Témoin");
-            oQualite.add("Autre");
-            comboQualite.setItems(oQualite);
-            comboQualite.setValue(oQualite.get(0));
+            oType.add("Téléphone");
+            oType.add("Gsm");
+            oType.add("Email");
+            oType.add("Adresse web");
+            comboType.setItems(oType);
+            comboType.setValue(oType.get(0));
            
             // setitem
-            tablePersonnes.setItems(oPersonnes);
+            tableNumeros.setItems(oNumeros);
             // factory
-            columnNom.setCellValueFactory(cellData->cellData.getValue().nomProperty());
-            columnPrenom.setCellValueFactory(cellData->cellData.getValue().prenomProperty());
-            columnAdresse.setCellValueFactory(cellData->cellData.getValue().adresseProperty());
-            columnDateNaissance.setCellValueFactory(cellData->cellData.getValue().dateNaissanceProperty());
-            columnQualite.setCellValueFactory(cellData->cellData.getValue().qualiteProperty());
+            columnType.setCellValueFactory(cellData->cellData.getValue().typeProperty());
+            columnNumero.setCellValueFactory(cellData->cellData.getValue().numeroProperty());
+            columnNationalite.setCellValueFactory(cellData->cellData.getValue().nationaliteProperty());
+            columnOwner.setCellValueFactory(cellData->cellData.getValue().ownerProperty());
+            
             
            
     }   
     
     private void disable()
     {
-            nomField.setDisable(true);
-            prenomField.setDisable(true);
-            adresseField.setDisable(true);
-            dateField.setDisable(true);
-            comboQualite.setDisable(true);
+            comboType.setDisable(true);
+            numeroField.setDisable(true);
+            nationaliteField.setDisable(true);
+            ownerField.setDisable(true);
             buttonModif.setDisable(true);
             buttonAdd.setDisable(true);
             buttonDel.setDisable(true);
@@ -123,11 +120,10 @@ public class PersonneViewController implements Initializable,IController,ListCha
     
     private void enable()
     {
-            nomField.setDisable(false);
-            prenomField.setDisable(false);
-            adresseField.setDisable(false);
-            dateField.setDisable(false);
-            comboQualite.setDisable(false);
+            comboType.setDisable(false);
+            numeroField.setDisable(false);
+            nationaliteField.setDisable(false);
+            ownerField.setDisable(false);
             buttonModif.setDisable(false);
             buttonAdd.setDisable(false);
             buttonDel.setDisable(false);
@@ -142,11 +138,10 @@ public class PersonneViewController implements Initializable,IController,ListCha
     @FXML
     public void handleNew(ActionEvent event)
     {
-        nomField.clear();
-        prenomField.clear();
-        adresseField.clear();
-        dateField.setValue(null);
-        comboQualite.setValue(oQualite.get(0));
+        comboType.setValue(oType.get(0));
+        numeroField.clear();
+        nationaliteField.clear();
+        ownerField.clear();
         enable();
        
     }
@@ -154,20 +149,18 @@ public class PersonneViewController implements Initializable,IController,ListCha
     @FXML
     public void handleAdd(ActionEvent event)
     {
-        ModelPersonne model = new ModelPersonne();
-        model.setNom(nomField.getText());
-        model.setPrenom(prenomField.getText());
-        model.setAdresse(adresseField.getText());
-        model.setDateNaissance(dateField.getValue());
-        model.setQualite((String)comboQualite.getSelectionModel().getSelectedItem());
-        oPersonnes.add(model);
+        ModelNumero model = new ModelNumero();
+        model.setType((String)comboType.getSelectionModel().getSelectedItem());
+        model.setNumero(numeroField.getText());
+        model.setNationalite(nationaliteField.getText());
+        model.setOwner(ownerField.getText());
+        oNumeros.add(model);
         
         
-        nomField.clear();
-        prenomField.clear();
-        adresseField.clear();
-        dateField.setValue(null);
-        comboQualite.setValue(oQualite.get(0));
+        numeroField.clear();
+        nationaliteField.clear();
+        comboType.setValue(oType.get(0));
+        ownerField.clear();
         
         disable();
         
@@ -176,7 +169,7 @@ public class PersonneViewController implements Initializable,IController,ListCha
     @FXML
     public void handleDelete()
     {
-        ModelPersonne model = (ModelPersonne) tablePersonnes.getSelectionModel().getSelectedItem();
+        ModelNumero model = (ModelNumero) tableNumeros.getSelectionModel().getSelectedItem();
         if(model != null)
         {
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -188,7 +181,7 @@ public class PersonneViewController implements Initializable,IController,ListCha
             Optional<ButtonType> ret = alert.showAndWait();
             if(ret.get() == bOui)
             {
-                oPersonnes.remove(model);
+                oNumeros.remove(model);
             }
             
         }
@@ -201,27 +194,25 @@ public class PersonneViewController implements Initializable,IController,ListCha
     @FXML
     public void handleModif()
     {
-        ModelPersonne model = (ModelPersonne) tablePersonnes.getSelectionModel().getSelectedItem();
+        ModelNumero model = (ModelNumero) tableNumeros.getSelectionModel().getSelectedItem();
         if(model != null)
         {
             try {
-                model.setNom(nomField.getText());
-                model.setPrenom(prenomField.getText());
-                model.setAdresse(adresseField.getText());
-                model.setDateNaissance(dateField.getValue());
-                model.setQualite((String)comboQualite.getValue());
+                model.setType((String)comboType.getValue());
+                model.setNumero(numeroField.getText());
+                model.setNationalite(nationaliteField.getText());
+                model.setOwner(ownerField.getText());
                 
-                String sql = "update t_personne set nom = ?, prenom = ?,adresse = ?,date_naissance = ?,qualite = ? where id = ?";
+                String sql = "update t_numero set type = ?, numero = ?,nationalite = ?,owner = ? where id = ?";
                 PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
-                ps.setString(1, model.getNom());
-                ps.setString(2, model.getPrenom());
-                ps.setString(3, model.getAdresse());
-                ps.setDate(4, Date.valueOf(model.getDateNaissance()));
-                ps.setString(5, model.getQualite());
-                ps.setLong(6, model.getId());
+                ps.setString(1, model.getType());
+                ps.setString(2, model.getNumero());
+                ps.setString(3, model.getNationalite());
+                ps.setString(4, model.getOwner());
+                ps.setLong(5, model.getId());
                 ps.executeUpdate();
             } catch (SQLException ex) {
-                Logger.getLogger(PersonneViewController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(NumeroViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }
@@ -232,16 +223,15 @@ public class PersonneViewController implements Initializable,IController,ListCha
     @FXML
     public void handleSelect()
     {
-        ModelPersonne model = (ModelPersonne) tablePersonnes.getSelectionModel().getSelectedItem();
+        ModelNumero model = (ModelNumero) tableNumeros.getSelectionModel().getSelectedItem();
         if(model != null)
         {
             
-            nomField.setText(model.getNom());
-            prenomField.setText(model.getPrenom());
-            adresseField.setText(model.getAdresse());
-            dateField.setValue(model.getDateNaissance());
-            comboQualite.setValue(model.getQualite());
-            
+            comboType.setValue(model.getType());
+            numeroField.setText(model.getNumero());
+            nationaliteField.setText(model.getNationalite());
+            ownerField.setText(model.getOwner());
+                     
             enable();
             
         }
@@ -260,32 +250,31 @@ public class PersonneViewController implements Initializable,IController,ListCha
                 {
                     for(Object o : c.getAddedSubList())
                     {
-                        ModelPersonne model = (ModelPersonne) o;
+                        ModelNumero model = (ModelNumero) o;
                         PreparedStatement ps = null;
                         try {
                             // ajout
-                            String sql = "insert into t_personne (nom,prenom,adresse,date_naissance,qualite,ref_id_folders) values "
-                                    + "(?,?,?,?,?,?)";
+                            String sql = "insert into t_numero (type,numero,nationalite,owner,ref_id_folders) values "
+                                    + "(?,?,?,?,?)";
                             ps = ConnectionSQL.getCon().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                            ps.setString(1, model.getNom());
-                            ps.setString(2, model.getPrenom());
-                            ps.setString(3, model.getAdresse());
-                            ps.setDate(4, Date.valueOf(model.getDateNaissance()));
-                            ps.setString(5, model.getQualite());
-                            ps.setLong(6, this.currentDossier.getId());
+                            ps.setString(1, model.getType());
+                            ps.setString(2, model.getNumero());
+                            ps.setString(3, model.getNationalite());
+                            ps.setString(4, model.getOwner());
+                            ps.setLong(5, this.currentDossier.getId());
                             ps.execute();
                             ResultSet r = ps.getGeneratedKeys();
                             r.first();
                             model.setId(r.getLong(1));
                         } catch (SQLException ex) {
-                            Logger.getLogger(PersonneViewController.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(NumeroViewController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         finally 
                         {
                             try {
                                 ps.close();
                             } catch (SQLException ex) {
-                                Logger.getLogger(PersonneViewController.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(NumeroViewController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                     }
@@ -297,13 +286,13 @@ public class PersonneViewController implements Initializable,IController,ListCha
                     for(Object o : c.getRemoved())
                     {
                         try {
-                            ModelPersonne model = (ModelPersonne) o;
-                            String sql = "delete from t_personne where id = ?";
+                            ModelNumero model = (ModelNumero) o;
+                            String sql = "delete from t_numero where id = ?";
                             PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
                             ps.setLong(1, model.getId());
                             ps.execute();
                         } catch (SQLException ex) {
-                            Logger.getLogger(PersonneViewController.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(NumeroViewController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         
                     }
@@ -328,34 +317,33 @@ public class PersonneViewController implements Initializable,IController,ListCha
     {
         this.currentDossier = currentDossier;
         
-        oPersonnes.removeListener(this);
+        oNumeros.removeListener(this);
         try {
             PreparedStatement ps = null;
             // chargement de la liste des personnes
-            String sql = "select * from t_personne where ref_id_folders = ?";
+            String sql = "select * from t_numero where ref_id_folders = ?";
             ps = ConnectionSQL.getCon().prepareStatement(sql);
             ps.setLong(1, currentDossier.getId());
             ResultSet result = ps.executeQuery();
             // clear de oPersonnes
-            oPersonnes.clear();
+            oNumeros.clear();
             while(result.next())
             {
-                ModelPersonne model = new ModelPersonne();
+                ModelNumero model = new ModelNumero();
                 model.setId(result.getLong("id"));
-                model.setNom(result.getString("nom"));
-                model.setPrenom(result.getString("prenom"));
-                model.setAdresse(result.getString("adresse"));
-                model.setDateNaissance(result.getDate("date_naissance").toLocalDate());
-                model.setQualite(result.getString("qualite"));
+                model.setType(result.getString("type"));
+                model.setNumero(result.getString("numero"));
+                model.setNationalite(result.getString("nationalite"));
+                model.setOwner(result.getString("owner"));
                 // add
-                oPersonnes.add(model);
+                oNumeros.add(model);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PersonneViewController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NumeroViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         // ajout des events
-        oPersonnes.addListener(this);
+        oNumeros.addListener(this);
     }
      
 }
