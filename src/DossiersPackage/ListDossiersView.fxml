@@ -11,7 +11,7 @@
    <children>
       <BorderPane layoutX="100.0" layoutY="300.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
-            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER_RIGHT" prefHeight="12.0" prefWidth="400.0" BorderPane.alignment="CENTER">
                <children>
                   <Button defaultButton="true" mnemonicParsing="false" onAction="#handleAccept" text="Selectionner">
                      <HBox.margin>
@@ -38,7 +38,7 @@
          <center>
             <TableView fx:id="tableDossiers" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
-                <TableColumn fx:id="columnOwner" prefWidth="134.0" text="Owner" />
+                <TableColumn fx:id="columnOwner" prefWidth="134.0" text="Créé par" />
                 <TableColumn fx:id="columnDossier" prefWidth="265.0" text="Dossier" />
               </columns>
             </TableView>
