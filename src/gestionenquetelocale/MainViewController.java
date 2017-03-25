@@ -71,7 +71,7 @@ public class MainViewController implements Initializable {
         Stage stage = new Stage();
         stage.initOwner(mainView.getScene().getWindow());
         stage.initStyle(StageStyle.UTILITY);
-        stage.initModality(Modality.APPLICATION_MODAL);
+        //stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Gestion des entités : Numero");
         // Personne
         FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/EntityPackage/NumeroView.fxml"));
@@ -82,7 +82,7 @@ public class MainViewController implements Initializable {
         
         stage.setResizable(false);
         stage.setScene(scene);
-        stage.showAndWait();
+        stage.show();
     }
      
     @FXML
@@ -94,7 +94,7 @@ public class MainViewController implements Initializable {
         Stage stage = new Stage();
         stage.initOwner(mainView.getScene().getWindow());
         stage.initStyle(StageStyle.UTILITY);
-        stage.initModality(Modality.APPLICATION_MODAL);
+        //stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Gestion des entités : Personne");
         // Personne
         FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/EntityPackage/PersonneView.fxml"));
@@ -105,7 +105,7 @@ public class MainViewController implements Initializable {
         
         stage.setResizable(false);
         stage.setScene(scene);
-        stage.showAndWait();
+        stage.show();
     }
     
     @FXML

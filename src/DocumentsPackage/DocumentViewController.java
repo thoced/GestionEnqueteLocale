@@ -18,15 +18,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -35,18 +40,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
  *
  * @author Thonon
  */
-public class DocumentViewController implements Initializable,IController,ListChangeListener {
+public class DocumentViewController implements Initializable,IController,ListChangeListener,Predicate<ModelDocument>{
 
     @FXML
     private TableView tableDocuments;
@@ -59,15 +67,19 @@ public class DocumentViewController implements Initializable,IController,ListCha
     @FXML
     private TableColumn<ModelDocument,LocalDate> columnDate;
     @FXML
-    private TableColumn<ModelDocument,String> columnAnnexe;
+    private TableColumn<ModelDocument,String> columnReference;
     @FXML
     private ComboBox comboType;
+    @FXML
+    private ComboBox comboFiltre;
     @FXML
     private TextField titreField;
     @FXML
     private TextArea commentaireField;
     @FXML
     private DatePicker dateField;
+    @FXML
+    private TextField referenceField;
     
     
     @FXML
@@ -81,8 +93,11 @@ public class DocumentViewController implements Initializable,IController,ListCha
     private ObservableList<String> oType = FXCollections.observableArrayList();
     // list de Personne
     private ObservableList<ModelDocument> oDocuments = FXCollections.observableArrayList();
+   
     
     private ModelDossier currentDossier;
+    
+   
      
     
    
@@ -103,21 +118,31 @@ public class DocumentViewController implements Initializable,IController,ListCha
             {
                 oType.add(result.getString("type"));
             }
+            // type
             comboType.setItems(oType);
+            // filtre
+            comboFiltre.setItems(oType);
+            comboFiltre.getItems().add("Tous");
+            comboFiltre.setValue("Tous");
            
             // setitem
-            tableDocuments.setItems(oDocuments);
+           // tableDocuments.setItems(oDocuments);
             // factory
             columnIndex.setCellValueFactory(cellData->cellData.getValue().indexProperty().asString());
             columnType.setCellValueFactory(cellData->cellData.getValue().typeProperty());
             columnTitre.setCellValueFactory(cellData->cellData.getValue().titreProperty());
             columnDate.setCellValueFactory(cellData->cellData.getValue().dateProperty());
+            columnReference.setCellValueFactory(cellData->cellData.getValue().referenceProperty());
         } catch (SQLException ex) {
             Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-           
-    }   
+        
+        // filtre
+         FilteredList<ModelDocument> filter = new FilteredList<>(oDocuments,p->true);
+         filter.setPredicate(this);
+         tableDocuments.setItems(filter);
+       
+    }
     
     private void disable()
     {
@@ -125,6 +150,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
             titreField.setDisable(true);
             commentaireField.setDisable(true);
             dateField.setDisable(true);
+            referenceField.setDisable(true);
             buttonModif.setDisable(true);
             buttonAdd.setDisable(true);
             buttonDel.setDisable(true);
@@ -136,9 +162,19 @@ public class DocumentViewController implements Initializable,IController,ListCha
             titreField.setDisable(false);
             commentaireField.setDisable(false);
             dateField.setDisable(false);
+            referenceField.setDisable(false);
             buttonModif.setDisable(false);
             buttonAdd.setDisable(false);
             buttonDel.setDisable(false);
+    }
+    
+    @FXML
+    public void handleFiltre(ActionEvent event)
+    {
+      FilteredList<ModelDocument> filter = new FilteredList<>(oDocuments,p->true);
+      filter.setPredicate(this);
+      tableDocuments.setItems(filter);
+     
     }
     
     @FXML
@@ -154,6 +190,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
        titreField.clear();
        commentaireField.clear();
        dateField.setValue(null);
+       referenceField.clear();
            
        enable();
        
@@ -167,6 +204,8 @@ public class DocumentViewController implements Initializable,IController,ListCha
         model.setCommentaire(commentaireField.getText());
         model.setDate(dateField.getValue());
         model.setType((String)comboType.getSelectionModel().getSelectedItem());
+        model.setReference(referenceField.getText());
+        model.setIndex(oDocuments.size() + 1);
         oDocuments.add(model);
         
         
@@ -174,6 +213,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
        titreField.clear();
        commentaireField.clear();
        dateField.setValue(null);
+       referenceField.clear();
         
         disable();
         
@@ -213,14 +253,16 @@ public class DocumentViewController implements Initializable,IController,ListCha
                 model.setCommentaire(commentaireField.getText());
                 model.setDate(dateField.getValue());
                 model.setType((String)comboType.getSelectionModel().getSelectedItem());
+                model.setReference(referenceField.getText());
                 
-                String sql = "update t_document set ref_id_type = (select t_type_document.id from t_type_document where t_type_document.type = ?), titre = ?, commentaire = ?, date = ?  where id = ?";
+                String sql = "update t_document set ref_id_type = (select t_type_document.id from t_type_document where t_type_document.type = ?), titre = ?, commentaire = ?, date = ?,referrence = ?  where id = ?";
                 PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
                 ps.setString(1, model.getType());
                 ps.setString(2, model.getTitre());
                 ps.setString(3, model.getCommentaire());
                 ps.setDate(4, Date.valueOf(model.getDate()));
-                ps.setLong(5, model.getId());
+                ps.setString(5, model.getReference());
+                ps.setLong(6, model.getId());
                 ps.executeUpdate();
             } catch (SQLException ex) {
                 Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -241,6 +283,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
             titreField.setText(model.getTitre());
             commentaireField.setText(model.getCommentaire());
             dateField.setValue(model.getDate());
+            referenceField.setText(model.getReference());
             
             
             enable();
@@ -265,14 +308,15 @@ public class DocumentViewController implements Initializable,IController,ListCha
                         PreparedStatement ps = null;
                         try {
                             // ajout
-                            String sql = "insert into t_document (ref_id_type,titre,commentaire,date,ref_id_folders) values "
-                                    + "((select id from t_type_document where type = ?),?,?,?,?)";
+                            String sql = "insert into t_document (ref_id_type,titre,commentaire,date,reference,ref_id_folders) values "
+                                    + "((select id from t_type_document where type = ?),?,?,?,?,?)";
                             ps = ConnectionSQL.getCon().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
                             ps.setString(1, model.getType());
                             ps.setString(2, model.getTitre());
                             ps.setString(3, model.getCommentaire());
                             ps.setDate(4, Date.valueOf(model.getDate()));
-                            ps.setLong(5, this.currentDossier.getId());
+                            ps.setString(5, model.getReference());
+                            ps.setLong(6, this.currentDossier.getId());
                             ps.execute();
                             ResultSet r = ps.getGeneratedKeys();
                             r.first();
@@ -347,6 +391,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
                 model.setCommentaire(result.getString("commentaire"));
                 model.setDate(result.getDate("date").toLocalDate());
                 model.setType(result.getString("type"));
+                model.setReference(result.getString("reference"));
                 model.setIndex(index);
                 index++;
                 // add
@@ -359,5 +404,26 @@ public class DocumentViewController implements Initializable,IController,ListCha
         // ajout des events
         oDocuments.addListener(this);
     }
-     
+
+    
+    
+
+    @Override
+    public boolean test(ModelDocument t)
+    {
+        String compare = (String)comboFiltre.getSelectionModel().getSelectedItem();
+        
+        if(t.getType().equals(compare) || compare.equals("Tous"))
+         {
+             return true;       
+         }
+        else
+            return false;
+               
+    }
+
+    
+
+    
+   
 }

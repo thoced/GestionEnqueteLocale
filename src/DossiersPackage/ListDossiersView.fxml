@@ -41,6 +41,9 @@
                 <TableColumn fx:id="columnOwner" prefWidth="134.0" text="Créé par" />
                 <TableColumn fx:id="columnDossier" prefWidth="265.0" text="Dossier" />
               </columns>
+               <BorderPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </BorderPane.margin>
             </TableView>
          </center>
       </BorderPane>

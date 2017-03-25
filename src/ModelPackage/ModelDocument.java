@@ -46,6 +46,21 @@ public class ModelDocument extends Model
     private final ObjectProperty<LocalDate> date = new SimpleObjectProperty<>();
     // contenu du document, pour les recheches index
     private final StringProperty contenu = new SimpleStringProperty();
+    // reference liée au document
+    private final StringProperty reference = new SimpleStringProperty();
+
+    public String getReference() {
+        return reference.get();
+    }
+
+    public void setReference(String value) {
+        reference.set(value);
+    }
+
+    public StringProperty referenceProperty() {
+        return reference;
+    }
+    
 
     public String getContenu() {
         return contenu.get();
