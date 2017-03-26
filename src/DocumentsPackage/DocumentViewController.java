@@ -93,10 +93,10 @@ public class DocumentViewController implements Initializable,IController,ListCha
     private ObservableList<String> oType = FXCollections.observableArrayList();
     // list de Personne
     private ObservableList<ModelDocument> oDocuments = FXCollections.observableArrayList();
-   
-    
+      
     private ModelDossier currentDossier;
-    
+    // index
+    private int index = 1;
    
      
     
@@ -171,6 +171,8 @@ public class DocumentViewController implements Initializable,IController,ListCha
     @FXML
     public void handleFiltre(ActionEvent event)
     {
+        // index à 1
+      this.index = 1;
       FilteredList<ModelDocument> filter = new FilteredList<>(oDocuments,p->true);
       filter.setPredicate(this);
       tableDocuments.setItems(filter);
@@ -411,10 +413,14 @@ public class DocumentViewController implements Initializable,IController,ListCha
     @Override
     public boolean test(ModelDocument t)
     {
+        //methode de test pour le filtre à type
+        
         String compare = (String)comboFiltre.getSelectionModel().getSelectedItem();
         
         if(t.getType().equals(compare) || compare.equals("Tous"))
          {
+             t.setIndex(this.index);
+             this.index++;
              return true;       
          }
         else

@@ -35,7 +35,7 @@
                 <TableColumn fx:id="columnType" prefWidth="200.0" text="Type" />
                   <TableColumn fx:id="columnTitre" prefWidth="373.0" text="Titre" />
                   <TableColumn fx:id="columnDate" prefWidth="130.0" text="Date" />
-                  <TableColumn fx:id="columnReference" prefWidth="213.0" text="Ref" />
+                  <TableColumn fx:id="columnReference" prefWidth="201.0" text="Ref" />
               </columns>
             </TableView>
          </children>
@@ -71,7 +71,7 @@
                   <Button mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <DatePicker fx:id="dateField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Label text="Référence" GridPane.columnIndex="2" />
-                  <TextField fx:id="referenceField" GridPane.columnIndex="3" />
+                  <TextField fx:id="referenceField" prefHeight="25.0" prefWidth="187.0" GridPane.columnIndex="3" />
                </children>
             </GridPane>
          </children>
