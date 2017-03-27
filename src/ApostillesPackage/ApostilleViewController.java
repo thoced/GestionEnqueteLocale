@@ -26,6 +26,8 @@ import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ListChangeListener;
@@ -56,7 +58,7 @@ import javafx.util.Callback;
  *
  * @author Thonon
  */
-public class ApostilleViewController implements Initializable,IController,ListChangeListener,Predicate<ModelApostille>{
+public class ApostilleViewController implements Initializable,IController,ListChangeListener,Predicate<ModelApostille>,ChangeListener<LocalDate>{
 
     @FXML
     private TableView tableApostilles;
@@ -116,7 +118,7 @@ public class ApostilleViewController implements Initializable,IController,ListCh
             comboFiltre.getItems().add("Tous");
             comboFiltre.getItems().add("En cours");
             comboFiltre.getItems().add("Cloturé");
-            comboFiltre.setValue("Cloturé");
+            comboFiltre.setValue("Tous");
            
             // setitem
            // tableDocuments.setItems(oDocuments);
@@ -128,6 +130,9 @@ public class ApostilleViewController implements Initializable,IController,ListCh
             columnDateOut.setCellValueFactory(cellData->cellData.getValue().dateOutProperty());
             columnStatut.setCellValueFactory(cellData->cellData.getValue().statutProperty());
       
+            // listener sur le changement du dateOut
+            dateInField.valueProperty().addListener(this);
+            dateOutField.valueProperty().addListener(this);
         
         // filtre
          FilteredList<ModelApostille> filter = new FilteredList<>(oApostilles,p->true);
@@ -458,6 +463,29 @@ public class ApostilleViewController implements Initializable,IController,ListCh
         
        return false;
                
+    }
+
+    // test de la date de fermeture
+    @Override
+    public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue)
+    {
+       if(observable == dateOutField.valueProperty() && newValue.isBefore(dateInField.getValue()))
+       {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erreur dans la date de clôture !!!");
+            alert.setContentText("La date de clôture de l'apostille ne peut être inférieur à la date d'ouverture");
+            alert.showAndWait();
+            dateOutField.setValue(dateInField.getValue());
+       }
+       else
+           if(observable == dateInField.valueProperty() && newValue.isAfter(dateOutField.getValue()))
+            {
+                 Alert alert = new Alert(AlertType.ERROR);
+                 alert.setTitle("Erreur dans la date de d'ouverture !!!");
+                 alert.setContentText("La date d'ouverture de l'apostille ne peut être supérieur à la date de clôture");
+                 alert.showAndWait();
+                 dateInField.setValue(dateOutField.getValue());
+            }
     }
 
     
