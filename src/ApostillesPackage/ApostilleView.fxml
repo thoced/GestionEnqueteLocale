@@ -36,7 +36,7 @@
                   <TableColumn fx:id="columnLibelle" prefWidth="373.0" text="Libellé" />
                   <TableColumn fx:id="columnDateIn" prefWidth="130.0" text="Date In" />
                   <TableColumn fx:id="columnDateOut" prefWidth="130.0" text="Date Out" />
-                  <TableColumn fx:id="columnStatut" prefWidth="75.0" text="Cloturé" />
+                  <TableColumn fx:id="columnStatut" prefWidth="75.0" text="Statut" />
               </columns>
             </TableView>
          </children>

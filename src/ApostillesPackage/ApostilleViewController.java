@@ -53,12 +53,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
+
 /**
  * FXML Controller class
  *
  * @author Thonon
  */
-public class ApostilleViewController implements Initializable,IController,ListChangeListener,Predicate<ModelApostille>,ChangeListener<LocalDate>{
+public class ApostilleViewController  implements Initializable,IController,ListChangeListener,Predicate<ModelApostille>,ChangeListener<LocalDate>{
 
     @FXML
     private TableView tableApostilles;
@@ -129,6 +130,7 @@ public class ApostilleViewController implements Initializable,IController,ListCh
             columnDateIn.setCellValueFactory(cellData->cellData.getValue().dateInProperty());
             columnDateOut.setCellValueFactory(cellData->cellData.getValue().dateOutProperty());
             columnStatut.setCellValueFactory(cellData->cellData.getValue().statutProperty());
+            columnStatut.setCellFactory(p->new StatutCell());
       
             // listener sur le changement du dateOut
             dateInField.valueProperty().addListener(this);
@@ -488,8 +490,4 @@ public class ApostilleViewController implements Initializable,IController,ListCh
             }
     }
 
-    
-
-    
-   
 }
