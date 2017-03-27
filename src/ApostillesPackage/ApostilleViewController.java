@@ -44,6 +44,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -88,7 +89,8 @@ public class ApostilleViewController  implements Initializable,IController,ListC
     private DatePicker dateInField;
     @FXML
     private DatePicker dateOutField;
-      
+    @FXML
+    private Label statutLabel;
     
     @FXML
     private Button buttonModif;
@@ -96,6 +98,8 @@ public class ApostilleViewController  implements Initializable,IController,ListC
     private Button buttonAdd;
     @FXML
     private Button buttonDel;
+    
+    
     
     // initi comboQualite
     private ObservableList<String> oStatut = FXCollections.observableArrayList();
@@ -131,6 +135,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
             columnDateOut.setCellValueFactory(cellData->cellData.getValue().dateOutProperty());
             columnStatut.setCellValueFactory(cellData->cellData.getValue().statutProperty());
             columnStatut.setCellFactory(p->new StatutCell());
+            
       
             // listener sur le changement du dateOut
             dateInField.valueProperty().addListener(this);

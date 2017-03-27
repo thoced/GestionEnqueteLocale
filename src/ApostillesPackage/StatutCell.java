@@ -60,7 +60,8 @@ public class StatutCell extends TableCell implements ChangeListener<Boolean>
         {
             ModelApostille model = (ModelApostille) this.getTableRow().getItem();
             model.setStatut(!model.isStatut());
-            System.out.println(model.getLibelle());
+            
+            // 
         }
     }
     

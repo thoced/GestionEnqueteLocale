@@ -30,11 +30,9 @@ import javafx.stage.WindowEvent;
  * @author Thonon
  */
 public class MainViewController implements Initializable {
-   
-    
+
     @FXML
     private AnchorPane mainView;
-    
     // data
     private ModelDossier currentDossier;
     
