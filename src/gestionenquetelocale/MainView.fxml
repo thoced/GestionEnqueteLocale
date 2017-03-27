@@ -27,7 +27,7 @@
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleDocument" text="Documents" />
                   <MenuItem mnemonicParsing="false" text="Annexes" />
-                  <MenuItem mnemonicParsing="false" text="Apostilles" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleApostille" text="Apostilles" />
                   <MenuItem mnemonicParsing="false" text="Suivi d'enquête" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#handleEntityPersonne" text="Personnes" />

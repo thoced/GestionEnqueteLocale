@@ -38,7 +38,31 @@ public class MainViewController implements Initializable {
     // data
     private ModelDossier currentDossier;
     
-     @FXML
+    @FXML
+    private void handleApostille(ActionEvent event) throws IOException 
+    {
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));
+        BorderPane pane = loader.load();
+        Scene scene = new Scene(pane);
+        Stage stage = new Stage();
+        stage.setMinWidth(960);
+        stage.initOwner(mainView.getScene().getWindow());
+        stage.initStyle(StageStyle.UTILITY);
+       // stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Gestion des apostilles");
+        // Personne
+        FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/ApostillesPackage/ApostilleView.fxml"));
+        BorderPane panePersonne = loaderPersonne.load();
+        IController controller = loaderPersonne.getController();
+        controller.loadModel(currentDossier);
+        pane.setCenter(panePersonne);
+        
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    @FXML
     private void handleDocument(ActionEvent event) throws IOException 
     {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));
