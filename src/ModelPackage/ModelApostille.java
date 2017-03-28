@@ -14,12 +14,15 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Alert;
 
 /**
  *
  * @author Thonon
  */
-public class ModelApostille extends Model
+public class ModelApostille extends Model implements ChangeListener<LocalDate>
 {
     // index
     private final IntegerProperty index = new SimpleIntegerProperty();
@@ -50,6 +53,15 @@ public class ModelApostille extends Model
     // statut - en cours (false) - cloture (true)
     private final BooleanProperty statut = new SimpleBooleanProperty();
 
+    public ModelApostille() 
+    {
+        // installation des listener sur les dates pour les vérifications
+        dateOut.addListener(this);
+        dateIn.addListener(this);
+    }
+
+    
+    
     public boolean isStatut() {
         return statut.get();
     }
@@ -125,6 +137,31 @@ public class ModelApostille extends Model
 
     public StringProperty autoriteProperty() {
         return autorite;
+    }
+
+    @Override
+    public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue)
+    {
+       if(observable == dateOut && newValue.isBefore(dateIn.getValue()))
+       {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur dans la date de clôture !!!");
+            alert.setContentText("La date de clôture de l'apostille ne peut être inférieur à la date d'ouverture");
+            alert.showAndWait();
+            dateOut.setValue(dateIn.getValue());
+       }
+       else
+           if(observable == dateIn && newValue.isAfter(dateOut.getValue()))
+            {
+                 Alert alert = new Alert(Alert.AlertType.ERROR);
+                 alert.setTitle("Erreur dans la date de d'ouverture !!!");
+                 alert.setContentText("La date d'ouverture de l'apostille ne peut être supérieur à la date de clôture");
+                 alert.showAndWait();
+                 dateIn.setValue(dateOut.getValue());
+            }
+       
+       
+       
     }
     
 }

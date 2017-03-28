@@ -87,8 +87,8 @@ public class ApostilleViewController  implements Initializable,IController,ListC
     private TextArea contenuField;
     @FXML
     private DatePicker dateInField;
-    @FXML
-    private DatePicker dateOutField;
+   // @FXML
+   // private DatePicker dateOutField;
     @FXML
     private Label statutLabel;
     
@@ -139,7 +139,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
       
             // listener sur le changement du dateOut
             dateInField.valueProperty().addListener(this);
-            dateOutField.valueProperty().addListener(this);
+           // dateOutField.valueProperty().addListener(this);
         
         // filtre
          FilteredList<ModelApostille> filter = new FilteredList<>(oApostilles,p->true);
@@ -154,7 +154,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
             libelleField.setDisable(true);
             contenuField.setDisable(true);
             dateInField.setDisable(true);
-            dateOutField.setDisable(true);
+            //dateOutField.setDisable(true);
             buttonModif.setDisable(true);
             buttonAdd.setDisable(true);
             buttonDel.setDisable(true);
@@ -166,7 +166,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
             libelleField.setDisable(false);
             contenuField.setDisable(false);
             dateInField.setDisable(false);
-            dateOutField.setDisable(false);
+            //dateOutField.setDisable(false);
             buttonModif.setDisable(false);
             buttonAdd.setDisable(false);
             buttonDel.setDisable(false);
@@ -196,7 +196,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
         libelleField.clear();
         contenuField.clear();
         dateInField.setValue(null);
-        dateOutField.setValue(null);
+        //dateOutField.setValue(null);
         
                 
        enable();
@@ -211,7 +211,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
         model.setLibelle(libelleField.getText());
         model.setContenu(contenuField.getText());
         model.setDateIn(dateInField.getValue());
-        model.setDateOut(dateOutField.getValue());
+        //model.setDateOut(dateOutField.getValue());
         model.setIndex(oApostilles.size() + 1);
         oApostilles.add(model);
         
@@ -220,7 +220,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
         libelleField.clear();
         contenuField.clear();
         dateInField.setValue(null);
-        dateOutField.setValue(null);
+        //dateOutField.setValue(null);
         
         disable();
         
@@ -260,7 +260,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
                 model.setLibelle(libelleField.getText());
                 model.setContenu(contenuField.getText());
                 model.setDateIn(dateInField.getValue());
-                model.setDateOut(dateOutField.getValue());
+               // model.setDateOut(dateOutField.getValue());
                 
                 String sql = "update t_apostille set autorite = ?, libelle = ?, contenu = ?, date_IN = ?, date_OUT = ?, statut = ? where id = ?";
                 PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
@@ -299,7 +299,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
         libelleField.setText(model.getLibelle());
         contenuField.setText(model.getContenu());
         dateInField.setValue(model.getDateIn());
-        dateOutField.setValue(model.getDateOut());
+        //dateOutField.setValue(model.getDateOut());
             
             
             enable();
@@ -476,7 +476,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
     @Override
     public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue)
     {
-       if(observable == dateOutField.valueProperty() && newValue.isBefore(dateInField.getValue()))
+      /* if(observable == dateOutField.valueProperty() && newValue.isBefore(dateInField.getValue()))
        {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erreur dans la date de clôture !!!");
@@ -492,7 +492,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
                  alert.setContentText("La date d'ouverture de l'apostille ne peut être supérieur à la date de clôture");
                  alert.showAndWait();
                  dateInField.setValue(dateOutField.getValue());
-            }
+            }*/
     }
 
 }

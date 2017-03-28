@@ -67,8 +67,6 @@
                   <TextField fx:id="libelleField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Date IN" GridPane.rowIndex="3" />
                   <DatePicker fx:id="dateInField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Label text="Date OUT" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <DatePicker fx:id="dateOutField" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                   <Label text="Statut" GridPane.columnIndex="2" />
                   <TextField fx:id="autoriteField" GridPane.columnIndex="1" />
                   <Label fx:id="statutLabel" GridPane.columnIndex="3" />
