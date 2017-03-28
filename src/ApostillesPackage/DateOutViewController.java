@@ -9,12 +9,15 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 
 /**
@@ -22,11 +25,13 @@ import javafx.scene.control.DatePicker;
  *
  * @author Thonon
  */
-public class DateOutViewController implements Initializable {
+public class DateOutViewController implements Initializable,ChangeListener<Boolean> {
 
     
     @FXML 
     private DatePicker dateOutField; 
+    @FXML 
+    private CheckBox nowField; 
     
     private LocalDate dateOut = null;
     
@@ -56,12 +61,23 @@ public class DateOutViewController implements Initializable {
     }
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    public void initialize(URL url, ResourceBundle rb) 
+    {
+       nowField.selectedProperty().addListener(this);
     }  
 
     public LocalDate getDateOut() {
         return dateOut;
+    }
+
+    @Override
+    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) 
+    {
+       if(newValue)
+       {
+           dateOutField.setValue(LocalDate.now());
+
+       }
     }
     
     

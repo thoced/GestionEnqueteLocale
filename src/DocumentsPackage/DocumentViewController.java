@@ -11,6 +11,7 @@ import ModelPackage.IController;
 import ModelPackage.ModelDocument;
 import ModelPackage.ModelDossier;
 import ModelPackage.ModelPersonne;
+import UtilsPackage.DateCell;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -133,6 +134,10 @@ public class DocumentViewController implements Initializable,IController,ListCha
             columnTitre.setCellValueFactory(cellData->cellData.getValue().titreProperty());
             columnDate.setCellValueFactory(cellData->cellData.getValue().dateProperty());
             columnReference.setCellValueFactory(cellData->cellData.getValue().referenceProperty());
+            
+            // factory
+            columnDate.setCellFactory(p->new DateCell());
+            
         } catch (SQLException ex) {
             Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
         }

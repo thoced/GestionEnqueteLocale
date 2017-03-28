@@ -5,6 +5,7 @@
  */
 package ApostillesPackage;
 
+import UtilsPackage.DateCell;
 import DocumentsPackage.*;
 import EntityPackage.*;
 import ModelPackage.ConnectionSQL;
@@ -134,7 +135,11 @@ public class ApostilleViewController  implements Initializable,IController,ListC
             columnDateIn.setCellValueFactory(cellData->cellData.getValue().dateInProperty());
             columnDateOut.setCellValueFactory(cellData->cellData.getValue().dateOutProperty());
             columnStatut.setCellValueFactory(cellData->cellData.getValue().statutProperty());
+            // factory
             columnStatut.setCellFactory(p->new StatutCell());
+            columnDateIn.setCellFactory(p-> new DateCell());
+            columnDateOut.setCellFactory(p-> new DateCell());
+            
             
       
             // listener sur le changement du dateOut
