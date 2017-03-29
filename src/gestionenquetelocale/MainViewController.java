@@ -37,6 +37,30 @@ public class MainViewController implements Initializable {
     private ModelDossier currentDossier;
     
     @FXML
+    private void handleAnnexe(ActionEvent event) throws IOException 
+    {
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));
+        BorderPane pane = loader.load();
+        Scene scene = new Scene(pane);
+        Stage stage = new Stage();
+        stage.setMinWidth(960);
+        stage.initOwner(mainView.getScene().getWindow());
+        stage.initStyle(StageStyle.UTILITY);
+       // stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Gestion des annexes");
+        // Personne
+        FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/AnnexesPackage/AnnexeView.fxml"));
+        BorderPane panePersonne = loaderPersonne.load();
+        IController controller = loaderPersonne.getController();
+        controller.loadModel(currentDossier);
+        pane.setCenter(panePersonne);
+        
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    @FXML
     private void handleApostille(ActionEvent event) throws IOException 
     {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));

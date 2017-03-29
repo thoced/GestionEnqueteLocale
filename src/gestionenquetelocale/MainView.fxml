@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="mainView" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestionenquetelocale.MainViewController">
+<AnchorPane id="AnchorPane" fx:id="mainView" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: LightSteelBlue;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestionenquetelocale.MainViewController">
    <children>
       <MenuBar layoutX="398.0" layoutY="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -26,7 +26,7 @@
           <Menu mnemonicParsing="false" text="Dossier en cours">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleDocument" text="Documents" />
-                  <MenuItem mnemonicParsing="false" text="Annexes" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleAnnexe" text="Annexes" />
                   <MenuItem mnemonicParsing="false" onAction="#handleApostille" text="Apostilles" />
                   <MenuItem mnemonicParsing="false" text="Suivi d'enquête" />
                   <SeparatorMenuItem mnemonicParsing="false" />
