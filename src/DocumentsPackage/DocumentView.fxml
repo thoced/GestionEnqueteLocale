@@ -113,7 +113,7 @@
             <Pane prefHeight="117.0" prefWidth="650.0">
                <children>
                   <ListView fx:id="listAnnexes" layoutY="12.0" prefHeight="48.0" prefWidth="256.0" />
-                  <Label layoutX="2.0" layoutY="-6.0" text="Annexes attachées:" />
+                  <Label layoutX="2.0" layoutY="-6.0" text="Annexes attachées: (Double click pour afficher)" />
                </children>
             </Pane>
          </children>

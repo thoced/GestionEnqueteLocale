@@ -13,6 +13,9 @@ import ModelPackage.ModelDocument;
 import ModelPackage.ModelDossier;
 import ModelPackage.ModelPersonne;
 import UtilsPackage.DateCell;
+import UtilsPackage.ViewPdfController;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
@@ -27,6 +30,8 @@ import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ListChangeListener;
@@ -61,13 +66,15 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
+import javax.swing.event.ChangeEvent;
+
 
 /**
  * FXML Controller class
  *
  * @author Thonon
  */
-public class DocumentViewController implements Initializable,IController,ListChangeListener,Predicate<ModelDocument>,EventHandler<WindowEvent>{
+public class DocumentViewController implements Initializable,IController,ListChangeListener,Predicate<ModelDocument>,EventHandler<WindowEvent>,ChangeListener<ModelAnnexe>{
 
     @FXML
     private TableView tableDocuments;
@@ -159,6 +166,39 @@ public class DocumentViewController implements Initializable,IController,ListCha
             columnDate.setCellFactory(p->new DateCell());
             // set item de la liste des annexes attachées
             listAnnexes.setItems(oAnnexes);
+            listAnnexes.setOnMouseClicked((mouseEvent) -> {
+               
+                        if(mouseEvent.getClickCount() < 2)
+                            return;
+
+                        ModelAnnexe model = (ModelAnnexe) listAnnexes.getSelectionModel().getSelectedItem();
+                        if(model != null)
+                            {
+                             try {
+                            // on récupère la raw pour l'afficher, pour ce faire, on relance une requete pour le récupérer
+                            String sql_raw  = "select raw from t_annexe where id = ?";
+                            PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql_raw);
+                            ps.setLong(1, model.getId());
+                            ResultSet result_raw = ps.executeQuery();
+                            result_raw.first();
+                            model.setRaw(result_raw.getBlob("raw"));
+                            // lancement de l'affiche du PDf
+                            if(model.getRaw() != null)
+                            {
+                                ViewPdfController vpc = new ViewPdfController(model.getLibelle(),model.getRaw());
+                                vpc.ShowPDFDocument();
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                            }
+
+                         });
+            
+           
+         
             
         } catch (SQLException ex) {
             Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -400,6 +440,17 @@ public class DocumentViewController implements Initializable,IController,ListCha
         else
             disable();
     }
+    
+    @FXML
+    private void handleClicAnnexe(MouseEvent mouse)
+    {
+       
+        // si il y a au moin 2 clic
+      // System.out.println(event.getEventType().getName());
+          
+            
+        //
+    }
 
     @Override
     public void onChanged(Change c) 
@@ -537,10 +588,22 @@ public class DocumentViewController implements Initializable,IController,ListCha
     }
 
    
+  
     @Override
-    public void handle(WindowEvent event)
+    public void changed(ObservableValue<? extends ModelAnnexe> observable, ModelAnnexe oldValue, ModelAnnexe newValue) 
     {
-        if(event.getEventType() == WindowEvent.WINDOW_HIDDEN)
+            
+            if(newValue != null && oldValue == newValue)
+            {
+               
+            }
+    }
+
+    @Override
+    public void handle(WindowEvent event) 
+    {
+
+        if(event.getSource().getClass() == Stage.class)
         {
             // si fermeture du stage du contenu, il y a enregistrement
             ModelDocument model = (ModelDocument) tableDocuments.getSelectionModel().getSelectedItem();
@@ -549,8 +612,15 @@ public class DocumentViewController implements Initializable,IController,ListCha
                 if(controllerContenu != null && controllerContenu.getContenu() != null)
                      model.setContenu(controllerContenu.getContenu());
             }
+            
+            
         }
+        
+      
     }
+
+
+   
 
     
 
