@@ -11,7 +11,7 @@
    <bottom>
       <HBox alignment="BOTTOM_RIGHT" prefHeight="64.0" prefWidth="800.0" style="-fx-background-color: lightgray;" BorderPane.alignment="CENTER">
          <children>
-            <Button defaultButton="true" mnemonicParsing="false" onAction="#handleFermer" style="-fx-background-radius: 8;" text="Fermer">
+            <Button mnemonicParsing="false" onAction="#handleFermer" style="-fx-background-radius: 8; -fx-background-color: lightblue; -fx-border-color: grey; -fx-border-radius: 6;" text="Fermer">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>

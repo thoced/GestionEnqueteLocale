@@ -79,5 +79,13 @@ public class ModelAnnexe extends Model
     public IntegerProperty indexProperty() {
         return index;
     }
+
+    @Override
+    public String toString()
+    {
+        return libelle.getValue();
+    }
+    
+    
     
 }

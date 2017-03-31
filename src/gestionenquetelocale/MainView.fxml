@@ -12,7 +12,7 @@
    <children>
       <MenuBar layoutX="398.0" layoutY="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="Fichier">
                <items>
                   <MenuItem mnemonicParsing="false" text="Fermer l'application" />
                </items>
@@ -36,6 +36,11 @@
                   <MenuItem mnemonicParsing="false" text="Lieux" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Recherche">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+              </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
@@ -43,5 +48,10 @@
           </Menu>
         </menus>
       </MenuBar>
+      <Label fx:id="labelDossier" layoutX="834.0" layoutY="737.0" text="Dossier en cours: " AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="96.0">
+         <font>
+            <Font name="Cambria" size="25.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

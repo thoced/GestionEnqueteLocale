@@ -5,7 +5,11 @@
  */
 package ModelPackage;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
@@ -14,12 +18,14 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 /**
  *
  * @author Thonon
  */
-public class ModelDocument extends Model
+public class ModelDocument extends Model implements ChangeListener<String>
 {
 
     private final IntegerProperty index = new SimpleIntegerProperty();
@@ -49,6 +55,15 @@ public class ModelDocument extends Model
     // reference liée au document
     private final StringProperty reference = new SimpleStringProperty();
 
+    public ModelDocument() 
+    {
+        this.setId(-1); // pour éviter un update du contenu lors de l'anjout et que l'id n'est pas encore connu
+        // installation d'un listener sur le contenu, pour update la db
+        contenu.addListener(this);
+    }
+
+    
+    
     public String getReference() {
         return reference.get();
     }
@@ -124,6 +139,23 @@ public class ModelDocument extends Model
 
     public StringProperty typeProperty() {
         return type;
+    }
+
+    @Override
+    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) 
+    {
+        if(newValue != null && this.getId() > -1)
+        {
+            try {
+                String sql = "update t_document set contenu = ? where id = ?";
+                PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
+                ps.setString(1, this.getContenu());
+                ps.setLong(2, this.getId());
+                ps.execute();
+            } catch (SQLException ex) {
+                Logger.getLogger(ModelDocument.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
 }

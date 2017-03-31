@@ -33,6 +33,8 @@ public class MainViewController implements Initializable {
 
     @FXML
     private AnchorPane mainView;
+    @FXML
+    private Label labelDossier;
     // data
     private ModelDossier currentDossier;
     
@@ -175,6 +177,8 @@ public class MainViewController implements Initializable {
         {
             this.currentDossier = controller.getModelDossier();
             ((Stage)mainView.getScene().getWindow()).setTitle("Dossier en cours: " + controller.getModelDossier().getNomDossier());
+            // label
+            labelDossier.setText("Dossier en cours: " +  controller.getModelDossier().getNomDossier());
         }
     }
     

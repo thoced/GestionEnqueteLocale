@@ -8,10 +8,12 @@ package DocumentsPackage;
 import EntityPackage.*;
 import ModelPackage.ConnectionSQL;
 import ModelPackage.IController;
+import ModelPackage.ModelAnnexe;
 import ModelPackage.ModelDocument;
 import ModelPackage.ModelDossier;
 import ModelPackage.ModelPersonne;
 import UtilsPackage.DateCell;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -32,22 +34,32 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
 /**
@@ -55,7 +67,7 @@ import javafx.util.Callback;
  *
  * @author Thonon
  */
-public class DocumentViewController implements Initializable,IController,ListChangeListener,Predicate<ModelDocument>{
+public class DocumentViewController implements Initializable,IController,ListChangeListener,Predicate<ModelDocument>,EventHandler<WindowEvent>{
 
     @FXML
     private TableView tableDocuments;
@@ -82,6 +94,9 @@ public class DocumentViewController implements Initializable,IController,ListCha
     @FXML
     private TextField referenceField;
     
+    // liste des annexes attachées
+    @FXML
+    private ListView listAnnexes;
     
     @FXML
     private Button buttonModif;
@@ -94,8 +109,13 @@ public class DocumentViewController implements Initializable,IController,ListCha
     private ObservableList<String> oType = FXCollections.observableArrayList();
     // list de Personne
     private ObservableList<ModelDocument> oDocuments = FXCollections.observableArrayList();
+    // list annexes attachées
+    private ObservableList<ModelAnnexe> oAnnexes = FXCollections.observableArrayList();
       
     private ModelDossier currentDossier;
+    
+    // contenu controller
+    private ContenuViewController controllerContenu;
     // index
     private int index = 1;
    
@@ -137,6 +157,8 @@ public class DocumentViewController implements Initializable,IController,ListCha
             
             // factory
             columnDate.setCellFactory(p->new DateCell());
+            // set item de la liste des annexes attachées
+            listAnnexes.setItems(oAnnexes);
             
         } catch (SQLException ex) {
             Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -174,6 +196,62 @@ public class DocumentViewController implements Initializable,IController,ListCha
     }
     
     @FXML
+    public void handleContenu(ActionEvent event)
+    {
+        try {
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));
+            BorderPane pane = loader.load();
+            Scene scene = new Scene(pane);
+            Stage stage = new Stage();
+            stage.setMinWidth(960);
+            stage.initOwner(tableDocuments.getScene().getWindow());
+            stage.initStyle(StageStyle.UTILITY);
+            // stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Gestion du contenu du document");
+            // Personne
+            FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/DocumentsPackage/ContenuView.fxml"));
+            AnchorPane panePersonne = loaderPersonne.load();
+            controllerContenu = loaderPersonne.getController();
+            controllerContenu.setContenu(((ModelDocument)tableDocuments.getSelectionModel().getSelectedItem()).getContenu());
+           // controller.loadModel(currentDossier);
+            pane.setCenter(panePersonne);
+            
+            stage.setResizable(false);
+            stage.setScene(scene);
+            // ajout d'un listener de fermeture pour pouvoir enregistré le contenu inséré
+            stage.setOnHidden(this);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @FXML
+    private void handleDocument(ActionEvent event) throws IOException 
+    {
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));
+        BorderPane pane = loader.load();
+        Scene scene = new Scene(pane);
+        Stage stage = new Stage();
+        stage.setMinWidth(960);
+        stage.initOwner(tableDocuments.getScene().getWindow());
+        stage.initStyle(StageStyle.UTILITY);
+       // stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Gestion du document");
+        // Personne
+        FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/DocumentsPackage/DocumentView.fxml"));
+        BorderPane panePersonne = loaderPersonne.load();
+        IController controller = loaderPersonne.getController();
+        controller.loadModel(currentDossier);
+        pane.setCenter(panePersonne);
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+   
+    
+    @FXML
     public void handleFiltre(ActionEvent event)
     {
         // index à 1
@@ -198,6 +276,8 @@ public class DocumentViewController implements Initializable,IController,ListCha
        commentaireField.clear();
        dateField.setValue(null);
        referenceField.clear();
+       // init controller contenu
+       controllerContenu = null;
            
        enable();
        
@@ -213,6 +293,8 @@ public class DocumentViewController implements Initializable,IController,ListCha
         model.setType((String)comboType.getSelectionModel().getSelectedItem());
         model.setReference(referenceField.getText());
         model.setIndex(oDocuments.size() + 1);
+        if(controllerContenu != null && controllerContenu.getContenu() != null)
+         model.setContenu(controllerContenu.getContenu());
         oDocuments.add(model);
         
         
@@ -262,14 +344,15 @@ public class DocumentViewController implements Initializable,IController,ListCha
                 model.setType((String)comboType.getSelectionModel().getSelectedItem());
                 model.setReference(referenceField.getText());
                 
-                String sql = "update t_document set ref_id_type = (select t_type_document.id from t_type_document where t_type_document.type = ?), titre = ?, commentaire = ?, date = ?,referrence = ?  where id = ?";
+                String sql = "update t_document set ref_id_type = (select t_type_document.id from t_type_document where t_type_document.type = ?), titre = ?, commentaire = ?, date = ?, reference = ?, contenu = ?  where id = ?";
                 PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
                 ps.setString(1, model.getType());
                 ps.setString(2, model.getTitre());
                 ps.setString(3, model.getCommentaire());
                 ps.setDate(4, Date.valueOf(model.getDate()));
                 ps.setString(5, model.getReference());
-                ps.setLong(6, model.getId());
+                ps.setString(6, model.getContenu());
+                ps.setLong(7, model.getId());
                 ps.executeUpdate();
             } catch (SQLException ex) {
                 Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -286,15 +369,33 @@ public class DocumentViewController implements Initializable,IController,ListCha
         ModelDocument model = (ModelDocument) tableDocuments.getSelectionModel().getSelectedItem();
         if(model != null)
         {
-            comboType.setValue(model.getType());
-            titreField.setText(model.getTitre());
-            commentaireField.setText(model.getCommentaire());
-            dateField.setValue(model.getDate());
-            referenceField.setText(model.getReference());
-            
-            
-            enable();
-            
+            try {
+                comboType.setValue(model.getType());
+                titreField.setText(model.getTitre());
+                commentaireField.setText(model.getCommentaire());
+                dateField.setValue(model.getDate());
+                referenceField.setText(model.getReference());
+                controllerContenu = null;
+                enable();
+                // clear du listAnnexes
+                oAnnexes.clear();
+                // recherche des annexes attachées
+                String sql = "select id,libelle from t_annexe inner join t_link_annexe_document on t_annexe.id = t_link_annexe_document.ref_id_annexe where t_link_annexe_document.ref_id_document = ?";
+                PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
+                ps.setLong(1, model.getId());
+                ResultSet result = ps.executeQuery();
+ 
+                while(result.next())
+                {
+                    ModelAnnexe annexe = new ModelAnnexe();
+                    annexe.setId(result.getLong("id"));
+                    annexe.setLibelle(result.getString("libelle"));
+                    oAnnexes.add(annexe);
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         else
             disable();
@@ -315,15 +416,16 @@ public class DocumentViewController implements Initializable,IController,ListCha
                         PreparedStatement ps = null;
                         try {
                             // ajout
-                            String sql = "insert into t_document (ref_id_type,titre,commentaire,date,reference,ref_id_folders) values "
-                                    + "((select id from t_type_document where type = ?),?,?,?,?,?)";
+                            String sql = "insert into t_document (ref_id_type,titre,commentaire,date,reference,contenu,ref_id_folders) values "
+                                    + "((select id from t_type_document where type = ?),?,?,?,?,?,?)";
                             ps = ConnectionSQL.getCon().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
                             ps.setString(1, model.getType());
                             ps.setString(2, model.getTitre());
                             ps.setString(3, model.getCommentaire());
                             ps.setDate(4, Date.valueOf(model.getDate()));
                             ps.setString(5, model.getReference());
-                            ps.setLong(6, this.currentDossier.getId());
+                            ps.setString(6, model.getContenu());
+                            ps.setLong(7, this.currentDossier.getId());
                             ps.execute();
                             ResultSet r = ps.getGeneratedKeys();
                             r.first();
@@ -399,6 +501,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
                 model.setDate(result.getDate("date").toLocalDate());
                 model.setType(result.getString("type"));
                 model.setReference(result.getString("reference"));
+                model.setContenu(result.getString("contenu"));
                 model.setIndex(index);
                 index++;
                 // add
@@ -431,6 +534,22 @@ public class DocumentViewController implements Initializable,IController,ListCha
         else
             return false;
                
+    }
+
+   
+    @Override
+    public void handle(WindowEvent event)
+    {
+        if(event.getEventType() == WindowEvent.WINDOW_HIDDEN)
+        {
+            // si fermeture du stage du contenu, il y a enregistrement
+            ModelDocument model = (ModelDocument) tableDocuments.getSelectionModel().getSelectedItem();
+            if(model != null)
+            {
+                if(controllerContenu != null && controllerContenu.getContenu() != null)
+                     model.setContenu(controllerContenu.getContenu());
+            }
+        }
     }
 
     
