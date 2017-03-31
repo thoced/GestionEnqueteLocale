@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="anchor" prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LinksPackage.LinksViewController">
+   <children>
+      <ListView fx:id="listAnnexes" layoutX="39.0" layoutY="39.0" prefHeight="512.0" prefWidth="320.0" />
+      <ListView fx:id="listAttach" layoutX="596.0" layoutY="39.0" prefHeight="512.0" prefWidth="320.0" />
+      <Label layoutX="39.0" layoutY="14.0" text="Liste des annexes" />
+      <Label layoutX="596.0" layoutY="14.0" text="Annexes attachées" />
+      <Button layoutX="420.0" layoutY="147.0" mnemonicParsing="false" onAction="#handleAdd" prefHeight="51.0" prefWidth="121.0" text="&gt;&gt;" />
+      <Button layoutX="420.0" layoutY="224.0" mnemonicParsing="false" onAction="#handleSub" prefHeight="51.0" prefWidth="121.0" text="&lt;&lt;" />
+   </children>
+</AnchorPane>

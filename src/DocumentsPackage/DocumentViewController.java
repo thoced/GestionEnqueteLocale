@@ -6,6 +6,7 @@
 package DocumentsPackage;
 
 import EntityPackage.*;
+import LinksPackage.LinksViewController;
 import ModelPackage.ConnectionSQL;
 import ModelPackage.IController;
 import ModelPackage.ModelAnnexe;
@@ -120,6 +121,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
     private ObservableList<ModelAnnexe> oAnnexes = FXCollections.observableArrayList();
       
     private ModelDossier currentDossier;
+    private ModelDocument currentDocument;
     
     // contenu controller
     private ContenuViewController controllerContenu;
@@ -267,7 +269,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
     }
     
     @FXML
-    private void handleDocument(ActionEvent event) throws IOException 
+    private void handleAttach(ActionEvent event) throws IOException 
     {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));
         BorderPane pane = loader.load();
@@ -277,16 +279,37 @@ public class DocumentViewController implements Initializable,IController,ListCha
         stage.initOwner(tableDocuments.getScene().getWindow());
         stage.initStyle(StageStyle.UTILITY);
        // stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Gestion du document");
+        stage.setTitle("Gestion des liens des annexes");
         // Personne
-        FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/DocumentsPackage/DocumentView.fxml"));
-        BorderPane panePersonne = loaderPersonne.load();
-        IController controller = loaderPersonne.getController();
-        controller.loadModel(currentDossier);
+        FXMLLoader loaderLinks = new FXMLLoader(this.getClass().getResource("/LinksPackage/LinksView.fxml"));
+        AnchorPane panePersonne = loaderLinks.load();
+        LinksViewController controller = loaderLinks.getController();
+        controller.load(currentDocument, currentDossier);
         pane.setCenter(panePersonne);
         stage.setResizable(false);
         stage.setScene(scene);
-        stage.show();
+        stage.showAndWait();
+        // enregistremnet 
+         for(ModelAnnexe annexe : controller.getoAttach())
+            {
+                try {
+                    // suppression de l'ensemble des liens
+                    String del = "delete from t_link_annexe_document where ref_id_document = ?";
+                    PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(del);
+                    ps.setLong(1,currentDocument.getId());
+                    ps.execute();
+                    // ajout des nouveaux liens
+                    String sql = "insert into t_link_annexe_document (ref_id_annexe,ref_id_document) values (?,?)";
+                    ps = ConnectionSQL.getCon().prepareStatement(sql);
+                    ps.setLong(1,annexe.getId());
+                    ps.setLong(2, currentDocument.getId());
+                    ps.execute();
+                } catch (SQLException ex) {
+                    Logger.getLogger(LinksViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        
+       
     }
     
    
@@ -409,6 +432,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
         ModelDocument model = (ModelDocument) tableDocuments.getSelectionModel().getSelectedItem();
         if(model != null)
         {
+            currentDocument = model;
             try {
                 comboType.setValue(model.getType());
                 titreField.setText(model.getTitre());
