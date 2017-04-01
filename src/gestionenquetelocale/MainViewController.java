@@ -7,9 +7,14 @@ package gestionenquetelocale;
 
 import ModelPackage.IController;
 import ModelPackage.ModelDossier;
+import java.awt.event.FocusEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -25,11 +30,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
+
 /**
  *
  * @author Thonon
  */
-public class MainViewController implements Initializable {
+public class MainViewController implements Initializable, ChangeListener<Boolean>,EventHandler<WindowEvent>{
 
     @FXML
     private AnchorPane mainView;
@@ -37,6 +43,8 @@ public class MainViewController implements Initializable {
     private Label labelDossier;
     // data
     private ModelDossier currentDossier;
+    
+    private ObservableList<Stage> oStages;
     
     @FXML
     private void handleAnnexe(ActionEvent event) throws IOException 
@@ -190,10 +198,15 @@ public class MainViewController implements Initializable {
             scene = new Scene(bp);
             stage = new Stage();
             stage.setTitle(controller.getModelDossier().getNomDossier());
-            stage.initOwner(mainView.getScene().getWindow());
-            stage.initStyle(StageStyle.UTILITY);
-            stage.setResizable(false);
+           // stage.initOwner(mainView.getScene().getWindow());
+            stage.initStyle(StageStyle.DECORATED);
+            stage.setMaxHeight(700);
+            stage.setMaxWidth(960);
+            stage.setResizable(true);
             stage.setScene(scene);
+            stage.focusedProperty().addListener(this);
+            stage.setOnHidden(this);
+            oStages.add(stage);
             stage.show();
         }
     }
@@ -201,9 +214,40 @@ public class MainViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-        // TODO  
+       oStages = FXCollections.observableArrayList();
        
     }    
+
+    
+
+    @Override
+    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) 
+    {
+        if(newValue)
+        {
+           // on parse les stages et on regarde celui qui a le focus
+            for(Stage s: oStages)
+            {
+                if(s.isFocused())
+                {
+                    labelDossier.setText(s.getTitle());
+                    return;
+                }
+            }
+   
+        }
+        else 
+            labelDossier.setText("");
+    }
+
+    @Override
+    public void handle(WindowEvent event) 
+    {
+        // suppression du stage à sa fermeture
+        oStages.remove((Stage)event.getSource());
+    }
+
+    
 
     
     

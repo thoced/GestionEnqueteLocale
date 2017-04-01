@@ -30,6 +30,10 @@ public class MainFolderTabViewController implements Initializable {
    private Tab annexesTab;
    @FXML
    private Tab apostillesTab;
+   @FXML
+   private Tab personnesTab;
+   @FXML
+   private Tab numerosTab;
    
    private ModelDossier currentDossier;
     
@@ -64,6 +68,20 @@ public class MainFolderTabViewController implements Initializable {
         controller = loader.getController();
         controller.loadModel(currentDossier);
         ((BorderPane)apostillesTab.getContent()).setCenter(bp);
+        
+        // Personnes
+        loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/PersonneView.fxml"));
+        bp = loader.load();
+        controller = loader.getController();
+        controller.loadModel(currentDossier);
+        ((BorderPane)personnesTab.getContent()).setCenter(bp);
+        
+        // Numéros
+        loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/NumeroView.fxml"));
+        bp = loader.load();
+        controller = loader.getController();
+        controller.loadModel(currentDossier);
+        ((BorderPane)numerosTab.getContent()).setCenter(bp);
     }
     
     

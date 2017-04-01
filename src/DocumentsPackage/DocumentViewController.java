@@ -271,21 +271,13 @@ public class DocumentViewController implements Initializable,IController,ListCha
     @FXML
     private void handleAttach(ActionEvent event) throws IOException 
     {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));
-        BorderPane pane = loader.load();
-        Scene scene = new Scene(pane);
-        Stage stage = new Stage();
-        stage.setMinWidth(960);
-        stage.initOwner(tableDocuments.getScene().getWindow());
-        stage.initStyle(StageStyle.UTILITY);
-       // stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Gestion des liens des annexes");
-        // Personne
+       
         FXMLLoader loaderLinks = new FXMLLoader(this.getClass().getResource("/LinksPackage/LinksView.fxml"));
         AnchorPane panePersonne = loaderLinks.load();
         LinksViewController controller = loaderLinks.getController();
         controller.load(currentDocument, currentDossier);
-        pane.setCenter(panePersonne);
+        Scene scene = new Scene(panePersonne);
+        Stage stage = new Stage();
         stage.setResizable(false);
         stage.setScene(scene);
         stage.showAndWait();
