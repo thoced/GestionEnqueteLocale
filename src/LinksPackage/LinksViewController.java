@@ -78,6 +78,18 @@ public class LinksViewController implements Initializable,EventHandler<WindowEve
     @FXML
     public void handleConfirmer(ActionEvent event) 
     {
+        // Suppression 
+        String s = "delete from t_link_annexe_document where ref_id_document = ?";
+        PreparedStatement ps;
+        try 
+        {
+            ps = ConnectionSQL.getCon().prepareStatement(s);
+            ps.setLong(1, currentDocument.getId());
+            ps.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(LinksViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         // confirmation
         for(ModelAnnexeChecked annexe : oAnnexes)
         {
@@ -85,7 +97,7 @@ public class LinksViewController implements Initializable,EventHandler<WindowEve
             {
                 try {
                     String sql = "insert into t_link_annexe_document (ref_id_annexe,ref_id_document) values (?,?)";
-                    PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
+                    ps = ConnectionSQL.getCon().prepareStatement(sql);
                     ps.setLong(1, annexe.getId());
                     ps.setLong(2, currentDocument.getId());
                     ps.execute();

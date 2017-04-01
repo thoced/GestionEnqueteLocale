@@ -281,26 +281,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
         stage.setResizable(false);
         stage.setScene(scene);
         stage.showAndWait();
-        // enregistremnet 
-         for(ModelAnnexe annexe : controller.getoAttach())
-            {
-                try {
-                    // suppression de l'ensemble des liens
-                    String del = "delete from t_link_annexe_document where ref_id_document = ?";
-                    PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(del);
-                    ps.setLong(1,currentDocument.getId());
-                    ps.execute();
-                    // ajout des nouveaux liens
-                    String sql = "insert into t_link_annexe_document (ref_id_annexe,ref_id_document) values (?,?)";
-                    ps = ConnectionSQL.getCon().prepareStatement(sql);
-                    ps.setLong(1,annexe.getId());
-                    ps.setLong(2, currentDocument.getId());
-                    ps.execute();
-                } catch (SQLException ex) {
-                    Logger.getLogger(LinksViewController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        
+       
        
     }
     
@@ -317,7 +298,6 @@ public class DocumentViewController implements Initializable,IController,ListCha
      
     }
     
-    @FXML
     public void handleOnUpdate()
     {
         buttonModif.setDisable(false);
@@ -457,16 +437,6 @@ public class DocumentViewController implements Initializable,IController,ListCha
             disable();
     }
     
-    @FXML
-    private void handleClicAnnexe(MouseEvent mouse)
-    {
-       
-        // si il y a au moin 2 clic
-      // System.out.println(event.getEventType().getName());
-          
-            
-        //
-    }
 
     @Override
     public void onChanged(Change c) 
@@ -633,6 +603,10 @@ public class DocumentViewController implements Initializable,IController,ListCha
         }
         
       
+    }
+
+    @FXML
+    private void handleNew(javafx.scene.input.MouseEvent event) {
     }
 
 
