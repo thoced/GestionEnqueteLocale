@@ -179,6 +179,22 @@ public class MainViewController implements Initializable {
             ((Stage)mainView.getScene().getWindow()).setTitle("Dossier en cours: " + controller.getModelDossier().getNomDossier());
             // label
             labelDossier.setText("Dossier en cours: " +  controller.getModelDossier().getNomDossier());
+            
+            // chargement du stage folderstab
+            loader = new FXMLLoader(this.getClass().getResource("/gestionenquetelocale/MainFolderTabView.fxml"));
+            BorderPane bp = loader.load();
+            MainFolderTabViewController mftvc = loader.getController();
+            mftvc.load(currentDossier);
+            //IController controller = loader.getController();
+            //controller.setModelDossier(currentDossier);
+            scene = new Scene(bp);
+            stage = new Stage();
+            stage.setTitle(controller.getModelDossier().getNomDossier());
+            stage.initOwner(mainView.getScene().getWindow());
+            stage.initStyle(StageStyle.UTILITY);
+            stage.setResizable(false);
+            stage.setScene(scene);
+            stage.show();
         }
     }
     
