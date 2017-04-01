@@ -112,9 +112,9 @@
             </Button>
             <Pane prefHeight="117.0" prefWidth="650.0">
                <children>
-                  <ListView fx:id="listAnnexes" layoutY="12.0" prefHeight="48.0" prefWidth="256.0" />
+                  <ListView fx:id="listAnnexes" layoutY="12.0" prefHeight="48.0" prefWidth="320.0" />
                   <Label layoutX="2.0" layoutY="-6.0" text="Annexes attachées: (Double click pour afficher)" />
-                  <Button layoutX="273.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleAttach" text="Lier des annexes" />
+                  <Button layoutX="336.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleAttach" text="Lier des annexes" />
                </children>
             </Pane>
          </children>
