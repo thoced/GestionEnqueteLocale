@@ -6,6 +6,7 @@
 package ModelPackage;
 
 import AnnexesPackage.AnnexeViewController;
+import ApostillesPackage.ApostilleViewController;
 import DocumentsPackage.DocumentViewController;
 import EntityPackage.NumeroViewController;
 import java.sql.PreparedStatement;
@@ -36,12 +37,15 @@ public class ModelDossier extends Model
     private ObservableList<ModelDocument> oDocuments;
     // Annexe
     private ObservableList<ModelAnnexe> oAnnexes;
+    // Apostilles
+    private ObservableList<ModelApostille> oApostilles;
 
     public ModelDossier() 
     {
         oNumeros = FXCollections.observableArrayList();
         oDocuments = FXCollections.observableArrayList();
         oAnnexes = FXCollections.observableArrayList();
+        oApostilles = FXCollections.observableArrayList();
     }
 
     
@@ -130,9 +134,57 @@ public class ModelDossier extends Model
         } catch (SQLException ex) {
             Logger.getLogger(AnnexeViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+           
+           // chargement des apostilles
+            try {
+            PreparedStatement ps = null;
+            // chargement de la liste des personnes
+            String sql = "select * from t_apostille where ref_id_folders = ?";
+            ps = ConnectionSQL.getCon().prepareStatement(sql);
+            ps.setLong(1, this.getId());
+            ResultSet result = ps.executeQuery();
+            // clear de oPersonnes
+            oApostilles.clear();
+            int index = 1;
+            while(result.next())
+            {
+                ModelApostille model = new ModelApostille();
+                model.setId(result.getLong("id"));
+                model.setAutorite(result.getString("autorite"));
+                model.setLibelle(result.getString("libelle"));
+                model.setContenu(result.getString("contenu"));
+                model.setStatut(result.getBoolean("statut"));
+                try
+                {
+                     model.setDateIn(result.getDate("date_IN").toLocalDate());
+                }catch(NullPointerException npe)
+                {
+                    
+                }
+                try
+                {
+                    model.setDateOut(result.getDate("date_OUT").toLocalDate());
+                }
+                catch(NullPointerException npe)
+                {
+                    
+                }
+                model.setIndex(index);
+                index++;
+                // add
+                oApostilles.add(model);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ApostilleViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
+    public ObservableList<ModelApostille> getoApostilles() {
+        return oApostilles;
+    }
+    
+    
     public ObservableList<ModelAnnexe> getoAnnexes() {
         return oAnnexes;
     }

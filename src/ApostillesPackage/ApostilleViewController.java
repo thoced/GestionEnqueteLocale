@@ -147,9 +147,9 @@ public class ApostilleViewController  implements Initializable,IController,ListC
            // dateOutField.valueProperty().addListener(this);
         
         // filtre
-         FilteredList<ModelApostille> filter = new FilteredList<>(oApostilles,p->true);
+        /* FilteredList<ModelApostille> filter = new FilteredList<>(oApostilles,p->true);
          filter.setPredicate(this);
-         tableApostilles.setItems(filter);
+         tableApostilles.setItems(filter);*/
        
     }
     
@@ -182,7 +182,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
     {
         // index à 1
       this.index = 1;
-      FilteredList<ModelApostille> filter = new FilteredList<>(oApostilles,p->true);
+      FilteredList<ModelApostille> filter = new FilteredList<>(this.currentDossier.getoApostilles(),p->true);
       filter.setPredicate(this);
       tableApostilles.setItems(filter);
      
@@ -218,7 +218,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
         model.setDateIn(dateInField.getValue());
         //model.setDateOut(dateOutField.getValue());
         model.setIndex(oApostilles.size() + 1);
-        oApostilles.add(model);
+        this.currentDossier.getoApostilles().add(model);
         
         
         autoriteField.clear();
@@ -246,7 +246,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
             Optional<ButtonType> ret = alert.showAndWait();
             if(ret.get() == bOui)
             {
-                oApostilles.remove(model);
+                this.currentDossier.getoApostilles().remove(model);
             }
 
         }
@@ -401,51 +401,14 @@ public class ApostilleViewController  implements Initializable,IController,ListC
     {
         this.currentDossier = currentDossier;
         
-        oApostilles.removeListener(this);
-        try {
-            PreparedStatement ps = null;
-            // chargement de la liste des personnes
-            String sql = "select * from t_apostille where ref_id_folders = ?";
-            ps = ConnectionSQL.getCon().prepareStatement(sql);
-            ps.setLong(1, currentDossier.getId());
-            ResultSet result = ps.executeQuery();
-            // clear de oPersonnes
-            oApostilles.clear();
-            int index = 1;
-            while(result.next())
-            {
-                ModelApostille model = new ModelApostille();
-                model.setId(result.getLong("id"));
-                model.setAutorite(result.getString("autorite"));
-                model.setLibelle(result.getString("libelle"));
-                model.setContenu(result.getString("contenu"));
-                model.setStatut(result.getBoolean("statut"));
-                try
-                {
-                     model.setDateIn(result.getDate("date_IN").toLocalDate());
-                }catch(NullPointerException npe)
-                {
-                    
-                }
-                try
-                {
-                    model.setDateOut(result.getDate("date_OUT").toLocalDate());
-                }
-                catch(NullPointerException npe)
-                {
-                    
-                }
-                model.setIndex(index);
-                index++;
-                // add
-                oApostilles.add(model);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ApostilleViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.currentDossier.getoApostilles().removeListener(this);
 
         // ajout des events
-        oApostilles.addListener(this);
+        this.currentDossier.getoApostilles().addListener(this);
+        
+         FilteredList<ModelApostille> filter = new FilteredList<>(this.currentDossier.getoApostilles(),p->true);
+         filter.setPredicate(this);
+         tableApostilles.setItems(filter);
     }
 
     
