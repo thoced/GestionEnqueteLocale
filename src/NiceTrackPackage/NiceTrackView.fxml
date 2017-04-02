@@ -9,9 +9,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NiceTrackPackage.NiceTrackViewController">
    <top>
-      <VBox prefHeight="0.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="48.0" prefWidth="960.0" BorderPane.alignment="CENTER">
          <children>
-            <FlowPane prefHeight="39.0" prefWidth="960.0">
+            <FlowPane prefHeight="92.0" prefWidth="960.0">
                <children>
                   <Label text="Numéro target:">
                      <padding>
@@ -19,7 +19,7 @@
                      </padding>
                   </Label>
                   <ComboBox fx:id="comboNumeros" prefHeight="25.0" prefWidth="261.0" />
-                  <Button mnemonicParsing="false" text="Importer">
+                  <Button mnemonicParsing="false" onAction="#handleImport" text="Importer">
                      <FlowPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </FlowPane.margin>
@@ -30,21 +30,23 @@
       </VBox>
    </top>
    <center>
-      <TableView prefHeight="462.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableNices" prefHeight="352.0" prefWidth="729.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="75.0" text="Event Id" />
-            <TableColumn prefWidth="75.0" text="Date Start" />
-            <TableColumn prefWidth="75.0" text="Date End" />
-          <TableColumn prefWidth="75.0" text="Type" />
-            <TableColumn prefWidth="175.0" text="Num Target" />
-            <TableColumn prefWidth="175.0" text="Num Partener" />
-            <TableColumn prefWidth="75.0" text="Categorie" />
-            <TableColumn prefWidth="75.0" text="Sens" />
+          <TableColumn fx:id="columnEventId" prefWidth="75.0" text="Event Id" />
+            <TableColumn fx:id="columnStartDate" prefWidth="75.0" text="Date Start" />
+            <TableColumn fx:id="columnStartTime" prefWidth="75.0" text="Time Start" />
+            <TableColumn fx:id="columnEndDate" prefWidth="75.0" text="Date End" />
+            <TableColumn fx:id="columnEndTime" prefWidth="75.0" text="Time End" />
+          <TableColumn fx:id="columnEventType" prefWidth="75.0" text="Type" />
+            <TableColumn fx:id="columnNumCaller" prefWidth="175.0" text="Num Caller" />
+            <TableColumn fx:id="columnNumCalled" prefWidth="175.0" text="Num Called" />
+            <TableColumn fx:id="columCategorie" prefWidth="75.0" text="Categorie" />
+            <TableColumn fx:id="columSens" prefWidth="75.0" text="Sens" />
         </columns>
       </TableView>
    </center>
    <bottom>
-      <AnchorPane prefHeight="201.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="Event Id:" />
             <TextField editable="false" layoutX="60.0" layoutY="10.0" />

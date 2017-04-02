@@ -42,6 +42,8 @@ public class ModelDossier extends Model
     private ObservableList<ModelAnnexe> oAnnexes;
     // Apostilles
     private ObservableList<ModelApostille> oApostilles;
+    // NiceTrack
+    private ModelNiceWrapper niceWrapper = null;
 
     public ModelDossier() 
     {
@@ -50,6 +52,7 @@ public class ModelDossier extends Model
         oDocuments = FXCollections.observableArrayList();
         oAnnexes = FXCollections.observableArrayList();
         oApostilles = FXCollections.observableArrayList();
+        
     }
 
     
@@ -210,6 +213,16 @@ public class ModelDossier extends Model
 
     }
 
+    public ModelNiceWrapper getNiceWrapper() {
+        return niceWrapper;
+    }
+
+    public void setNiceWrapper(ModelNiceWrapper niceWrapper) {
+        this.niceWrapper = niceWrapper;
+    }
+
+    
+    
     public ObservableList<ModelApostille> getoApostilles() {
         return oApostilles;
     }

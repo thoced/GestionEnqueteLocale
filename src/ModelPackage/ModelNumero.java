@@ -15,6 +15,7 @@ import javafx.beans.property.StringProperty;
 public class ModelNumero extends Model
 {
     // type de numero
+    
     private final StringProperty type = new SimpleStringProperty();
     // numero
     private final StringProperty numero = new SimpleStringProperty();

@@ -201,7 +201,7 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
            // stage.initOwner(mainView.getScene().getWindow());
             stage.initStyle(StageStyle.DECORATED);
             stage.setMaxHeight(700);
-            stage.setMaxWidth(960);
+            stage.setMaxWidth(1024);
             stage.setResizable(true);
             stage.setScene(scene);
             stage.focusedProperty().addListener(this);
