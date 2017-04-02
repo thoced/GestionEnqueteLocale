@@ -8,6 +8,7 @@ package ModelPackage;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -36,6 +37,38 @@ public class ModelNice extends Model
     private final ObjectProperty<String> numCalled = new SimpleObjectProperty<>();
     private final ObjectProperty<String> categorie = new SimpleObjectProperty<>();
     private final ObjectProperty<String> sens = new SimpleObjectProperty<>();
+    private final ObjectProperty<String> synopsis = new SimpleObjectProperty<>();
+    private final ObjectProperty<String> smsContent = new SimpleObjectProperty<>();
+
+    
+    @XmlElement(name="SMS-Content")
+    public String getSmsContent() {
+        return smsContent.get();
+    }
+
+    public void setSmsContent(String value) {
+        smsContent.set(value);
+    }
+
+    public ObjectProperty smsContentProperty() {
+        return smsContent;
+    }
+
+    @XmlElement(name="Synopsis")
+    public String getSynopsis() {
+        return synopsis.get();
+    }
+
+    public void setSynopsis(String value) {
+        synopsis.set(value);
+    }
+
+    public ObjectProperty synopsisProperty() {
+        return synopsis;
+    }
+
+    // locations
+    private List<ModelNiceLocation> oLocations;
 
     @XmlElement(name="Direction") 
     public String getSens() {
@@ -156,22 +189,12 @@ public class ModelNice extends Model
     public ObjectProperty startDateProperty() {
         return startDate;
     }
-    // start date
-    private  String StartDate;
-    
-    
-
-   
-   
-    
-    
-
+  
+ 
     @XmlElement(name="Event_ID") 
     public Long getEventId() {
         return eventId.get();
     }
-
-    
 
     public void setEventId(Long value) {
         eventId.set(value);
@@ -180,82 +203,15 @@ public class ModelNice extends Model
     public ObjectProperty eventIdProperty() {
         return eventId;
     }
-    
-    
-   
-   /* private final ObjectProperty<LocalDate> dateStart = new SimpleObjectProperty<>();
-    private final ObjectProperty<LocalTime> timeStart = new SimpleObjectProperty<>();
-    private final ObjectProperty<LocalDate> dateEnd = new SimpleObjectProperty<>();
-    private final ObjectProperty<LocalTime> timeEnd = new SimpleObjectProperty<>();
-    private final StringProperty eventType = new SimpleStringProperty();*/
 
-   
-   /* public String getEventType() {
-        return eventType.get();
+    @XmlElement(name="Locations") 
+    public List<ModelNiceLocation> getoLocations() {
+        return oLocations;
     }
 
-    public void setEventType(String value) {
-        eventType.set(value);
+    public void setoLocations(List<ModelNiceLocation> oLocations) {
+        this.oLocations = oLocations;
     }
-
-    public StringProperty eventTypeProperty() {
-        return eventType;
-    }
-    
-
-    public LocalTime getTimeEnd() {
-        return timeEnd.get();
-    }
-
-    public void setTimeEnd(LocalTime value) {
-        timeEnd.set(value);
-    }
-
-    public ObjectProperty timeEndProperty() {
-        return timeEnd;
-    }
-    
-
-    public LocalDate getDateEnd() {
-        return dateEnd.get();
-    }
-
-    public void setDateEnd(LocalDate value) {
-        dateEnd.set(value);
-    }
-
-    public ObjectProperty dateEndProperty() {
-        return dateEnd;
-    }
-    
-    
-
-    public LocalTime getTimeStart() {
-        return timeStart.get();
-    }
-
-    public void setTimeStart(LocalTime value) {
-        
-        timeStart.set(value);
-    }
-
-    public ObjectProperty startTimeProperty() {
-        return timeStart;
-    }
-    
-
-    public LocalDate getDateStart() {
-        return dateStart.get();
-    }
-
-    public void setDateStart(LocalDate value) {
-        dateStart.set(value);
-    }
-
-    public ObjectProperty dateStartProperty() {
-        return dateStart;
-    }
-    */
 
    
     

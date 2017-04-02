@@ -92,17 +92,19 @@ public class NiceTrackViewController implements Initializable,IController {
         File file = choose.showOpenDialog(comboNumeros.getScene().getWindow());
         if(file != null)
         {
+            // creation du marshaller
             try {
                 JAXBContext context = JAXBContext
                         .newInstance(ModelNiceWrapper.class);
                 Unmarshaller um = context.createUnmarshaller();
                 // lecture
                ModelNiceWrapper wrapper =  (ModelNiceWrapper) um.unmarshal(file);
+               // placement du model dans le currentFolder
                this.currentFolder.setNiceWrapper(wrapper);
                // création d'une observablelist nécessaire pour la tableNices
                ObservableList<ModelNice> oo = FXCollections.observableArrayList();
                oo.addAll(this.currentFolder.getNiceWrapper().getoNices());
-
+               // set du item
                tableNices.setItems(oo);
             
                 
@@ -110,7 +112,6 @@ public class NiceTrackViewController implements Initializable,IController {
                 Logger.getLogger(NiceTrackViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-          
         }
         
     }
@@ -130,10 +131,8 @@ public class NiceTrackViewController implements Initializable,IController {
     {
         this.currentFolder = currentDossier;
          // set numéros
- 
         comboNumeros.setItems(this.currentFolder.getoNumeros());
-        
-       
+
     }
     
 }
