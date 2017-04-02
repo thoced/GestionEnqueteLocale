@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="mainView" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: LightSteelBlue;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestionenquetelocale.MainViewController">
+   <children>
+      <MenuBar layoutX="398.0" layoutY="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Fichier">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Fermer l'application" />
+               </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Gestion des dossiers">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#handleVoirDossiers" text="Voir les dossiers" />
+                  <SeparatorMenuItem mnemonicParsing="false" text="Créer un dossier" />
+              </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Dossier en cours">
+            <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleDocument" text="Documents" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleAnnexe" text="Annexes" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleApostille" text="Apostilles" />
+                  <MenuItem mnemonicParsing="false" text="Suivi d'enquête" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleEntityPersonne" text="Personnes" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleEntityNumero" text="Numero" />
+                  <MenuItem mnemonicParsing="false" text="Mtp" />
+                  <MenuItem mnemonicParsing="false" text="Lieux" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Recherche">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+              </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Label fx:id="labelDossier" layoutX="834.0" layoutY="737.0" text="Dossier en cours: " AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="96.0">
+         <font>
+            <Font name="Cambria" size="25.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

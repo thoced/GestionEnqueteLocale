@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <VBox prefHeight="48.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+         <children>
+            <FlowPane prefHeight="92.0" prefWidth="960.0">
+               <children>
+                  <Label text="Numéro target:">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <ComboBox prefHeight="25.0" prefWidth="261.0" />
+               </children>
+            </FlowPane>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Event Id" />
+            <TableColumn prefWidth="75.0" text="Date Start" />
+            <TableColumn prefWidth="75.0" text="Date End" />
+          <TableColumn prefWidth="75.0" text="Type" />
+            <TableColumn prefWidth="175.0" text="Num Target" />
+            <TableColumn prefWidth="175.0" text="Num Partener" />
+            <TableColumn prefWidth="75.0" text="Categorie" />
+            <TableColumn prefWidth="75.0" text="Sens" />
+        </columns>
+      </TableView>
+   </center>
+   <bottom>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Event Id:" />
+            <TextField editable="false" layoutX="60.0" layoutY="10.0" />
+            <Label layoutX="14.0" layoutY="51.0" text="Content:" />
+            <Label layoutX="232.0" layoutY="14.0" text="Type:" />
+            <TextField layoutX="261.0" layoutY="10.0" prefHeight="25.0" prefWidth="64.0" />
+            <TextArea layoutX="60.0" layoutY="51.0" prefHeight="142.0" prefWidth="403.0" />
+            <Label layoutX="480.0" layoutY="51.0" text="Synopsis:" />
+            <TextArea layoutX="529.0" layoutY="47.0" prefHeight="142.0" prefWidth="403.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
+</BorderPane>

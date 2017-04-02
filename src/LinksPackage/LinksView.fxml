@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="anchor" prefHeight="600.0" prefWidth="356.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LinksPackage.LinksViewController">
+   <children>
+      <Label layoutX="20.0" layoutY="20.0" text="Liste des annexes" />
+      <TableView fx:id="tableAnnexes" layoutX="20.0" layoutY="52.0" prefHeight="497.0" prefWidth="308.0">
+        <columns>
+          <TableColumn fx:id="columnLibelle" prefWidth="244.0" text="Libelle" />
+          <TableColumn fx:id="columnCheck" prefWidth="63.0" text="Sélection" />
+        </columns>
+      </TableView>
+      <Button fx:id="buttonConfirmer" defaultButton="true" layoutX="259.0" layoutY="562.0" mnemonicParsing="false" onAction="#handleConfirmer" text="Confirmer" />
+      <Button fx:id="buttonCancel" cancelButton="true" layoutX="185.0" layoutY="562.0" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
+   </children>
+</AnchorPane>
