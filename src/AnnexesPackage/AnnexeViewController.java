@@ -109,12 +109,7 @@ public class AnnexeViewController implements Initializable,IController,ListChang
         // disable les field
         disable();
         
-       
-            // ajout des event
-            
-            // initi
-           
-           
+
             // setitem
            // tableDocuments.setItems(oDocuments);
             // factory
@@ -123,7 +118,7 @@ public class AnnexeViewController implements Initializable,IController,ListChang
             columnVoiAnnexe.setCellValueFactory(cellData->cellData.getValue().rawProperty());
             // cellfactory
             columnVoiAnnexe.setCellFactory(p->new RawCell());
-            tableAnnexes.setItems(oAnnexes);
+            //tableAnnexes.setItems(oAnnexes);
            
     }
     
@@ -206,7 +201,7 @@ public class AnnexeViewController implements Initializable,IController,ListChang
         model.setCommentaire(commentaireField.getText());
         model.setRaw(this.raw);
         model.setIndex(oAnnexes.size() + 1);
-        oAnnexes.add(model);
+        this.currentDossier.getoAnnexes().add(model);
 
        libelleField.clear();
        commentaireField.clear();
@@ -230,7 +225,7 @@ public class AnnexeViewController implements Initializable,IController,ListChang
             Optional<ButtonType> ret = alert.showAndWait();
             if(ret.get() == bOui)
             {
-                oAnnexes.remove(model);
+                this.currentDossier.getoAnnexes().remove(model);
             }
 
         }
@@ -366,35 +361,12 @@ public class AnnexeViewController implements Initializable,IController,ListChang
     {
         this.currentDossier = currentDossier;
         
-        oAnnexes.removeListener(this);
-        try {
-            PreparedStatement ps = null;
-            // chargement de la liste des personnes
-            String sql = "select * from t_annexe where ref_id_folders = ?";
-            ps = ConnectionSQL.getCon().prepareStatement(sql);
-            ps.setLong(1, currentDossier.getId());
-            ResultSet result = ps.executeQuery();
-            // clear de oPersonnes
-            oAnnexes.clear();
-            int index = 1;
-            while(result.next())
-            {
-                ModelAnnexe model = new ModelAnnexe();
-                model.setId(result.getLong("id"));
-                model.setLibelle(result.getString("libelle"));
-                model.setCommentaire(result.getString("commentaire"));
-                model.setRaw(result.getBlob("raw"));
-                model.setIndex(index);
-                index++;
-                // add
-                oAnnexes.add(model);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AnnexeViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.currentDossier.getoAnnexes().removeListener(this);
+        
+        tableAnnexes.setItems(this.currentDossier.getoAnnexes());
 
         // ajout des events
-        oAnnexes.addListener(this);
+        this.currentDossier.getoAnnexes().addListener(this);
     }
   
 }

@@ -5,6 +5,7 @@
  */
 package ModelPackage;
 
+import AnnexesPackage.AnnexeViewController;
 import DocumentsPackage.DocumentViewController;
 import EntityPackage.NumeroViewController;
 import java.sql.PreparedStatement;
@@ -32,12 +33,15 @@ public class ModelDossier extends Model
     // Numero
     private ObservableList<ModelNumero> oNumeros;
     // Document
-     private ObservableList<ModelDocument> oDocuments;
+    private ObservableList<ModelDocument> oDocuments;
+    // Annexe
+    private ObservableList<ModelAnnexe> oAnnexes;
 
     public ModelDossier() 
     {
         oNumeros = FXCollections.observableArrayList();
         oDocuments = FXCollections.observableArrayList();
+        oAnnexes = FXCollections.observableArrayList();
     }
 
     
@@ -99,9 +103,41 @@ public class ModelDossier extends Model
         } catch (SQLException ex) {
             Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+          
+          // chargement des annexes
+           try {
+            PreparedStatement ps = null;
+            // chargement de la liste des personnes
+            String sql = "select * from t_annexe where ref_id_folders = ?";
+            ps = ConnectionSQL.getCon().prepareStatement(sql);
+            ps.setLong(1, this.getId());
+            ResultSet result = ps.executeQuery();
+            // clear de oPersonnes
+            oAnnexes.clear();
+            int index = 1;
+            while(result.next())
+            {
+                ModelAnnexe model = new ModelAnnexe();
+                model.setId(result.getLong("id"));
+                model.setLibelle(result.getString("libelle"));
+                model.setCommentaire(result.getString("commentaire"));
+                model.setRaw(result.getBlob("raw"));
+                model.setIndex(index);
+                index++;
+                // add
+                oAnnexes.add(model);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AnnexeViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
+    public ObservableList<ModelAnnexe> getoAnnexes() {
+        return oAnnexes;
+    }
+    
+    
     public ObservableList<ModelDocument> getoDocuments() {
         return oDocuments;
     }
