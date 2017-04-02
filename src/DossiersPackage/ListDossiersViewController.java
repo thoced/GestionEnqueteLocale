@@ -98,6 +98,9 @@ public class ListDossiersViewController implements Initializable,IController {
         if( tableDossiers.getSelectionModel().getSelectedItem() != null)
             this.currentDossier = (ModelDossier) tableDossiers.getSelectionModel().getSelectedItem();
         
+        // Preparation des donnée
+        this.currentDossier.prepareData();
+        
         System.out.println(this.currentDossier.getNomDossier());
         // hide
         tableDossiers.getScene().getWindow().hide();

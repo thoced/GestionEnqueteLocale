@@ -96,7 +96,7 @@ public class NumeroViewController implements Initializable,IController,ListChang
             comboType.setValue(oType.get(0));
            
             // setitem
-            tableNumeros.setItems(oNumeros);
+            //tableNumeros.setItems(oNumeros);
             // factory
             columnType.setCellValueFactory(cellData->cellData.getValue().typeProperty());
             columnNumero.setCellValueFactory(cellData->cellData.getValue().numeroProperty());
@@ -154,7 +154,7 @@ public class NumeroViewController implements Initializable,IController,ListChang
         model.setNumero(numeroField.getText());
         model.setNationalite(nationaliteField.getText());
         model.setOwner(ownerField.getText());
-        oNumeros.add(model);
+        this.currentDossier.getoNumeros().add(model);
         
         
         numeroField.clear();
@@ -181,7 +181,7 @@ public class NumeroViewController implements Initializable,IController,ListChang
             Optional<ButtonType> ret = alert.showAndWait();
             if(ret.get() == bOui)
             {
-                oNumeros.remove(model);
+                this.currentDossier.getoNumeros().remove(model);
             }
             
         }
@@ -317,33 +317,12 @@ public class NumeroViewController implements Initializable,IController,ListChang
     {
         this.currentDossier = currentDossier;
         
-        oNumeros.removeListener(this);
-        try {
-            PreparedStatement ps = null;
-            // chargement de la liste des personnes
-            String sql = "select * from t_numero where ref_id_folders = ?";
-            ps = ConnectionSQL.getCon().prepareStatement(sql);
-            ps.setLong(1, currentDossier.getId());
-            ResultSet result = ps.executeQuery();
-            // clear de oPersonnes
-            oNumeros.clear();
-            while(result.next())
-            {
-                ModelNumero model = new ModelNumero();
-                model.setId(result.getLong("id"));
-                model.setType(result.getString("type"));
-                model.setNumero(result.getString("numero"));
-                model.setNationalite(result.getString("nationalite"));
-                model.setOwner(result.getString("owner"));
-                // add
-                oNumeros.add(model);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(NumeroViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        this.currentDossier.getoNumeros().removeListener(this);
+       
         // ajout des events
-        oNumeros.addListener(this);
+        this.currentDossier.getoNumeros().addListener(this);
+        
+       this.tableNumeros.setItems(this.currentDossier.getoNumeros());
     }
      
 }
