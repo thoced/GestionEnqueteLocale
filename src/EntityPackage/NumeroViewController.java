@@ -202,6 +202,7 @@ public class NumeroViewController implements Initializable,IController,ListChang
                 model.setNumero(numeroField.getText());
                 model.setNationalite(nationaliteField.getText());
                 model.setOwner(ownerField.getText());
+               
                 
                 String sql = "update t_numero set type = ?, numero = ?,nationalite = ?,owner = ? where id = ?";
                 PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);

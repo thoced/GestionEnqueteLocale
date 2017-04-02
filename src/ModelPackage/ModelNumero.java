@@ -73,5 +73,13 @@ public class ModelNumero extends Model
     public StringProperty typeProperty() {
         return type;
     }
+
+    @Override
+    public String toString() 
+    {
+        return numero.getValue();
+    }
+    
+    
     
 }

@@ -34,6 +34,8 @@ public class MainFolderTabViewController implements Initializable {
    private Tab personnesTab;
    @FXML
    private Tab numerosTab;
+   @FXML
+   private Tab niceTab;
    
    private ModelDossier currentDossier;
     
@@ -82,6 +84,13 @@ public class MainFolderTabViewController implements Initializable {
         controller = loader.getController();
         controller.loadModel(currentDossier);
         ((BorderPane)numerosTab.getContent()).setCenter(bp);
+        
+        // Nice Track
+        loader = new FXMLLoader(this.getClass().getResource("/NiceTrackPackage/NiceTrackView.fxml"));
+        bp = loader.load();
+        controller = loader.getController();
+        controller.loadModel(currentDossier);
+        ((BorderPane)niceTab.getContent()).setCenter(bp);
     }
     
     
