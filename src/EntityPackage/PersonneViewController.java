@@ -99,7 +99,7 @@ public class PersonneViewController implements Initializable,IController,ListCha
             comboQualite.setValue(oQualite.get(0));
            
             // setitem
-            tablePersonnes.setItems(oPersonnes);
+            //tablePersonnes.setItems(oPersonnes);
             // factory
             columnNom.setCellValueFactory(cellData->cellData.getValue().nomProperty());
             columnPrenom.setCellValueFactory(cellData->cellData.getValue().prenomProperty());
@@ -160,7 +160,7 @@ public class PersonneViewController implements Initializable,IController,ListCha
         model.setAdresse(adresseField.getText());
         model.setDateNaissance(dateField.getValue());
         model.setQualite((String)comboQualite.getSelectionModel().getSelectedItem());
-        oPersonnes.add(model);
+        this.currentDossier.getoPersonnes().add(model);
         
         
         nomField.clear();
@@ -188,7 +188,7 @@ public class PersonneViewController implements Initializable,IController,ListCha
             Optional<ButtonType> ret = alert.showAndWait();
             if(ret.get() == bOui)
             {
-                oPersonnes.remove(model);
+                this.currentDossier.getoPersonnes().remove(model);
             }
             
         }
@@ -328,34 +328,11 @@ public class PersonneViewController implements Initializable,IController,ListCha
     {
         this.currentDossier = currentDossier;
         
-        oPersonnes.removeListener(this);
-        try {
-            PreparedStatement ps = null;
-            // chargement de la liste des personnes
-            String sql = "select * from t_personne where ref_id_folders = ?";
-            ps = ConnectionSQL.getCon().prepareStatement(sql);
-            ps.setLong(1, currentDossier.getId());
-            ResultSet result = ps.executeQuery();
-            // clear de oPersonnes
-            oPersonnes.clear();
-            while(result.next())
-            {
-                ModelPersonne model = new ModelPersonne();
-                model.setId(result.getLong("id"));
-                model.setNom(result.getString("nom"));
-                model.setPrenom(result.getString("prenom"));
-                model.setAdresse(result.getString("adresse"));
-                model.setDateNaissance(result.getDate("date_naissance").toLocalDate());
-                model.setQualite(result.getString("qualite"));
-                // add
-                oPersonnes.add(model);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(PersonneViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        this.currentDossier.getoPersonnes().removeListener(this);
+       
+        tablePersonnes.setItems(this.currentDossier.getoPersonnes());
         // ajout des events
-        oPersonnes.addListener(this);
+         this.currentDossier.getoPersonnes().addListener(this);
     }
      
 }

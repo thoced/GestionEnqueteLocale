@@ -9,6 +9,7 @@ import AnnexesPackage.AnnexeViewController;
 import ApostillesPackage.ApostilleViewController;
 import DocumentsPackage.DocumentViewController;
 import EntityPackage.NumeroViewController;
+import EntityPackage.PersonneViewController;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,6 +34,8 @@ public class ModelDossier extends Model
     
     // Numero
     private ObservableList<ModelNumero> oNumeros;
+    // Personne
+    private ObservableList<ModelPersonne> oPersonnes;
     // Document
     private ObservableList<ModelDocument> oDocuments;
     // Annexe
@@ -43,6 +46,7 @@ public class ModelDossier extends Model
     public ModelDossier() 
     {
         oNumeros = FXCollections.observableArrayList();
+        oPersonnes = FXCollections.observableArrayList();
         oDocuments = FXCollections.observableArrayList();
         oAnnexes = FXCollections.observableArrayList();
         oApostilles = FXCollections.observableArrayList();
@@ -76,6 +80,32 @@ public class ModelDossier extends Model
             }
         } catch (SQLException ex) {
             Logger.getLogger(NumeroViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+         // chargement des personnes
+         try {
+            PreparedStatement ps = null;
+            // chargement de la liste des personnes
+            String sql = "select * from t_personne where ref_id_folders = ?";
+            ps = ConnectionSQL.getCon().prepareStatement(sql);
+            ps.setLong(1, this.getId());
+            ResultSet result = ps.executeQuery();
+            // clear de oPersonnes
+            oPersonnes.clear();
+            while(result.next())
+            {
+                ModelPersonne model = new ModelPersonne();
+                model.setId(result.getLong("id"));
+                model.setNom(result.getString("nom"));
+                model.setPrenom(result.getString("prenom"));
+                model.setAdresse(result.getString("adresse"));
+                model.setDateNaissance(result.getDate("date_naissance").toLocalDate());
+                model.setQualite(result.getString("qualite"));
+                // add
+                oPersonnes.add(model);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PersonneViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
          
          // chargement des documents
@@ -197,6 +227,12 @@ public class ModelDossier extends Model
     public ObservableList<ModelNumero> getoNumeros() {
         return oNumeros;
     }
+
+    public ObservableList<ModelPersonne> getoPersonnes() {
+        return oPersonnes;
+    }
+    
+    
         
     public String getNomOwner() {
         return nomOwner.get();
