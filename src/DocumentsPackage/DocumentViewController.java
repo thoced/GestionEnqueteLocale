@@ -206,10 +206,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
             Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        // filtre
-         FilteredList<ModelDocument> filter = new FilteredList<>(oDocuments,p->true);
-         filter.setPredicate(this);
-         tableDocuments.setItems(filter);
+       
        
     }
     
@@ -292,7 +289,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
     {
         // index à 1
       this.index = 1;
-      FilteredList<ModelDocument> filter = new FilteredList<>(oDocuments,p->true);
+      FilteredList<ModelDocument> filter = new FilteredList<>(this.currentDossier.getoDocuments(),p->true);
       filter.setPredicate(this);
       tableDocuments.setItems(filter);
      
@@ -330,7 +327,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
         model.setIndex(oDocuments.size() + 1);
         if(controllerContenu != null && controllerContenu.getContenu() != null)
          model.setContenu(controllerContenu.getContenu());
-        oDocuments.add(model);
+        this.currentDossier.getoDocuments().add(model);
         
         
        comboType.setValue(oType.get(0));
@@ -358,7 +355,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
             Optional<ButtonType> ret = alert.showAndWait();
             if(ret.get() == bOui)
             {
-                oDocuments.remove(model);
+                this.currentDossier.getoDocuments().remove(model);
             }
 
         }
@@ -518,38 +515,17 @@ public class DocumentViewController implements Initializable,IController,ListCha
     {
         this.currentDossier = currentDossier;
         
-        oDocuments.removeListener(this);
-        try {
-            PreparedStatement ps = null;
-            // chargement de la liste des personnes
-            String sql = "select * from t_document inner join t_type_document on t_document.ref_id_type = t_type_document.id where ref_id_folders = ?";
-            ps = ConnectionSQL.getCon().prepareStatement(sql);
-            ps.setLong(1, currentDossier.getId());
-            ResultSet result = ps.executeQuery();
-            // clear de oPersonnes
-            oDocuments.clear();
-            int index = 1;
-            while(result.next())
-            {
-                ModelDocument model = new ModelDocument();
-                model.setId(result.getLong("id"));
-                model.setTitre(result.getString("titre"));
-                model.setCommentaire(result.getString("commentaire"));
-                model.setDate(result.getDate("date").toLocalDate());
-                model.setType(result.getString("type"));
-                model.setReference(result.getString("reference"));
-                model.setContenu(result.getString("contenu"));
-                model.setIndex(index);
-                index++;
-                // add
-                oDocuments.add(model);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        this.currentDossier.getoDocuments().removeListener(this);
+        
+        this.tableDocuments.setItems(this.currentDossier.getoDocuments());
+   
         // ajout des events
-        oDocuments.addListener(this);
+        this.currentDossier.getoDocuments().addListener(this);
+        
+         // filtre
+         FilteredList<ModelDocument> filter = new FilteredList<>(this.currentDossier.getoDocuments(),p->true);
+         filter.setPredicate(this);
+         tableDocuments.setItems(filter);
     }
 
     
@@ -605,9 +581,6 @@ public class DocumentViewController implements Initializable,IController,ListCha
       
     }
 
-    @FXML
-    private void handleNew(javafx.scene.input.MouseEvent event) {
-    }
 
 
    

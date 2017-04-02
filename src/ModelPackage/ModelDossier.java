@@ -5,6 +5,7 @@
  */
 package ModelPackage;
 
+import DocumentsPackage.DocumentViewController;
 import EntityPackage.NumeroViewController;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,10 +31,13 @@ public class ModelDossier extends Model
     
     // Numero
     private ObservableList<ModelNumero> oNumeros;
+    // Document
+     private ObservableList<ModelDocument> oDocuments;
 
     public ModelDossier() 
     {
         oNumeros = FXCollections.observableArrayList();
+        oDocuments = FXCollections.observableArrayList();
     }
 
     
@@ -65,9 +69,43 @@ public class ModelDossier extends Model
         } catch (SQLException ex) {
             Logger.getLogger(NumeroViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+         
+         // chargement des documents
+          try {
+            PreparedStatement ps = null;
+            // chargement de la liste des personnes
+            String sql = "select * from t_document inner join t_type_document on t_document.ref_id_type = t_type_document.id where ref_id_folders = ?";
+            ps = ConnectionSQL.getCon().prepareStatement(sql);
+            ps.setLong(1, this.getId());
+            ResultSet result = ps.executeQuery();
+            // clear de oPersonnes
+            oDocuments.clear();
+            int index = 1;
+            while(result.next())
+            {
+                ModelDocument model = new ModelDocument();
+                model.setId(result.getLong("id"));
+                model.setTitre(result.getString("titre"));
+                model.setCommentaire(result.getString("commentaire"));
+                model.setDate(result.getDate("date").toLocalDate());
+                model.setType(result.getString("type"));
+                model.setReference(result.getString("reference"));
+                model.setContenu(result.getString("contenu"));
+                model.setIndex(index);
+                index++;
+                // add
+                oDocuments.add(model);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
-    
+
+    public ObservableList<ModelDocument> getoDocuments() {
+        return oDocuments;
+    }
+
     public ObservableList<ModelNumero> getoNumeros() {
         return oNumeros;
     }
