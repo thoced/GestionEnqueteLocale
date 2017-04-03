@@ -49,13 +49,13 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="Event Id:" />
-            <TextField editable="false" layoutX="60.0" layoutY="10.0" />
+            <TextField fx:id="eventIdField" editable="false" layoutX="60.0" layoutY="10.0" />
             <Label layoutX="14.0" layoutY="51.0" text="Content:" />
             <Label layoutX="232.0" layoutY="14.0" text="Type:" />
-            <TextField layoutX="261.0" layoutY="10.0" prefHeight="25.0" prefWidth="64.0" />
-            <TextArea layoutX="60.0" layoutY="51.0" prefHeight="142.0" prefWidth="403.0" />
+            <TextField fx:id="typeField" layoutX="261.0" layoutY="10.0" prefHeight="25.0" prefWidth="64.0" />
+            <TextArea fx:id="contentField" layoutX="60.0" layoutY="51.0" prefHeight="142.0" prefWidth="403.0" wrapText="true" />
             <Label layoutX="480.0" layoutY="51.0" text="Synopsis:" />
-            <TextArea layoutX="529.0" layoutY="47.0" prefHeight="142.0" prefWidth="403.0" />
+            <TextArea fx:id="synopsisField" layoutX="529.0" layoutY="47.0" prefHeight="142.0" prefWidth="403.0" wrapText="true" />
          </children>
       </AnchorPane>
    </bottom>
