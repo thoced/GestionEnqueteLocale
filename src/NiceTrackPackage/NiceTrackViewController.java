@@ -211,11 +211,7 @@ public class NiceTrackViewController implements Initializable,IController {
                // 
                if(controller.isIsImport())
                {
-                   for(Object obj : controller.getTableNices().getItems())
-                   {
-                       ModelNice model = (ModelNice) obj;
-                        // l'import est accepté
-                        String str = "insert into t_nicetrack (event_id,"
+                    String str = "insert into t_nicetrack (event_id,"
                                 + "date_start,"
                                 + "time_start,"
                                 + "date_end,"
@@ -231,6 +227,12 @@ public class NiceTrackViewController implements Initializable,IController {
                                 + "ref_id_numero) "
                                 + "value (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                         PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(str);
+                   
+                   for(Object obj : controller.getTableNices().getItems())
+                   {
+                       ModelNice model = (ModelNice) obj;
+                        // l'import est accepté
+                       
                         ps.setLong(1, model.getEventId());
                         // conversation date
                         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -266,6 +268,8 @@ public class NiceTrackViewController implements Initializable,IController {
                         ps.setLong(14, ((ModelNumero)comboNumeros.getSelectionModel().getSelectedItem()).getId());
                         ps.execute();
                    }
+                   //fermeture
+                   ps.close();
                    
                    // ajout des models
                    this.tableNices.getItems().addAll(controller.getTableNices().getItems());
