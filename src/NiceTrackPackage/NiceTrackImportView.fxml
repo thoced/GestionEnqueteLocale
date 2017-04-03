@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NiceTrackPackage.NiceTrackViewImportController">
+   <top>
+      <VBox prefHeight="48.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+         <children>
+            <FlowPane prefHeight="92.0" prefWidth="960.0" />
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <TableView fx:id="tableNices" prefHeight="487.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="columnEventId" prefWidth="75.0" text="Event Id" />
+            <TableColumn fx:id="columnStartDate" prefWidth="75.0" text="Date Start" />
+            <TableColumn fx:id="columnStartTime" prefWidth="75.0" text="Time Start" />
+            <TableColumn fx:id="columnEndDate" prefWidth="75.0" text="Date End" />
+            <TableColumn fx:id="columnEndTime" prefWidth="75.0" text="Time End" />
+          <TableColumn fx:id="columnEventType" prefWidth="75.0" text="Type" />
+            <TableColumn fx:id="columnNumCaller" prefWidth="175.0" text="Num Caller" />
+            <TableColumn fx:id="columnNumCalled" prefWidth="175.0" text="Num Called" />
+            <TableColumn fx:id="columCategorie" prefWidth="75.0" text="Categorie" />
+            <TableColumn fx:id="columSens" prefWidth="75.0" text="Sens" />
+        </columns>
+      </TableView>
+   </center>
+   <bottom>
+      <AnchorPane prefHeight="61.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="bImporter" defaultButton="true" layoutX="861.0" layoutY="18.0" mnemonicParsing="false" text="Importer" />
+            <Button fx:id="bCancel" cancelButton="true" layoutX="789.0" layoutY="18.0" mnemonicParsing="false" text="Cancel" />
+         </children></AnchorPane>
+   </bottom>
+</BorderPane>

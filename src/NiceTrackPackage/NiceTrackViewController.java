@@ -14,11 +14,15 @@ import ModelPackage.ModelNumero;
 import ModelPackage.TestWrapper;
 import ModelPackage.Voiture;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -30,13 +34,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javax.swing.text.DateFormatter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -47,37 +55,37 @@ import javax.xml.bind.Unmarshaller;
  *
  * @author Thonon
  */
-public class NiceTrackViewController implements Initializable,IController,ChangeListener {
+public class NiceTrackViewController implements Initializable,IController {
 
-    private ModelDossier currentFolder;
+    protected ModelDossier currentFolder;
     @FXML
-    private ComboBox comboNumeros;
+    protected ComboBox comboNumeros;
     @FXML
-    private TableView tableNices;
+    protected TableView tableNices;
     @FXML
-    private TableColumn<ModelNice,Long> columnEventId;
+    protected TableColumn<ModelNice,Long> columnEventId;
     @FXML
-    private TableColumn<ModelNice,String> columnStartDate;
+    protected TableColumn<ModelNice,String> columnStartDate;
     @FXML
-    private TableColumn<ModelNice,String> columnStartTime;
+    protected TableColumn<ModelNice,String> columnStartTime;
     @FXML
-    private TableColumn<ModelNice,String> columnEndDate;
+    protected TableColumn<ModelNice,String> columnEndDate;
     @FXML
-    private TableColumn<ModelNice,String> columnEndTime;
+    protected TableColumn<ModelNice,String> columnEndTime;
     @FXML
-    private TableColumn<ModelNice,String> columnEventType;
+    protected TableColumn<ModelNice,String> columnEventType;
     @FXML
-    private TableColumn<ModelNice,String> columnNumCaller;
+    protected TableColumn<ModelNice,String> columnNumCaller;
     @FXML
-    private TableColumn<ModelNice,String> columnNumCalled;
+    protected TableColumn<ModelNice,String> columnNumCalled;
     @FXML
-    private TableColumn<ModelNice,String> columCategorie;
+    protected TableColumn<ModelNice,String> columCategorie;
     @FXML
-    private TableColumn<ModelNice,String> columSens;
+    protected TableColumn<ModelNice,String> columSens;
     @FXML
-    private TextField eventIdField;
+    protected TextField eventIdField;
     @FXML
-    private TextField typeField;
+    protected TextField typeField;
     
     @FXML
     private TextArea contentField;
@@ -157,6 +165,8 @@ public class NiceTrackViewController implements Initializable,IController,Change
                         model.setEventType(result.getString("event_type"));
                         model.setCategorie(result.getString("categorie"));
                         model.setSens(result.getString("sens"));
+                        model.setSmsContent(result.getString("content"));
+                        model.setSynopsis(result.getString("synopsis"));
                         oNices.add(model);
                         
                     }
@@ -170,7 +180,7 @@ public class NiceTrackViewController implements Initializable,IController,Change
     }  
     
     @FXML
-    public void handleImport(ActionEvent event)
+    public void handleImport(ActionEvent event) throws ParseException
     {
         FileChooser choose = new FileChooser();
         File file = choose.showOpenDialog(comboNumeros.getScene().getWindow());
@@ -189,10 +199,85 @@ public class NiceTrackViewController implements Initializable,IController,Change
                ObservableList<ModelNice> oo = FXCollections.observableArrayList();
                oo.addAll(this.currentFolder.getNiceWrapper().getoNices());
                // set du item
-               tableNices.setItems(oo);
+               // ouverture de la vue d'import
+               FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/NiceTrackPackage/NiceTrackImportView.fxml"));
+               BorderPane pane = loader.load();
+               NiceTrackViewImportController controller = loader.getController();
+               Scene scene = new Scene(pane);
+               Stage stage = new Stage();
+               stage.setScene(scene);
+               controller.getTableNices().setItems(oo);
+               stage.showAndWait();
+               // 
+               if(controller.isIsImport())
+               {
+                   for(Object obj : controller.getTableNices().getItems())
+                   {
+                       ModelNice model = (ModelNice) obj;
+                        // l'import est accepté
+                        String str = "insert into t_nicetrack (event_id,"
+                                + "date_start,"
+                                + "time_start,"
+                                + "date_end,"
+                                + "time_end,"
+                                + "num_caller,"
+                                + "num_called,"
+                                + "categorie,"
+                                + "sens,"
+                                + "content,"
+                                + "synopsis,"
+                                + "event_type,"
+                                + "ref_id_folders,"
+                                + "ref_id_numero) "
+                                + "value (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                        PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(str);
+                        ps.setLong(1, model.getEventId());
+                        // conversation date
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        Date parsed = format.parse(model.getStartDate());
+                        ps.setDate(2, new java.sql.Date(parsed.getTime()));
+                        // conversation time
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+                        LocalTime t = LocalTime.parse(model.getStartTime(),dtf);
+                        
+                        ps.setTime(3,  java.sql.Time.valueOf(t));
+                        // conversion
+                        try
+                        {
+                        parsed = format.parse(model.getEndDate());
+                        ps.setDate(4,new java.sql.Date(parsed.getTime()));
+                        }catch(NullPointerException npe)
+                        {
+                            ps.setDate(4,null);
+                        }
+                        // conversation time
+               
+                        t = LocalTime.parse(model.getEndTime(),dtf);
+                        ps.setTime(5,  java.sql.Time.valueOf(t));
+                        //
+                        ps.setString(6, model.getNumCaller());
+                        ps.setString(7, model.getNumCalled());
+                        ps.setString(8, model.getCategorie());
+                        ps.setString(9,model.getSens());
+                        ps.setString(10, model.getSmsContent());
+                        ps.setString(11, model.getSynopsis());
+                        ps.setString(12, model.getEventType());
+                        ps.setLong(13, this.currentFolder.getId());
+                        ps.setLong(14, ((ModelNumero)comboNumeros.getSelectionModel().getSelectedItem()).getId());
+                        ps.execute();
+                   }
+                   
+                   // ajout des models
+                   this.tableNices.getItems().addAll(controller.getTableNices().getItems());
+               }
+               
             
                 
             } catch (JAXBException ex) {
+                Logger.getLogger(NiceTrackViewController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(NiceTrackViewController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
                 Logger.getLogger(NiceTrackViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
             
@@ -219,12 +304,12 @@ public class NiceTrackViewController implements Initializable,IController,Change
 
     }
 
-    
-    @Override
-    public void changed(ObservableValue observable, Object oldValue, Object newValue) 
-    {
-        
+    public TableView getTableNices() {
+        return tableNices;
     }
+
+    
+    
 
     
 }
