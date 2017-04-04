@@ -13,6 +13,7 @@ import ModelPackage.ModelNiceWrapper;
 import ModelPackage.ModelNumero;
 import ModelPackage.TestWrapper;
 import ModelPackage.Voiture;
+import UtilsPackage.MakeRapport;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -49,6 +50,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javax.swing.text.DateFormatter;
 import javax.xml.bind.JAXBContext;
@@ -102,6 +104,8 @@ public class NiceTrackViewController implements Initializable,IController {
     protected ComboBox comboRelevant;
     @FXML
     protected Button buttonRechercher;
+    @FXML
+    protected Button buttonRapport;
     
     @FXML
     protected DatePicker pickerDateBasse;
@@ -137,6 +141,22 @@ public class NiceTrackViewController implements Initializable,IController {
         oRelevant.add("Relevant");
         oRelevant.add("Non relevant");
         comboRelevant.setItems(oRelevant);
+        
+        // creation du rapport
+        buttonRapport.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+               MakeRapport rapport = new MakeRapport();
+               FileChooser fc = new FileChooser();
+               ExtensionFilter filter = new ExtensionFilter("Document Word","*.docx");
+               fc.setSelectedExtensionFilter(filter);
+               File file = fc.showSaveDialog(NiceTrackViewController.this.buttonRapport.getScene().getWindow());
+               rapport.createNewDocument(file,NiceTrackViewController.this.tableNices.getItems());
+
+            }
+        });
         
         // listener du bouton rechercher
         buttonRechercher.setOnAction(new EventHandler<ActionEvent>() {
