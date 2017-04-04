@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -33,11 +34,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -91,8 +96,25 @@ public class NiceTrackViewController implements Initializable,IController {
     private TextArea contentField;
     @FXML
     private TextArea synopsisField;
+    @FXML
+    protected Label labelNbRecords;
+    @FXML
+    protected ComboBox comboRelevant;
+    @FXML
+    protected Button buttonRechercher;
+    
+    @FXML
+    protected DatePicker pickerDateBasse;
+    
+    @FXML
+    protected DatePicker pickerDateHaute;
     
     
+    private ModelNumero numeroSearch;
+    
+    private String request;
+    
+    private LocalDate dateBasse,dateHaute;
    
     
     @Override
@@ -108,6 +130,32 @@ public class NiceTrackViewController implements Initializable,IController {
         columnNumCalled.setCellValueFactory(cellData->cellData.getValue().numCalledProperty());
         columCategorie.setCellValueFactory(cellData->cellData.getValue().categorieProperty());
         columSens.setCellValueFactory(cellData->cellData.getValue().sensProperty());
+        
+        // initialisation du comboRelevant
+        ObservableList oRelevant = FXCollections.observableArrayList();
+        oRelevant.add("All");
+        oRelevant.add("Relevant");
+        oRelevant.add("Non relevant");
+        comboRelevant.setItems(oRelevant);
+        
+        // listener du bouton rechercher
+        buttonRechercher.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) 
+            {
+                boolean relevant = false;
+                // récupération des dates
+                dateBasse = pickerDateBasse.getValue();
+                if(dateBasse == null)
+                    dateBasse = LocalDate.of(1990, Month.JANUARY, 1);
+                dateHaute = pickerDateHaute.getValue();
+                if(dateHaute == null)
+                    dateHaute = LocalDate.of(2999, Month.DECEMBER, 31);
+
+               // request = "select * from t_nicetrack where ref_id_numero = ? AND ref_id_folders = ? AND date_start  BETWEEN ? AND ? AND categorie = 'Relevant'";
+                NiceTrackViewController.this.searchNice();
+            }
+        });
         
         // addlistener
         tableNices.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ModelNice>() 
@@ -135,12 +183,50 @@ public class NiceTrackViewController implements Initializable,IController {
             @Override
             public void changed(ObservableValue<? extends ModelNumero> observable, ModelNumero oldValue, ModelNumero newValue) 
             {
-                try {
+                // serach
+                numeroSearch = newValue;
+            }
+        });
+        
+        // combo relevant
+        comboRelevant.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+            {
+                
+                switch(newValue)
+                {
+                    case "All": request = "select * from t_nicetrack where ref_id_numero = ? AND ref_id_folders = ? AND date_start  BETWEEN ? AND ?";
+                    break;
+                    
+                    case "Relevant": request = "select * from t_nicetrack where ref_id_numero = ? AND ref_id_folders = ? AND date_start  BETWEEN ? AND ? AND categorie = 'Relevant'";
+                    break;
+                    
+                    case "Non relevant": request = "select * from t_nicetrack where ref_id_numero = ? AND ref_id_folders = ? AND date_start  BETWEEN ? AND ? AND categorie = 'Non relevant'";
+                    break;
+                }
+               
+               
+            }
+        }); 
+        
+    }  
+    
+    private void searchNice()
+    {
+        if(numeroSearch == null)
+            return;
+        
+        PreparedStatement ps = null;
+        try {
                     // chargement
-                    String st = "select * from t_nicetrack where ref_id_numero = ? AND ref_id_folders = ?";
-                    PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(st);
-                    ps.setLong(1, newValue.getId());
+                   // String st = "select * from t_nicetrack where ref_id_numero = ? AND ref_id_folders = ?";
+                    ps = ConnectionSQL.getCon().prepareStatement(request);
+                    ps.setLong(1, numeroSearch.getId());
                     ps.setLong(2, NiceTrackViewController.this.currentFolder.getId());
+                    ps.setDate(3, java.sql.Date.valueOf(dateBasse));
+                    ps.setDate(4, java.sql.Date.valueOf(dateHaute));
                     ResultSet result = ps.executeQuery();
                     ObservableList<ModelNice> oNices = FXCollections.observableArrayList();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -173,11 +259,20 @@ public class NiceTrackViewController implements Initializable,IController {
                     tableNices.setItems(oNices);
                 } catch (SQLException ex) {
                     Logger.getLogger(NiceTrackViewController.class.getName()).log(Level.SEVERE, null, ex);
+                 
                 }
-            }
-        });
-        
-    }  
+                  finally
+              {
+                  try {
+                      ps.close();
+                      } catch (SQLException ex) {
+                Logger.getLogger(NiceTrackViewController.class.getName()).log(Level.SEVERE, null, ex);
+               }
+}
+                
+                // modification du label du nombre de records
+                labelNbRecords.setText("Nombre de records: " + tableNices.getItems().size());
+    }
     
     @FXML
     public void handleImport(ActionEvent event) throws ParseException
