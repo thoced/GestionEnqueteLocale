@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-border-radius: 12; -fx-border-color: lightblue; -fx-border-width: 8;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginPackage.LoginController">
+   <children>
+      <TextField fx:id="login" layoutX="128.0" layoutY="158.0" prefHeight="25.0" prefWidth="259.0" />
+      <PasswordField fx:id="password" layoutX="128.0" layoutY="224.0" prefHeight="25.0" prefWidth="259.0" />
+      <Label layoutX="128.0" layoutY="126.0" text="Login" />
+      <Label layoutX="128.0" layoutY="198.0" text="Password" />
+      <Button defaultButton="true" layoutX="128.0" layoutY="286.0" mnemonicParsing="false" onAction="#handleConnecter" text="Se connecter" />
+      <Label fx:id="messageError" layoutX="14.0" layoutY="321.0" prefHeight="17.0" prefWidth="563.0" textFill="RED" wrapText="true" />
+      <Button cancelButton="true" layoutX="443.0" layoutY="356.0" mnemonicParsing="false" onAction="#handleClose" prefHeight="25.0" prefWidth="135.0" text="Fermer l'application" />
+      <Label layoutX="287.0" layoutY="14.0" prefHeight="113.0" prefWidth="290.0" text="G.E.L" textAlignment="CENTER" textFill="#6979a1" textOverrun="WORD_ELLIPSIS" underline="true">
+         <font>
+            <Font name="Liberation Mono" size="71.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="360.0" opacity="0.45" text="Programmé par THONON Cédric" underline="true">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Line endX="180.0" layoutX="50.0" layoutY="180.0" rotate="90.0" startX="-100.0" />
+      <Label layoutX="387.0" layoutY="120.0" text="Gestion d'enquête Locale" textFill="#6979a1">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

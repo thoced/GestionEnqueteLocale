@@ -15,7 +15,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -55,7 +57,17 @@ public class GestionEnqueteLocale extends Application
     
     
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws Exception 
+    {
+        // chargement de la vue de login
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/LoginPackage/LoginView.fxml"));
+        AnchorPane pane =  loader.load();
+        Scene sceneLogin = new Scene(pane);
+        Stage stageLogin = new Stage();
+        stageLogin.initStyle(StageStyle.UNDECORATED);
+        stageLogin.setScene(sceneLogin);
+        stageLogin.showAndWait();
+        
         Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
