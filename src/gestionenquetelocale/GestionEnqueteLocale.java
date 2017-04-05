@@ -72,6 +72,7 @@ public class GestionEnqueteLocale extends Application
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Gestion d'enquête locale");
+        stage.setMaximized(true);
         stage.show();
     }
 

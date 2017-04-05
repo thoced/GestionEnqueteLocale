@@ -54,6 +54,9 @@ public class LinksViewController implements Initializable,EventHandler<WindowEve
     
     private ObservableList<ModelAnnexeChecked> oAnnexes = FXCollections.observableArrayList();
     private ObservableList<ModelAnnexeChecked> oAttach = FXCollections.observableArrayList();
+    
+   
+    
     private ModelDocument currentDocument;
     private ModelDossier currentFolder;
     

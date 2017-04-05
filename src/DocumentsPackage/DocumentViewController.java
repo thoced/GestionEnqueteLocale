@@ -170,8 +170,8 @@ public class DocumentViewController implements Initializable,IController,ListCha
             listAnnexes.setItems(oAnnexes);
             listAnnexes.setOnMouseClicked((mouseEvent) -> {
                
-                        if(mouseEvent.getClickCount() < 2)
-                            return;
+           if(mouseEvent.getClickCount() < 2)
+             return;
 
                         ModelAnnexe model = (ModelAnnexe) listAnnexes.getSelectionModel().getSelectedItem();
                         if(model != null)
@@ -276,12 +276,14 @@ public class DocumentViewController implements Initializable,IController,ListCha
         Scene scene = new Scene(panePersonne);
         Stage stage = new Stage();
         stage.setResizable(false);
+    
         stage.setScene(scene);
         stage.showAndWait();
+        // refresh de la liste des Annexes
+        this.refreshAnnexes(currentDocument);
        
        
     }
-    
    
     
     @FXML
@@ -402,7 +404,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
         if(model != null)
         {
             currentDocument = model;
-            try {
+           
                 comboType.setValue(model.getType());
                 titreField.setText(model.getTitre());
                 commentaireField.setText(model.getCommentaire());
@@ -412,28 +414,35 @@ public class DocumentViewController implements Initializable,IController,ListCha
                 enable();
                 // clear du listAnnexes
                 oAnnexes.clear();
-                // recherche des annexes attachées
-                String sql = "select id,libelle from t_annexe inner join t_link_annexe_document on t_annexe.id = t_link_annexe_document.ref_id_annexe where t_link_annexe_document.ref_id_document = ?";
-                PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
-                ps.setLong(1, model.getId());
-                ResultSet result = ps.executeQuery();
- 
-                while(result.next())
-                {
-                    ModelAnnexe annexe = new ModelAnnexe();
-                    annexe.setId(result.getLong("id"));
-                    annexe.setLibelle(result.getString("libelle"));
-                    oAnnexes.add(annexe);
-                }
+                // refresh annexe
+                this.refreshAnnexes(currentDocument);
                 
-            } catch (SQLException ex) {
-                Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+           
         }
         else
             disable();
     }
     
+    private void refreshAnnexes(ModelDocument model)
+    {
+        try {
+            // recherche des annexes attachées
+            String sql = "select id,libelle from t_annexe inner join t_link_annexe_document on t_annexe.id = t_link_annexe_document.ref_id_annexe where t_link_annexe_document.ref_id_document = ?";
+            PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
+            ps.setLong(1, model.getId());
+            ResultSet result = ps.executeQuery();
+            
+            while(result.next())
+            {
+                ModelAnnexe annexe = new ModelAnnexe();
+                annexe.setId(result.getLong("id"));
+                annexe.setLibelle(result.getString("libelle"));
+                oAnnexes.add(annexe);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DocumentViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @Override
     public void onChanged(Change c) 

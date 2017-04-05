@@ -5,12 +5,17 @@
  */
 package gestionenquetelocale;
 
+import DossiersPackage.FolderCreateViewController;
 import ModelPackage.IController;
 import ModelPackage.ModelDossier;
+import ModelPackage.ModelUser;
 import java.awt.event.FocusEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -46,124 +51,29 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
     
     private ObservableList<Stage> oStages;
     
+   
     @FXML
-    private void handleAnnexe(ActionEvent event) throws IOException 
+    private void handleCreationDossier(ActionEvent event) throws IOException 
     {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));
-        BorderPane pane = loader.load();
-        Scene scene = new Scene(pane);
-        Stage stage = new Stage();
-        stage.setMinWidth(960);
-        stage.initOwner(mainView.getScene().getWindow());
-        stage.initStyle(StageStyle.UTILITY);
-       // stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Gestion des annexes");
-        // Personne
-        FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/AnnexesPackage/AnnexeView.fxml"));
-        BorderPane panePersonne = loaderPersonne.load();
-        IController controller = loaderPersonne.getController();
-        controller.loadModel(currentDossier);
-        pane.setCenter(panePersonne);
-        
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.show();
+        try {
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/DossiersPackage/FolderCreateView.fxml"));
+            AnchorPane pane = loader.load();
+            FolderCreateViewController controller = loader.getController();
+            controller.load(new ModelUser());
+            Scene scene = new Scene(pane);
+            Stage stage = new Stage();
+            stage.setTitle("Créatino d'un dossier");
+            stage.initOwner(mainView.getScene().getWindow());
+            stage.initStyle(StageStyle.UTILITY);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
-    @FXML
-    private void handleApostille(ActionEvent event) throws IOException 
-    {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));
-        BorderPane pane = loader.load();
-        Scene scene = new Scene(pane);
-        Stage stage = new Stage();
-        stage.setMinWidth(960);
-        stage.initOwner(mainView.getScene().getWindow());
-        stage.initStyle(StageStyle.UTILITY);
-       // stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Gestion des apostilles");
-        // Personne
-        FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/ApostillesPackage/ApostilleView.fxml"));
-        BorderPane panePersonne = loaderPersonne.load();
-        IController controller = loaderPersonne.getController();
-        controller.loadModel(currentDossier);
-        pane.setCenter(panePersonne);
-        
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.show();
-    }
-    
-    @FXML
-    private void handleDocument(ActionEvent event) throws IOException 
-    {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));
-        BorderPane pane = loader.load();
-        Scene scene = new Scene(pane);
-        Stage stage = new Stage();
-        stage.setMinWidth(960);
-        stage.initOwner(mainView.getScene().getWindow());
-        stage.initStyle(StageStyle.UTILITY);
-       // stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Gestion des documents");
-        // Personne
-        FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/DocumentsPackage/DocumentView.fxml"));
-        BorderPane panePersonne = loaderPersonne.load();
-        IController controller = loaderPersonne.getController();
-        controller.loadModel(currentDossier);
-        pane.setCenter(panePersonne);
-        
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.show();
-    }
-    
-    @FXML
-    private void handleEntityNumero(ActionEvent event) throws IOException 
-    {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));
-        BorderPane pane = loader.load();
-        Scene scene = new Scene(pane);
-        Stage stage = new Stage();
-        stage.initOwner(mainView.getScene().getWindow());
-        stage.initStyle(StageStyle.UTILITY);
-        //stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Gestion des entités : Numero");
-        // Personne
-        FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/EntityPackage/NumeroView.fxml"));
-        BorderPane panePersonne = loaderPersonne.load();
-        IController controller = loaderPersonne.getController();
-        controller.loadModel(currentDossier);
-        pane.setCenter(panePersonne);
-        
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.show();
-    }
-     
-    @FXML
-    private void handleEntityPersonne(ActionEvent event) throws IOException 
-    {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/EntityPackage/EntityBaseView.fxml"));
-        BorderPane pane = loader.load();
-        Scene scene = new Scene(pane);
-        Stage stage = new Stage();
-        stage.initOwner(mainView.getScene().getWindow());
-        stage.initStyle(StageStyle.UTILITY);
-        //stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Gestion des entités : Personne");
-        // Personne
-        FXMLLoader loaderPersonne = new FXMLLoader(this.getClass().getResource("/EntityPackage/PersonneView.fxml"));
-        BorderPane panePersonne = loaderPersonne.load();
-        IController controller = loaderPersonne.getController();
-        controller.loadModel(currentDossier);
-        pane.setCenter(panePersonne);
-        
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.show();
-    }
-    
+   
     @FXML
     private void handleVoirDossiers(ActionEvent event) throws IOException 
     {
@@ -173,6 +83,7 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
         controller.setModelDossier(currentDossier);
         Scene scene = new Scene(pane);
         Stage stage = new Stage();
+        stage.setTitle("Selection du dossier");
         stage.initOwner(mainView.getScene().getWindow());
         stage.initStyle(StageStyle.UTILITY);
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -204,7 +115,6 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
             stage.setMaxWidth(1024);
             stage.setResizable(true);
             stage.setScene(scene);
-            stage.setAlwaysOnTop(true);
             stage.focusedProperty().addListener(this);
             stage.setOnHidden(this);
             oStages.add(stage);

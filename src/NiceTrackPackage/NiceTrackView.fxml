@@ -42,7 +42,7 @@
       </VBox>
    </top>
    <center>
-      <TableView fx:id="tableNices" prefHeight="352.0" prefWidth="729.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableNices" prefHeight="352.0" prefWidth="884.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="columnEventId" prefWidth="75.0" text="Event Id" />
             <TableColumn fx:id="columnStartDate" prefWidth="75.0" text="Date Start" />
@@ -53,7 +53,7 @@
             <TableColumn fx:id="columnNumCaller" prefWidth="175.0" text="Num Caller" />
             <TableColumn fx:id="columnNumCalled" prefWidth="175.0" text="Num Called" />
             <TableColumn fx:id="columCategorie" prefWidth="75.0" text="Categorie" />
-            <TableColumn fx:id="columSens" prefWidth="75.0" text="Sens" />
+            <TableColumn fx:id="columSens" prefWidth="81.0" text="Sens" />
         </columns>
       </TableView>
    </center>
