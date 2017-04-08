@@ -141,6 +141,7 @@ public class NiceTrackViewController implements Initializable,IController {
         oRelevant.add("Relevant");
         oRelevant.add("Non relevant");
         comboRelevant.setItems(oRelevant);
+       
         
         // creation du rapport
         buttonRapport.setOnAction(new EventHandler<ActionEvent>() 
@@ -230,6 +231,9 @@ public class NiceTrackViewController implements Initializable,IController {
                
             }
         }); 
+        
+        // selection de base en all
+         comboRelevant.getSelectionModel().selectFirst();
         
     }  
     

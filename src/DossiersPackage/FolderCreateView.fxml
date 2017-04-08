@@ -37,6 +37,7 @@
          <children>
             <Label layoutX="14.0" layoutY="6.0" text="Groupe(s) propritaire(s):" />
             <ListView fx:id="listGroups" layoutX="14.0" layoutY="23.0" prefHeight="160.0" prefWidth="455.0" />
+            <Label layoutX="488.0" layoutY="23.0" prefHeight="160.0" prefWidth="480.0" text="Sélectionnez le ou les groupe(s) propritaire(s) qui auront accès au dossier." />
          </children>
       </Pane>
       <Label layoutX="24.0" layoutY="16.0" text="Information:" />

@@ -6,6 +6,7 @@
 package LoginPackage;
 
 import ModelPackage.ConnectionSQL;
+import ModelPackage.ModelUser;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -33,6 +34,8 @@ public class LoginController implements Initializable {
     
     private boolean isLogin = false;
     
+    private ModelUser user = null;
+    
     /**
      * Initializes the controller class.
      */
@@ -52,11 +55,11 @@ public class LoginController implements Initializable {
     @FXML
     public void handleConnecter()
     {
-     isLogin = true;
+     isLogin = false;
         
         try {
             // vérification que le login n'est pas vide
-            if(login.getText().isEmpty() || password.getText().isEmpty())
+            if(login.getText().isEmpty())
             {
                 login.setText("");
                 password.setText("");
@@ -64,22 +67,26 @@ public class LoginController implements Initializable {
             }
             
             // tentative de connection
-            ConnectionSQL.setUser(login.getText());
-            ConnectionSQL.setPassword(password.getText());
-            ConnectionSQL.Connect();
+            CheckLogin clogin = new CheckLogin(login.getText(),password.getText());
             
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-            isLogin = false;
-            messageError.setText("Le profil n'est pas accepté par le système, veuillez contacter l'administrateur (" + ex.getMessage() +")");
-            
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-             isLogin = false;
+       
         } catch (LoginException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
              isLogin = false;
               messageError.setText("Veuillez inscrire un login et/ou un password non vide");
+              
+        } catch (NoLoginException ex)
+        {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            // mauvais Login
+            isLogin = false;
+            messageError.setText(ex.getMessage());
+        } catch (OkLoginException ex) 
+        {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            isLogin = true;
+            user = ex.getModelUser();
+            
         }
         
         if(isLogin)
@@ -97,6 +104,12 @@ public class LoginController implements Initializable {
     public boolean isIsLogin() {
         return isLogin;
     }
+
+    public ModelUser getUser() {
+        return user;
+    }
+    
+    
     
     
 }

@@ -6,6 +6,7 @@
 package DossiersPackage;
 
 import ModelPackage.ConnectionSQL;
+import ModelPackage.ModelDossier;
 import ModelPackage.ModelGroup;
 import ModelPackage.ModelUser;
 import java.net.URL;
@@ -49,6 +50,11 @@ public class FolderCreateViewController implements Initializable {
     
     private ObservableList<ModelGroup> oGroups;
     
+    private boolean createFolder = false;
+    
+    
+    private ModelDossier dossier;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -85,6 +91,41 @@ public class FolderCreateViewController implements Initializable {
             oGroups.add(model);
         }
         
+    }
+    
+    @FXML
+    public void handleCancel()
+    {
+        createFolder = false;
+        // cancel
+        nameFolderField.getScene().getWindow().hide();
+    }
+    
+     @FXML
+    public void handleConfirmer()
+    {
+        if(nameFolderField.getText().isEmpty() || listGroups.getSelectionModel().isEmpty())
+        {
+        
+           
+        }else
+        {
+        
+        
+        
+        createFolder = true;
+        
+        // creation du modeldossier
+        dossier = new ModelDossier();
+        dossier.setNomDossier(nameFolderField.getText());
+      
+        }
+        // cancel
+        nameFolderField.getScene().getWindow().hide();
+    }
+
+    public boolean isCreateFolder() {
+        return createFolder;
     }
     
     

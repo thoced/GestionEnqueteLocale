@@ -5,6 +5,8 @@
  */
 package gestionenquetelocale;
 
+import LoginPackage.LoginController;
+import LoginPackage.ResetLoginViewController;
 import ModelPackage.ConnectionSQL;
 import ModelPackage.ModelDossier;
 import java.io.IOException;
@@ -12,22 +14,30 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 /**
  *
  * @author Thonon
  */
-public class GestionEnqueteLocale extends Application 
+public class GestionEnqueteLocale extends Application implements EventHandler<WindowEvent>
 {
 
     // class static de connection
     public static ConnectionSQL connectionSQL;
+    
+    private FXMLLoader loaderLogin;
+    
+    private Stage stageLogin;
+    
+    private Stage primaryStage;
    
     public GestionEnqueteLocale() throws SQLException 
     {
@@ -59,21 +69,20 @@ public class GestionEnqueteLocale extends Application
     @Override
     public void start(Stage stage) throws Exception 
     {
+        primaryStage = stage;
         // chargement de la vue de login
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/LoginPackage/LoginView.fxml"));
-        AnchorPane pane =  loader.load();
+        loaderLogin = new FXMLLoader(getClass().getResource("/LoginPackage/LoginView.fxml"));
+        AnchorPane pane =  loaderLogin.load();
         Scene sceneLogin = new Scene(pane);
-        Stage stageLogin = new Stage();
+        stageLogin = new Stage();
         stageLogin.initStyle(StageStyle.UNDECORATED);
         stageLogin.setScene(sceneLogin);
+        stageLogin.setOnHidden(this);
         stageLogin.showAndWait();
         
-        Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Gestion d'enquête locale");
-        stage.setMaximized(true);
-        stage.show();
+        
+        
+       
     }
 
     /**
@@ -81,6 +90,46 @@ public class GestionEnqueteLocale extends Application
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void handle(WindowEvent event) 
+    {
+       if(event.getSource() == stageLogin)
+       {
+           if(((LoginController)loaderLogin.getController()).isIsLogin())
+           {
+              
+               
+               try {
+                   Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
+                   Scene scene = new Scene(root);
+                   primaryStage.setScene(scene);
+                   primaryStage.setTitle("Gestion d'enquête locale");
+                   primaryStage.setMaximized(true);
+                   primaryStage.show();
+                   
+                   
+               // si le password est vide alors cela veut dire qu'il faut faire un reset
+               if(((LoginController)loaderLogin.getController()).getUser().getPassword().isEmpty())
+               {
+                   // il faut faire un reset
+                   FXMLLoader loaderReset = new FXMLLoader(this.getClass().getResource("/LoginPackage/ResetLoginView.fxml"));
+                   AnchorPane paneReset = loaderReset.load();
+                   ResetLoginViewController controller = loaderReset.getController();
+                   controller.load(((LoginController)loaderLogin.getController()).getUser());
+                   Scene sceneReset = new Scene(paneReset);
+                   Stage stageReset = new Stage();
+                   stageReset.setScene(sceneReset);
+                   stageReset.setTitle("Modification du password");
+                   stageReset.showAndWait();
+               }
+                   
+               } catch (IOException ex) {
+                   Logger.getLogger(GestionEnqueteLocale.class.getName()).log(Level.SEVERE, null, ex);
+               }
+           }
+       }
     }
     
 }
