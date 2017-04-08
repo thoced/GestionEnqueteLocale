@@ -23,7 +23,7 @@ public class CheckLogin
     {
         try {
             // Check de login
-            String sql = "select * from t_users where login = ? AND password = ?";
+            String sql = "select * from t_users where login = ? AND password = MD5(?)";
             PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
             ps.setString(1, login);
             ps.setString(2, password);

@@ -5,10 +5,15 @@
  */
 package LoginPackage;
 
+import ModelPackage.ConnectionSQL;
 import ModelPackage.ModelUser;
 
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -39,6 +44,8 @@ public class ResetLoginViewController  implements Initializable, EventHandler<Mo
     @FXML
     private Label errorMessage;
     
+    private ModelUser currentUser;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -51,20 +58,49 @@ public class ResetLoginViewController  implements Initializable, EventHandler<Mo
     @FXML
     public void handleEnregistrer(ActionEvent event)
     {
-        // on vérifier que les deux textfield ne sont pas vides
-        if(newPassword.getText().isEmpty() || retapeNewPassword.getText().isEmpty())
-        {
-            errorMessage.setText("Les deux champs relatifs au nouveau password doivent être remplis");
-            newPassword.clear();
-            retapeNewPassword.clear();
+        if(currentUser == null)
+            return;
+        
+        try {
+            // on vérifier que les deux textfield ne sont pas vides
+            if(newPassword.getText().isEmpty() || retapeNewPassword.getText().isEmpty())
+            {
+                errorMessage.setText("Les deux champs relatifs au nouveau password doivent être remplis");
+                newPassword.clear();
+                retapeNewPassword.clear();
+                return;
+            }
+            
+            if(!newPassword.getText().equals(retapeNewPassword.getText()))
+            {
+                errorMessage.setText("Les deux champs password doivent être les même");
+                newPassword.clear();
+                retapeNewPassword.clear();
+                return;
+            }
+            
+            if(newPassword.getText().length() < 8 || newPassword.getText().length() > 16)
+            {
+                errorMessage.setText("Le password doit au minimum contenir 8 caractères et maximum 16 caractères");
+                newPassword.clear();
+                retapeNewPassword.clear();
+                return;
+            }
+            
+            // modification du mot de password avec chiffrage
+            String sql = "update t_users set password = MD5(?) where id = ?";
+            PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
+            ps.setString(1, newPassword.getText());
+            ps.setLong(2,currentUser.getId());
+            ps.execute();
+            
+            // fermeture de la vue
+            newPassword.getScene().getWindow().hide();
+           
+        } catch (SQLException ex) {
+            Logger.getLogger(ResetLoginViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        if(!newPassword.getText().equals(retapeNewPassword.getText()))
-        {
-            errorMessage.setText("Les deux champs password doivent être les même");
-            newPassword.clear();
-            retapeNewPassword.clear();
-        }
     }
     
     public void load(ModelUser user)
@@ -72,6 +108,7 @@ public class ResetLoginViewController  implements Initializable, EventHandler<Mo
         if(user != null)
         {
             login.setText(user.getLogin());
+            currentUser = user;
             
         }
     }
