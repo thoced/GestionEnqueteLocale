@@ -29,9 +29,13 @@ public class ModelDossier extends Model
 
     // nom du dossier
     private final StringProperty nomDossier = new SimpleStringProperty();
+    // commentaire
+    private final StringProperty commentaire = new SimpleStringProperty();
     // nom du owner
     private final StringProperty nomOwner = new SimpleStringProperty();
     
+    // groupe (liste des groupes pouvant avoir accès au dossier
+    private ObservableList<ModelGroup> oGroups;
     // Numero
     private ObservableList<ModelNumero> oNumeros;
     // Personne
@@ -52,6 +56,7 @@ public class ModelDossier extends Model
         oDocuments = FXCollections.observableArrayList();
         oAnnexes = FXCollections.observableArrayList();
         oApostilles = FXCollections.observableArrayList();
+        oGroups = FXCollections.observableArrayList();
         
     }
 
@@ -60,6 +65,7 @@ public class ModelDossier extends Model
     // préparation de donnée du dossier
     public void prepareData()
     {
+       
         // chargement des numéros
          try {
             PreparedStatement ps = null;
@@ -212,6 +218,19 @@ public class ModelDossier extends Model
         }
 
     }
+    
+       public String getCommentaire() {
+        return commentaire.get();
+    }
+
+    public void setCommentaire(String value) {
+        commentaire.set(value);
+    }
+
+    public StringProperty commentaireProperty() {
+        return commentaire;
+    }
+    
 
     public ModelNiceWrapper getNiceWrapper() {
         return niceWrapper;
@@ -271,6 +290,15 @@ public class ModelDossier extends Model
     public StringProperty nomDossierProperty() {
         return nomDossier;
     }
-    // nom du dossier
+
+    public ObservableList<ModelGroup> getoGroups() {
+        return oGroups;
+    }
+
+    public void setoGroups(ObservableList<ModelGroup> oGroups) {
+        this.oGroups = oGroups;
+    }
+    
+    
     
 }

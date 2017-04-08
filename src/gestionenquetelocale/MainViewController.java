@@ -7,12 +7,16 @@ package gestionenquetelocale;
 
 import DossiersPackage.FolderCreateViewController;
 import DossiersPackage.ListDossiersViewController;
+import ModelPackage.ConnectionSQL;
 import ModelPackage.IController;
 import ModelPackage.ModelDossier;
+import ModelPackage.ModelGroup;
 import ModelPackage.ModelUser;
 import java.awt.event.FocusEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -72,6 +76,31 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
             stage.setResizable(false);
             stage.setScene(scene);
             stage.showAndWait();
+            
+            if(controller.isCreateFolder())
+            {
+                ModelDossier model = controller.getDossier();
+                // création du nouveau dossier
+                String sql = "insert into t_folders (nom,commentaire,owner,visible) values (?,?,?,true)";
+                PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setString(1, model.getNomDossier());
+                ps.setString(2, model.getCommentaire());
+                ps.setLong(3, currentUser.getId());
+                ps.execute();
+                ResultSet result = ps.getGeneratedKeys();
+                result.first();
+                model.setId(result.getLong(1));
+                // liens des groupes
+                sql = "insert into t_link_group_folders (ref_id_group,ref_id_folders) values (?,?)";
+                ps = ConnectionSQL.getCon().prepareStatement(sql);
+                for(ModelGroup group : model.getoGroups())
+                {
+                    ps.setLong(1, group.getId());
+                    ps.setLong(2, model.getId());
+                    ps.execute();
+                }
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }

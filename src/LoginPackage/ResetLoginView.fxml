@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="LoginPackage.ResetLoginViewController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginPackage.ResetLoginViewController">
    <children>
-      <GridPane layoutX="29.0" layoutY="24.0" prefHeight="221.0" prefWidth="545.0">
+      <Pane layoutX="10.0" layoutY="13.0" prefHeight="333.0" prefWidth="580.0" style="-fx-border-color: lightblue; -fx-border-width: 6; -fx-border-radius: 4;">
+         <children>
+            <Label layoutX="113.0" layoutY="31.0" text="Modifier le password pour sécuriser votre compte." underline="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <GridPane layoutX="28.0" layoutY="108.0" prefHeight="221.0" prefWidth="545.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -21,14 +30,19 @@
         </rowConstraints>
          <children>
             <TextField fx:id="login" editable="false" GridPane.columnIndex="1" />
-            <TextField fx:id="newPassword" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="retapeNewPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Login" />
             <Label text="Nouveau password" GridPane.rowIndex="1" />
             <Label text="Retaper le nouveau password" GridPane.rowIndex="2" />
+            <PasswordField fx:id="newPassword" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <PasswordField fx:id="retapeNewPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
       <Button defaultButton="true" layoutX="500.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleEnregistrer" text="Enregistrer" />
       <Label fx:id="errorMessage" layoutX="29.0" layoutY="305.0" textFill="RED" />
+      <Label layoutX="201.0" layoutY="360.0" prefHeight="27.0" prefWidth="199.0" text="Gestion locale d'enquête" textFill="#1d808d">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

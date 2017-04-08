@@ -21,6 +21,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
@@ -38,9 +39,9 @@ public class ResetLoginViewController  implements Initializable, EventHandler<Mo
     @FXML
     private TextField login;
     @FXML
-    private TextField newPassword;
+    private PasswordField newPassword;
     @FXML
-    private TextField retapeNewPassword;
+    private PasswordField retapeNewPassword;
     @FXML
     private Label errorMessage;
     
@@ -52,6 +53,8 @@ public class ResetLoginViewController  implements Initializable, EventHandler<Mo
     {
        newPassword.setOnMouseClicked(this);
        retapeNewPassword.setOnMouseClicked(this);
+       
+       
        
     }    
     
@@ -88,7 +91,7 @@ public class ResetLoginViewController  implements Initializable, EventHandler<Mo
             }
             
             // modification du mot de password avec chiffrage
-            String sql = "update t_users set password = MD5(?) where id = ?";
+            String sql = "update t_users set password = SHA1(?), reset = false where id = ?";
             PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
             ps.setString(1, newPassword.getText());
             ps.setLong(2,currentUser.getId());

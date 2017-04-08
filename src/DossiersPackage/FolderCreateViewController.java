@@ -19,19 +19,22 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
  *
  * @author Thonon
  */
-public class FolderCreateViewController implements Initializable {
+public class FolderCreateViewController implements Initializable, EventHandler<MouseEvent> {
 
     /**
      * Initializes the controller class.
@@ -47,6 +50,9 @@ public class FolderCreateViewController implements Initializable {
     
     @FXML
     private TextField ownerField;
+    
+    @FXML
+    private Label messageError;
     
     private ObservableList<ModelGroup> oGroups;
     
@@ -71,6 +77,10 @@ public class FolderCreateViewController implements Initializable {
         
        oGroups = FXCollections.observableArrayList();
        listGroups.setItems(oGroups);
+       
+       // reset message error
+       nameFolderField.setOnMousePressed(this);
+       listGroups.setOnMousePressed(this);
         
     }    
     
@@ -106,26 +116,39 @@ public class FolderCreateViewController implements Initializable {
     {
         if(nameFolderField.getText().isEmpty() || listGroups.getSelectionModel().isEmpty())
         {
-        
+            messageError.setText("Un nom de dossier est obligatoire et/ou un groupe doit être au minimum sélectionné");
            
         }else
         {
-        
-        
-        
+ 
         createFolder = true;
         
         // creation du modeldossier
         dossier = new ModelDossier();
         dossier.setNomDossier(nameFolderField.getText());
+        dossier.setCommentaire(informationField.getText());
+        // ajout des groupes sélectionnés
+        dossier.getoGroups().addAll(listGroups.getSelectionModel().getSelectedItems());
+        
+         // fermeture de la vue
+        nameFolderField.getScene().getWindow().hide();
       
         }
-        // cancel
-        nameFolderField.getScene().getWindow().hide();
+       
     }
 
     public boolean isCreateFolder() {
         return createFolder;
+    }
+
+    @Override
+    public void handle(MouseEvent event) 
+    {
+       messageError.setText("");
+    }
+
+    public ModelDossier getDossier() {
+        return dossier;
     }
     
     
