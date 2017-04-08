@@ -6,6 +6,7 @@
 package gestionenquetelocale;
 
 import DossiersPackage.FolderCreateViewController;
+import DossiersPackage.ListDossiersViewController;
 import ModelPackage.IController;
 import ModelPackage.ModelDossier;
 import ModelPackage.ModelUser;
@@ -48,6 +49,8 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
     private Label labelDossier;
     // data
     private ModelDossier currentDossier;
+    // date user
+    private ModelUser currentUser;
     
     private ObservableList<Stage> oStages;
     
@@ -79,8 +82,9 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
     {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/DossiersPackage/ListDossiersView.fxml"));
         AnchorPane pane = loader.load();
-        IController controller = loader.getController();
+        ListDossiersViewController controller = loader.getController();
         controller.setModelDossier(currentDossier);
+        controller.load(currentUser);
         Scene scene = new Scene(pane);
         Stage stage = new Stage();
         stage.setTitle("Selection du dossier");
@@ -129,8 +133,6 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
        
     }    
 
-    
-
     @Override
     public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) 
     {
@@ -150,6 +152,16 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
         else 
             labelDossier.setText("");
     }
+
+    public ModelUser getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(ModelUser currentUser) {
+        this.currentUser = currentUser;
+    }
+    
+    
 
     @Override
     public void handle(WindowEvent event) 

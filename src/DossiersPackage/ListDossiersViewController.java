@@ -8,6 +8,7 @@ package DossiersPackage;
 import ModelPackage.ConnectionSQL;
 import ModelPackage.IController;
 import ModelPackage.ModelDossier;
+import ModelPackage.ModelUser;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,33 +53,7 @@ public class ListDossiersViewController implements Initializable,IController {
         oListDossiers = FXCollections.observableArrayList();
         oListDossiers.clear();
         
-        try {
-            // chargement des dossiers
-            String sql = "select * from t_folders inner join t_link_group_folders on t_folders.id = t_link_group_folders.ref_id_folders "
-                    + "where t_link_group_folders.ref_id_group like ("
-                    + "select DISTINCT t_group.id from t_group inner join t_link_group_users on t_group.id = t_link_group_users.ref_id_group "
-                    + "where t_link_group_users.ref_id_users = (select t_users.id from t_users where nom = ?)) AND t_folders.visible = TRUE";
-            
-            PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
-            ps.setString(1, "thonon");
-            ResultSet result = ps.executeQuery();
-            while(result.next())
-            {
-                ModelDossier model = new ModelDossier();
-                model.setId(result.getLong("id"));
-                model.setNomDossier(result.getString("nom"));
-                String sql_user = "select nom,prenom from t_users where id = ?";
-                PreparedStatement ps_user = ConnectionSQL.getCon().prepareStatement(sql_user);
-                ps_user.setLong(1, result.getLong("owner"));
-                ResultSet r = ps_user.executeQuery();
-                r.first();
-                model.setNomOwner(r.getString("nom") + " " + r.getString("prenom"));
-                oListDossiers.add(model);
-               
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ListDossiersViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
         
         // attachement du tableDossier avec le oListDossiers
         columnDossier.setCellValueFactory(cellData->cellData.getValue().nomDossierProperty());
@@ -119,8 +94,39 @@ public class ListDossiersViewController implements Initializable,IController {
     }
 
     @Override
-    public void loadModel(ModelDossier currentDossier) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void loadModel(ModelDossier currentDossier) 
+    {
+      
     }
     
+    public void load(ModelUser user)
+    {
+         try {
+            // chargement des dossiers
+            String sql = "select * from t_folders inner join t_link_group_folders on t_folders.id = t_link_group_folders.ref_id_folders "
+                    + "where t_link_group_folders.ref_id_group like ("
+                    + "select DISTINCT t_group.id from t_group inner join t_link_group_users on t_group.id = t_link_group_users.ref_id_group "
+                    + "where t_link_group_users.ref_id_users = (select t_users.id from t_users where login = ?)) AND t_folders.visible = TRUE";
+            
+            PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
+            ps.setString(1, user.getLogin());
+            ResultSet result = ps.executeQuery();
+            while(result.next())
+            {
+                ModelDossier model = new ModelDossier();
+                model.setId(result.getLong("id"));
+                model.setNomDossier(result.getString("nom"));
+                String sql_user = "select nom,prenom from t_users where id = ?";
+                PreparedStatement ps_user = ConnectionSQL.getCon().prepareStatement(sql_user);
+                ps_user.setLong(1, result.getLong("owner"));
+                ResultSet r = ps_user.executeQuery();
+                r.first();
+                model.setNomOwner(r.getString("nom") + " " + r.getString("prenom"));
+                oListDossiers.add(model);
+               
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ListDossiersViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

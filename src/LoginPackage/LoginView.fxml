@@ -15,7 +15,7 @@
       <Label layoutX="128.0" layoutY="126.0" text="Login" />
       <Label layoutX="128.0" layoutY="198.0" text="Password" />
       <Button defaultButton="true" layoutX="128.0" layoutY="286.0" mnemonicParsing="false" onAction="#handleConnecter" text="Se connecter" />
-      <Label fx:id="messageError" layoutX="14.0" layoutY="321.0" prefHeight="17.0" prefWidth="563.0" textFill="RED" wrapText="true" />
+      <Label fx:id="messageError" layoutX="29.0" layoutY="321.0" prefHeight="17.0" prefWidth="554.0" textFill="RED" wrapText="true" />
       <Button cancelButton="true" layoutX="443.0" layoutY="356.0" mnemonicParsing="false" onAction="#handleClose" prefHeight="25.0" prefWidth="135.0" text="Fermer l'application" />
       <Label layoutX="287.0" layoutY="14.0" prefHeight="113.0" prefWidth="290.0" text="G.E.L" textAlignment="CENTER" textFill="#6979a1" textOverrun="WORD_ELLIPSIS" underline="true">
          <font>

@@ -61,8 +61,8 @@ public class ResetLoginViewController  implements Initializable, EventHandler<Mo
         
         if(!newPassword.getText().equals(retapeNewPassword.getText()))
         {
-             errorMessage.setText("Les deux champs password doivent être les même");
-             newPassword.clear();
+            errorMessage.setText("Les deux champs password doivent être les même");
+            newPassword.clear();
             retapeNewPassword.clear();
         }
     }

@@ -102,8 +102,10 @@ public class GestionEnqueteLocale extends Application implements EventHandler<Wi
               
                
                try {
-                   Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
-                   Scene scene = new Scene(root);
+                   FXMLLoader loaderPrimary = new FXMLLoader(getClass().getResource("MainView.fxml"));
+                   Scene scene = new Scene(loaderPrimary.load());
+                   MainViewController mvc = loaderPrimary.getController();
+                   mvc.setCurrentUser(((LoginController)loaderLogin.getController()).getUser());
                    primaryStage.setScene(scene);
                    primaryStage.setTitle("Gestion d'enquête locale");
                    primaryStage.setMaximized(true);
@@ -124,6 +126,9 @@ public class GestionEnqueteLocale extends Application implements EventHandler<Wi
                    stageReset.setTitle("Modification du password");
                    stageReset.showAndWait();
                }
+               
+               // on place le user
+                mvc.setCurrentUser(((LoginController)loaderLogin.getController()).getUser());
                    
                } catch (IOException ex) {
                    Logger.getLogger(GestionEnqueteLocale.class.getName()).log(Level.SEVERE, null, ex);
