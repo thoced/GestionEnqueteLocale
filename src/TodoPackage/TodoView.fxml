@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TodoPackage.TodoViewController">
+   <top>
+      <VBox>
+         <children>
+            <FlowPane prefHeight="35.0" prefWidth="960.0">
+               <children>
+                  <Label text="Filtrer par: ">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </Label>
+                  <ComboBox fx:id="comboFiltre" onAction="#handleFiltre" prefHeight="25.0" prefWidth="320.0">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <FlowPane.margin>
+                        <Insets top="5.0" />
+                     </FlowPane.margin>
+                  </ComboBox>
+               </children>
+            </FlowPane>
+            <TableView fx:id="tableTodos" onMouseClicked="#handleSelect" prefHeight="305.0" prefWidth="800.0" style="-fx-border-color: lightblue;" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn fx:id="columnIndex" prefWidth="54.0" text="Num" />
+                <TableColumn fx:id="columnLibelle" prefWidth="580.0" text="Libelle" />
+                  <TableColumn fx:id="columnDateCreation" prefWidth="130.0" text="Date de création" />
+                  <TableColumn fx:id="columnDateRappel" prefWidth="110.0" text="Date de rappel" />
+                  <TableColumn fx:id="columnStatut" prefWidth="84.0" text="Statut" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane alignment="CENTER" layoutX="300.0" layoutY="55.0" onMousePressed="#handleNew" style="-fx-border-color: lightblue;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="395.0" minWidth="10.0" prefWidth="127.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="871.0" minWidth="10.0" prefWidth="507.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="871.0" minWidth="10.0" prefWidth="97.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="871.0" minWidth="10.0" prefWidth="236.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="83.0" minHeight="10.0" prefHeight="83.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="38.0" minHeight="7.0" prefHeight="26.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Contenu" GridPane.rowIndex="1" />
+                  <Label alignment="CENTER" text="Libellé" />
+                  <TextArea fx:id="contenuField" prefHeight="81.0" prefWidth="662.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label GridPane.rowIndex="2" />
+                  <Label text="Date de création" GridPane.rowIndex="2" />
+                  <DatePicker fx:id="dateCreation" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Statut" GridPane.columnIndex="2" />
+                  <TextField fx:id="libelleField" GridPane.columnIndex="1" />
+                  <Label fx:id="statutLabel" GridPane.columnIndex="3" />
+                  <Label text="Date de rappel" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <DatePicker fx:id="dateRappel" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <Label prefHeight="39.0" prefWidth="234.0" text="(Pour être rappelé, veuillez inscrire une date de rappel.)" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+   </center>
+   <bottom>
+      <HBox alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#handleNew" style="-fx-background-radius: 64; -fx-background-color: lightblue; -fx-border-width: 2; -fx-border-color: gray; -fx-border-radius: 64;" text="New">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="buttonAdd" disable="true" mnemonicParsing="false" onAction="#handleAdd" style="-fx-background-radius: 64; -fx-background-color: lightblue; -fx-border-width: 2; -fx-border-color: gray; -fx-border-radius: 64;" text="Add">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Button>
+            <Button fx:id="buttonDel" disable="true" mnemonicParsing="false" onAction="#handleDelete" style="-fx-background-radius: 64; -fx-background-color: lightblue; -fx-border-width: 2; -fx-border-color: gray; -fx-border-radius: 64;" text="Del">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin></Button>
+            <Button fx:id="buttonModif" disable="true" mnemonicParsing="false" onAction="#handleModif" style="-fx-background-radius: 64; -fx-background-color: lightblue; -fx-border-width: 2; -fx-border-color: gray; -fx-border-radius: 64;" text="Modifier">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+   </bottom>
+</BorderPane>

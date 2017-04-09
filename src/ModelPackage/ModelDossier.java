@@ -48,6 +48,8 @@ public class ModelDossier extends Model
     private ObservableList<ModelApostille> oApostilles;
     // NiceTrack
     private ModelNiceWrapper niceWrapper = null;
+    // Todos
+    private ObservableList<ModelTodo> oTodos;
 
     public ModelDossier() 
     {
@@ -57,6 +59,7 @@ public class ModelDossier extends Model
         oAnnexes = FXCollections.observableArrayList();
         oApostilles = FXCollections.observableArrayList();
         oGroups = FXCollections.observableArrayList();
+        oTodos = FXCollections.observableArrayList();
         
     }
 
@@ -65,6 +68,31 @@ public class ModelDossier extends Model
     // préparation de donnée du dossier
     public void prepareData()
     {
+        // chargement des Todos
+         try {
+            PreparedStatement ps = null;
+            // chargement de la liste des personnes
+            String sql = "select * from t_todo where ref_id_folders = ?";
+            ps = ConnectionSQL.getCon().prepareStatement(sql);
+            ps.setLong(1, this.getId());
+            ResultSet result = ps.executeQuery();
+            // clear de oPersonnes
+            oNumeros.clear();
+            while(result.next())
+            {
+                ModelTodo model = new ModelTodo();
+                model.setId(result.getLong("id"));
+                model.setLibelle(result.getString("libelle"));
+                model.setContenu(result.getString("contenu"));
+                model.setDateCreation(result.getDate("date_creation").toLocalDate());
+                model.setDateRappel(result.getDate("date_rappel").toLocalDate());
+                model.setStatut(result.getBoolean("statut"));
+                // add
+                oTodos.add(model);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NumeroViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
        
         // chargement des numéros
          try {
@@ -218,6 +246,16 @@ public class ModelDossier extends Model
         }
 
     }
+
+    public ObservableList<ModelTodo> getoTodos() {
+        return oTodos;
+    }
+
+    public void setoTodos(ObservableList<ModelTodo> oTodos) {
+        this.oTodos = oTodos;
+    }
+    
+    
     
        public String getCommentaire() {
         return commentaire.get();
