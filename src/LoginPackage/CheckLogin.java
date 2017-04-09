@@ -37,6 +37,7 @@ public class CheckLogin
                 ok.getModelUser().setNom(result.getString("nom"));
                 ok.getModelUser().setPrenom(result.getString("prenom"));
                 ok.getModelUser().setPassword(result.getString("password"));
+                System.out.println("Ok Login: " + ok.getModelUser().getLogin());
                 throw ok;
                 
             

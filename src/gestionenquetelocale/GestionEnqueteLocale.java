@@ -127,6 +127,7 @@ public class GestionEnqueteLocale extends Application implements EventHandler<Wi
                    stageReset.showAndWait();
                }
                
+               System.out.println("MVC : " +  ((LoginController)loaderLogin.getController()).getUser().getLogin());
                // on place le user
                 mvc.setCurrentUser(((LoginController)loaderLogin.getController()).getUser());
                    

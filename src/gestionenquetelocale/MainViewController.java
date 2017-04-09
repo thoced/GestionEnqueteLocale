@@ -66,10 +66,10 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/DossiersPackage/FolderCreateView.fxml"));
             AnchorPane pane = loader.load();
             FolderCreateViewController controller = loader.getController();
-            controller.load(new ModelUser());
+            controller.load(this.getCurrentUser());
             Scene scene = new Scene(pane);
             Stage stage = new Stage();
-            stage.setTitle("Créatino d'un dossier");
+            stage.setTitle("Création d'un dossier");
             stage.initOwner(mainView.getScene().getWindow());
             stage.initStyle(StageStyle.UTILITY);
             stage.initModality(Modality.APPLICATION_MODAL);

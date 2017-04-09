@@ -28,7 +28,7 @@
                   <TextField fx:id="nameFolderField" prefHeight="25.0" prefWidth="320.0" GridPane.columnIndex="1" />
                   <TextArea fx:id="informationField" prefHeight="200.0" prefWidth="320.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Owner:" GridPane.columnIndex="2" />
-                  <TextField fx:id="ownerField" editable="false" GridPane.columnIndex="3" />
+                  <TextField fx:id="ownerField" disable="true" editable="false" GridPane.columnIndex="3" />
                </children>
             </GridPane>
          </children>
