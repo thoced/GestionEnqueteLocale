@@ -117,6 +117,7 @@ public class AnnexeViewController implements Initializable,IController,ListChang
             columnlibelle.setCellValueFactory(cellData->cellData.getValue().libelleProperty());
             columnVoiAnnexe.setCellValueFactory(cellData->cellData.getValue().rawProperty());
             // cellfactory
+            columnIndex.setCellFactory(p->new UtilsPackage.IndexCell());
             columnVoiAnnexe.setCellFactory(p->new RawCell());
             //tableAnnexes.setItems(oAnnexes);
            
@@ -207,7 +208,8 @@ public class AnnexeViewController implements Initializable,IController,ListChang
        commentaireField.clear();
         
         disable();
-        
+        // refresh
+        tableAnnexes.refresh();
     }
     
     @FXML
@@ -231,6 +233,8 @@ public class AnnexeViewController implements Initializable,IController,ListChang
         }
 
          disable();
+         // refresh
+        tableAnnexes.refresh();
     }
     
     @FXML
@@ -263,6 +267,8 @@ public class AnnexeViewController implements Initializable,IController,ListChang
         }
         
          disable();
+         // refresh
+        tableAnnexes.refresh();
     }
     
     @FXML

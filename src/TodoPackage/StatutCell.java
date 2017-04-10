@@ -86,10 +86,7 @@ public class StatutCell extends TableCell implements ChangeListener<Boolean>, Ev
     {
        // récupération du model en cours
             ModelTodo model = (ModelTodo) this.getTableRow().getItem();
-            
-           
-           
-               
+
                     try {
                        // ModelApostille model = (ModelApostille) this.getTableRow().getItem();
                         model.setStatut(!model.isStatut());
@@ -106,7 +103,8 @@ public class StatutCell extends TableCell implements ChangeListener<Boolean>, Ev
                         Logger.getLogger(StatutCell.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 
-            
+            // refresh de la tablevieuw
+            this.getTableView().refresh();
     }
     
 }

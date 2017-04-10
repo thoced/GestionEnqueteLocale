@@ -136,6 +136,7 @@ public class ApostilleViewController  implements Initializable,IController,ListC
             columnDateOut.setCellValueFactory(cellData->cellData.getValue().dateOutProperty());
             columnStatut.setCellValueFactory(cellData->cellData.getValue().statutProperty());
             // factory
+            columnIndex.setCellFactory(p-> new UtilsPackage.IndexCell());
             columnStatut.setCellFactory(p->new StatutCell());
             columnDateIn.setCellFactory(p-> new DateCell());
             columnDateOut.setCellFactory(p-> new DateCell());
@@ -202,9 +203,9 @@ public class ApostilleViewController  implements Initializable,IController,ListC
         contenuField.clear();
         dateInField.setValue(null);
         //dateOutField.setValue(null);
-        
-                
+    
        enable();
+      
        
     }
     
@@ -228,6 +229,8 @@ public class ApostilleViewController  implements Initializable,IController,ListC
         //dateOutField.setValue(null);
         
         disable();
+          // refresh
+       tableApostilles.refresh();
         
     }
     
@@ -252,6 +255,8 @@ public class ApostilleViewController  implements Initializable,IController,ListC
         }
 
          disable();
+           // refresh
+       tableApostilles.refresh();
     }
     
     @FXML
@@ -292,6 +297,8 @@ public class ApostilleViewController  implements Initializable,IController,ListC
         }
         
          disable();
+        // refresh
+       tableApostilles.refresh();
     }
     
     @FXML

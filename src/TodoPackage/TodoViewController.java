@@ -133,7 +133,10 @@ public class TodoViewController  implements Initializable,IController,ListChange
             columnDateRappel.setCellValueFactory(cellData->cellData.getValue().dateRappelProperty());
             columnStatut.setCellValueFactory(cellData->cellData.getValue().statutProperty());
             // factory
+            columnIndex.setCellFactory(p->new UtilsPackage.IndexCell());
             columnStatut.setCellFactory(p->new TodoPackage.StatutCell());
+            columnDateCreation.setCellFactory(p->new UtilsPackage.DateCell());
+            columnDateRappel.setCellFactory(p->new TodoPackage.DataRappelCell());
            /* columnDateIn.setCellFactory(p-> new DateCell());
             columnDateOut.setCellFactory(p-> new DateCell());*/
             
@@ -164,6 +167,11 @@ public class TodoViewController  implements Initializable,IController,ListChange
                 dateCreation.setDisable(true);
             }
         });
+        
+        //
+        
+        
+       
        
         // lors de la selection d'une date
         dateRappel.valueProperty().addListener(new ChangeListener<LocalDate>() 
@@ -261,18 +269,16 @@ public class TodoViewController  implements Initializable,IController,ListChange
         //model.setDateOut(dateOutField.getValue());
         model.setIndex(this.currentDossier.getoTodos().size() + 1);
         this.currentDossier.getoTodos().add(model);
-        
-        
-      
+
         libelleField.clear();
         contenuField.clear();
         dateCreation.setValue(null);
         dateRappel.setValue(null);
-      
-        //dateOutField.setValue(null);
-        
+
         disable();
         
+        // refresh pour les index
+        tableTodos.refresh();
     }
     
     @FXML
@@ -340,6 +346,8 @@ public class TodoViewController  implements Initializable,IController,ListChange
         }
         
          disable();
+         // refresh pour les index
+         tableTodos.refresh();
     }
     
     @FXML

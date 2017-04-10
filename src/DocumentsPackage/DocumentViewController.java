@@ -165,6 +165,7 @@ public class DocumentViewController implements Initializable,IController,ListCha
             columnReference.setCellValueFactory(cellData->cellData.getValue().referenceProperty());
             
             // factory
+            columnIndex.setCellFactory(p->new UtilsPackage.IndexCell());
             columnDate.setCellFactory(p->new DateCell());
             // set item de la liste des annexes attachées
             listAnnexes.setItems(oAnnexes);
@@ -339,7 +340,8 @@ public class DocumentViewController implements Initializable,IController,ListCha
        referenceField.clear();
         
         disable();
-        
+        // refresh 
+        tableDocuments.refresh();
     }
     
     @FXML
@@ -363,6 +365,8 @@ public class DocumentViewController implements Initializable,IController,ListCha
         }
 
          disable();
+         // refresh 
+        tableDocuments.refresh();
     }
     
     @FXML
@@ -395,6 +399,8 @@ public class DocumentViewController implements Initializable,IController,ListCha
         }
         
          disable();
+         // refresh 
+        tableDocuments.refresh();
     }
     
     @FXML

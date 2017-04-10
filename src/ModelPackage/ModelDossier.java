@@ -85,10 +85,18 @@ public class ModelDossier extends Model
                 model.setLibelle(result.getString("libelle"));
                 model.setContenu(result.getString("contenu"));
                 model.setDateCreation(result.getDate("date_creation").toLocalDate());
+                try
+                {
                 model.setDateRappel(result.getDate("date_rappel").toLocalDate());
+                }
+                catch(NullPointerException npe)
+                {
+                    model.setDateRappel(null);
+                }
                 model.setStatut(result.getBoolean("statut"));
                 // add
                 oTodos.add(model);
+                
             }
         } catch (SQLException ex) {
             Logger.getLogger(NumeroViewController.class.getName()).log(Level.SEVERE, null, ex);

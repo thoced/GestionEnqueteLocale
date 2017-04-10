@@ -23,6 +23,7 @@ public class DateCell extends TableCell
     {
         super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
         this.setText(null);
+        this.setGraphic(null);
         
         if(item != null)
         {
