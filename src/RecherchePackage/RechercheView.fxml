@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="960.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="RecherchePackage.RechercheViewController">
+   <children>
+      <Pane layoutX="21.0" layoutY="14.0" prefHeight="200.0" prefWidth="920.0" style="-fx-border-color: lightblue; -fx-border-width: 4; -fx-border-radius: 4;" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="16.0" />
+      <TextArea fx:id="rechercheField" layoutX="32.0" layoutY="43.0" prefHeight="211.0" prefWidth="911.0" wrapText="true" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0" />
+      <TableView fx:id="tableResultats" layoutX="36.0" layoutY="300.0" prefHeight="200.0" prefWidth="901.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0">
+        <columns>
+          <TableColumn fx:id="columnContenu" prefWidth="529.0" text="Contenu" />
+          <TableColumn fx:id="columnDossier" minWidth="0.0" prefWidth="185.0" text="Dossier" />
+            <TableColumn fx:id="columnDocument" prefWidth="181.0" text="Document" />
+        </columns>
+      </TableView>
+      <Button layoutX="32.0" layoutY="265.0" mnemonicParsing="false" onAction="#handleRecherche" style="-fx-background-color: orange;" text="Recherche" />
+      <Button defaultButton="true" layoutX="874.0" layoutY="551.0" mnemonicParsing="false" text="Quitter" />
+      <Label layoutX="32.0" layoutY="23.0" prefHeight="14.0" prefWidth="102.0" text="Zone de recherche:" />
+   </children>
+</AnchorPane>

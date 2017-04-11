@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="mainView" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: SlateGray;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestionenquetelocale.MainViewController">
    <children>
-      <MenuBar layoutX="398.0" layoutY="68.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
         <menus>
           <Menu mnemonicParsing="false" text="Fichier">
                <items>
@@ -26,9 +26,9 @@
                   <MenuItem mnemonicParsing="false" onAction="#handleCreationDossier" text="Créer un dossier" />
               </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Recherche">
+            <Menu mnemonicParsing="false" text="Analyse">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" onAction="#handleRecherche" text="Recherche de contenu" />
               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Help">

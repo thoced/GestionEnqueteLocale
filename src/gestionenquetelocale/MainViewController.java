@@ -13,6 +13,7 @@ import ModelPackage.ModelDossier;
 import ModelPackage.ModelEvent;
 import ModelPackage.ModelGroup;
 import ModelPackage.ModelUser;
+import RecherchePackage.RechercheViewController;
 import java.awt.event.FocusEvent;
 import java.io.IOException;
 import java.net.URL;
@@ -70,7 +71,24 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
     private ObservableList<ModelEvent> oEvents;
     
     
-    
+    @FXML
+    private void handleRecherche(ActionEvent event) throws IOException 
+    {
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/RecherchePackage/RechercheView.fxml"));
+            AnchorPane pane = loader.load();
+            RechercheViewController controller = loader.getController();
+            controller.load(this.getCurrentUser());
+            Scene scene = new Scene(pane);
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.UTILITY);
+            stage.setMinHeight(600);
+            stage.setMinWidth(960);
+            stage.setMaximized(false);
+            stage.setScene(scene);
+            stage.setTitle("Recherche de contenu");
+            stage.showAndWait();
+            
+    }
    
     @FXML
     private void handleCreationDossier(ActionEvent event) throws IOException 
