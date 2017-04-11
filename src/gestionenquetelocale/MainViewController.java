@@ -10,6 +10,7 @@ import DossiersPackage.ListDossiersViewController;
 import ModelPackage.ConnectionSQL;
 import ModelPackage.IController;
 import ModelPackage.ModelDossier;
+import ModelPackage.ModelEvent;
 import ModelPackage.ModelGroup;
 import ModelPackage.ModelUser;
 import java.awt.event.FocusEvent;
@@ -33,6 +34,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -51,12 +54,22 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
     private AnchorPane mainView;
     @FXML
     private Label labelDossier;
+    @FXML
+    private TableView tableEvenements;
+    @FXML
+    private TableColumn<ModelEvent,String> columnInformation;
+    @FXML
+    private TableColumn<ModelEvent,String> columnNameDossier;
     // data
     private ModelDossier currentDossier;
     // date user
     private ModelUser currentUser;
     
     private ObservableList<Stage> oStages;
+    
+    private ObservableList<ModelEvent> oEvents;
+    
+    
     
    
     @FXML
@@ -158,9 +171,57 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-       oStages = FXCollections.observableArrayList();
+       
+            // instance de la liste des stages
+            oStages = FXCollections.observableArrayList();
+            // instance de la liste des evenements
+            oEvents = FXCollections.observableArrayList();
+            tableEvenements.setItems(oEvents);
+
+            tableEvenements.focusedProperty().addListener(new ChangeListener<Boolean>() 
+            {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+                {
+                    MainViewController.this.loadEvent();
+                }
+            });
+            
+            // cellfactoryvalue
+            columnInformation.setCellValueFactory(cellData->cellData.getValue().informationProperty());
+            columnNameDossier.setCellValueFactory(cellData->cellData.getValue().nameFolderProperty());
+           
        
     }    
+    
+    private void loadEvent()
+    {
+      
+        try {
+            // recherche d'évenements eventuelles sur les todos
+            String sql_event = "select * from t_todo inner join t_folders on t_todo.ref_id_folders = t_folders.id where statut = FALSE AND date_rappel <= CURRENT_DATE() AND t_todo.ref_id_folders IN "
+                    + "(select ref_id_folders from t_link_group_folders where ref_id_group IN (select ref_id_group from " +
+                       "t_link_group_users where ref_id_users = ?))";
+           /* select * from t_todo where statut = FALSE AND date_rappel <= CURRENT_DATE() AND t_todo.ref_id_folders IN (select ref_id_folders from t_link_group_folders where ref_id_group IN (select ref_id_group from 
+t_link_group_users where ref_id_users = 1))*/
+            
+            PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql_event);
+            ps.setLong(1, currentUser.getId());
+            ResultSet result = ps.executeQuery();
+            oEvents.clear();
+            while(result.next())
+            {
+               ModelEvent model = new ModelEvent();
+               model.setInformation("Un evenement est arrivé à expiration");
+               model.setNameFolder(result.getString("nom"));
+               oEvents.add(model);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+    }
 
     @Override
     public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) 
@@ -186,8 +247,11 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
         return currentUser;
     }
 
-    public void setCurrentUser(ModelUser currentUser) {
+    public void setCurrentUser(ModelUser currentUser) 
+    {
         this.currentUser = currentUser;
+        // chargement des events
+        this.loadEvent();
     }
     
     

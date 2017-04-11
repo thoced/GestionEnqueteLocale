@@ -43,14 +43,14 @@
             <Font name="Cambria" size="25.0" />
          </font>
       </Label>
-      <TitledPane expanded="false" layoutY="640.0" prefHeight="128.0" prefWidth="1024.0" style="-fx-background-color: LightSteelBlue;" text="Evenements" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <TitledPane layoutY="640.0" prefHeight="180.0" prefWidth="1024.0" style="-fx-background-color: LightSteelBlue;" text="Evenements" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <content>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: gray;">
                <children>
-                  <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="tableEvenements" layoutX="19.6" layoutY="19.6" prefHeight="46.0" prefWidth="640.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn fx:id="columnInformation" prefWidth="442.9999634027481" text="Information" />
+                        <TableColumn fx:id="columnNameDossier" prefWidth="196.00003051757812" text="Dossier" />
                     </columns>
                   </TableView>
                </children>

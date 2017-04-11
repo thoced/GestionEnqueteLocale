@@ -105,7 +105,7 @@ public class GestionEnqueteLocale extends Application implements EventHandler<Wi
                    FXMLLoader loaderPrimary = new FXMLLoader(getClass().getResource("MainView.fxml"));
                    Scene scene = new Scene(loaderPrimary.load());
                    MainViewController mvc = loaderPrimary.getController();
-                   mvc.setCurrentUser(((LoginController)loaderLogin.getController()).getUser());
+                  // mvc.setCurrentUser(((LoginController)loaderLogin.getController()).getUser());
                    primaryStage.setScene(scene);
                    primaryStage.setTitle("Gestion d'enquête locale");
                    primaryStage.setMaximized(true);
