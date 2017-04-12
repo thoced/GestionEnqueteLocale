@@ -6,6 +6,7 @@
 package RecherchePackage;
 
 import ModelPackage.ConnectionSQL;
+import ModelPackage.ModelRecherche;
 import ModelPackage.ModelUser;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -14,9 +15,15 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -33,40 +40,62 @@ public class RechercheViewController implements Initializable {
     @FXML
     private TableView tableResultats;
     @FXML
-    private TableColumn columnContenu;
+    private TableColumn<ModelRecherche,Button> columnContenu;
     @FXML
-    private TableColumn columnDossier;
+    private TableColumn<ModelRecherche,String> columnDossier;
     @FXML
-    private TableColumn columnDocument;
+    private TableColumn<ModelRecherche,String> columnDocument;
     
     private ModelUser user;
+    
+    private ObservableList<ModelRecherche> oRecherches;
     
     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-        // TODO
+       // instance
+        oRecherches = FXCollections.observableArrayList();
+        
+        // cellfactorey value
+        columnContenu.setCellValueFactory(cellData->cellData.getValue().buttonContenuProperty());
+        columnDossier.setCellValueFactory(cellData->cellData.getValue().getDossier().nomDossierProperty());
+        columnDocument.setCellValueFactory(cellData->cellData.getValue().titreProperty());
+        
+        tableResultats.setItems(oRecherches);
     }
     
     @FXML
     public void handleRecherche(ActionEvent event)
     {
-       
+        // clear
+        oRecherches.clear();
         try 
         {
             if(rechercheField.getText().isEmpty())
                 return;
-            
+
             String recherche = "%" + rechercheField.getText().trim() + "%";
             
-            String sql = "select * from t_document inner join t_folders on t_document.ref_id_folders = t_folders.id where contenu LIKE ?";
+            String sql = "select * from t_document inner join t_folders on t_document.ref_id_folders = t_folders.id where t_folders.visible = TRUE AND contenu LIKE ? AND t_folders.id IN "
+                    + "(select ref_id_folders from t_link_group_folders where t_link_group_folders.ref_id_group IN ( select t_link_group_users.ref_id_group from t_link_group_users where ref_id_users = ?))";
             PreparedStatement ps = ConnectionSQL.getCon().prepareStatement(sql);
             ps.setString(1, recherche);
+            ps.setLong(2, user.getId());
             ResultSet result = ps.executeQuery();
             while(result.next())
             {
-                System.out.println(result.getString("contenu") + " " + result.getString("nom"));
+                ModelRecherche model = new ModelRecherche();
+                model.setId(result.getLong("t_document.id"));
+                model.setTitre(result.getString("t_document.titre"));
+                model.getDossier().setId(result.getLong("t_folders.id"));
+                model.getDossier().setNomDossier(result.getString("t_folders.nom"));
+                
+                
+                // ajout
+                oRecherches.add(model);
+               
             }
             
             ps.close();
