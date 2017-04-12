@@ -28,7 +28,7 @@ public class DataRappelCell extends DateCell
         this.getTableRow().setStyle(null);*/
        
        // date de rappel des cell
-       
+        this.getTableRow().setStyle(null);
         
         if(item != null)
         {

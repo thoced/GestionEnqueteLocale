@@ -86,6 +86,7 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
             stage.setMaximized(false);
             stage.setScene(scene);
             stage.setTitle("Recherche de contenu");
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
             
     }
