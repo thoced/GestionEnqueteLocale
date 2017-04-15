@@ -120,8 +120,8 @@ public class TodoViewController  implements Initializable,IController,ListChange
           
             // filtre
             comboFiltre.getItems().add("Tous");
-            comboFiltre.getItems().add("En cours");
-            comboFiltre.getItems().add("Cloturé");
+            comboFiltre.getItems().add("A faire");
+            comboFiltre.getItems().add("Terminé");
             comboFiltre.setValue("Tous");
            
             // setitem
@@ -464,25 +464,25 @@ public class TodoViewController  implements Initializable,IController,ListChange
     public boolean test(ModelTodo t)
     {
         //methode de test pour le filtre à statut
-        /*String fil = (String) comboFiltre.getValue();
+        String fil = (String) comboFiltre.getValue();
         if(fil.equals("Tous"))
         {
             return true;
         }
         
-        if(fil.equals("En cours"))
+        if(fil.equals("A faire"))
         {
             if(!t.isStatut())
                 return true;
         }
         
-        if(fil.equals("Cloturé"))
+        if(fil.equals("Terminé"))
         {
             if(t.isStatut())
                 return true;
-        }*/
+        }
         
-       return true;
+       return false;
                
     }
 

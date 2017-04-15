@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="pane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HelpPackage.HelpController">
+   <children>
+      <Line endX="-50.0" endY="-50.0" layoutX="160.0" layoutY="188.0" startX="-50.0" startY="320.0" />
+      <Label layoutX="148.0" layoutY="158.0" opacity="0.45" text="Programmé par THONON Cédric" underline="true">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="148.0" layoutY="189.0" opacity="0.45" text="Logiciel de gestion d'enquête">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextArea layoutX="148.0" layoutY="216.0" prefHeight="256.0" prefWidth="512.0" text="- Version Alpha: 0.1A&#10;Thonon cédric&#10;" />
+      <HBox alignment="CENTER_RIGHT" layoutY="522.0" prefHeight="64.0" prefWidth="781.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Button alignment="CENTER_RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#handleCancel" text="Annuler">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </padding>
+      </HBox>
+      <Label layoutX="148.0" layoutY="14.0" prefHeight="113.0" prefWidth="290.0" text="G.E.L" textAlignment="CENTER" textFill="#6979a1" textOverrun="WORD_ELLIPSIS" underline="true">
+         <font>
+            <Font name="Liberation Mono" size="71.0" />
+         </font>
+      </Label>
+      <Label layoutX="148.0" layoutY="130.0" text="Gestion d'enquête Locale" textFill="#6979a1">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

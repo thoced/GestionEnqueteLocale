@@ -13,21 +13,19 @@ import javafx.scene.control.TableCell;
  */
 public class IndexCell extends TableCell
 {
-    public static int index = 1;
-    
+ 
     @Override
-    protected void updateItem(Object item, boolean empty)
+    public void updateIndex(int i) 
     {
-        super.updateItem(item, empty); 
-        this.setText(null);
-        
-        if(item != null)
-        {
-            this.setText(String.valueOf(index));
-            index++;
-        }
+        super.updateIndex(i+1); //To change body of generated methods, choose Tools | Templates.
+
+        if(i < this.getTableView().getItems().size())
+            this.setText(String.valueOf(i + 1));
         else
-            index = 1; // reset index
+            this.setText(null);
+
     }
+    
+    
     
 }

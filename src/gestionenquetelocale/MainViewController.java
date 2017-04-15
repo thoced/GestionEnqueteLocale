@@ -71,6 +71,22 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
     
     private ObservableList<ModelEvent> oEvents;
     
+     @FXML
+    private void handleHelp(ActionEvent event) throws IOException 
+    {
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/HelpPackage/HelpView.fxml"));
+            AnchorPane pane = loader.load();
+            Scene scene = new Scene(pane);
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.UTILITY);
+            stage.setMinHeight(600);
+            stage.setMinWidth(960);
+            stage.setMaximized(false);
+            stage.setScene(scene);
+            stage.setTitle("About");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+    }
     
     @FXML
     private void handleRecherche(ActionEvent event) throws IOException 
