@@ -9,12 +9,14 @@ import LoginPackage.LoginController;
 import LoginPackage.ResetLoginViewController;
 import ModelPackage.ConnectionSQL;
 import ModelPackage.ModelDossier;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -80,9 +82,6 @@ public class GestionEnqueteLocale extends Application implements EventHandler<Wi
         stageLogin.setOnHidden(this);
         stageLogin.showAndWait();
         
-        
-        
-       
     }
 
     /**
@@ -92,6 +91,8 @@ public class GestionEnqueteLocale extends Application implements EventHandler<Wi
         launch(args);
     }
 
+   
+    
     @Override
     public void handle(WindowEvent event) 
     {

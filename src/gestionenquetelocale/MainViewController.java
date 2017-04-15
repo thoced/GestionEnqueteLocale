@@ -28,6 +28,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -89,6 +90,15 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
             
+            // le module de recherche est fermé, on teste si un document doit être ouvert
+            if(controller.getDossierToView() != null)
+            {
+                // preparation des données liées au dossier
+                controller.getDossierToView().prepareData();
+                // Affichage du dossier
+                this.viewDossier(controller.getDossierToView());
+            }
+            
     }
    
     @FXML
@@ -137,6 +147,37 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    private void viewDossier(ModelDossier dossier)
+    {
+        try {
+            this.currentDossier = dossier;
+            ((Stage)mainView.getScene().getWindow()).setTitle("Dossier en cours: " + dossier.getNomDossier());
+            // label
+            labelDossier.setText("Dossier en cours: " +  dossier.getNomDossier());
+            
+            // chargement du stage folderstab
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/gestionenquetelocale/MainFolderTabView.fxml"));
+            BorderPane bp = loader.load();
+            MainFolderTabViewController mftvc = loader.getController();
+            mftvc.load(currentDossier);
+            Scene scene = new Scene(bp);
+            Stage stage = new Stage();
+            stage.setTitle(dossier.getNomDossier());
+            stage.initOwner(mainView.getScene().getWindow());
+            stage.initStyle(StageStyle.DECORATED);
+            stage.setMaxHeight(700);
+            stage.setMaxWidth(1024);
+            stage.setResizable(true);
+            stage.setScene(scene);
+            stage.focusedProperty().addListener(this);
+            stage.setOnHidden(this);
+            oStages.add(stage);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
    
     @FXML
     private void handleVoirDossiers(ActionEvent event) throws IOException 
@@ -159,31 +200,7 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
         //
         if(controller.getModelDossier() != null)
         {
-            this.currentDossier = controller.getModelDossier();
-            ((Stage)mainView.getScene().getWindow()).setTitle("Dossier en cours: " + controller.getModelDossier().getNomDossier());
-            // label
-            labelDossier.setText("Dossier en cours: " +  controller.getModelDossier().getNomDossier());
-            
-            // chargement du stage folderstab
-            loader = new FXMLLoader(this.getClass().getResource("/gestionenquetelocale/MainFolderTabView.fxml"));
-            BorderPane bp = loader.load();
-            MainFolderTabViewController mftvc = loader.getController();
-            mftvc.load(currentDossier);
-            //IController controller = loader.getController();
-            //controller.setModelDossier(currentDossier);
-            scene = new Scene(bp);
-            stage = new Stage();
-            stage.setTitle(controller.getModelDossier().getNomDossier());
-            stage.initOwner(mainView.getScene().getWindow());
-            stage.initStyle(StageStyle.DECORATED);
-            stage.setMaxHeight(700);
-            stage.setMaxWidth(1024);
-            stage.setResizable(true);
-            stage.setScene(scene);
-            stage.focusedProperty().addListener(this);
-            stage.setOnHidden(this);
-            oStages.add(stage);
-            stage.show();
+           this.viewDossier(controller.getModelDossier());
         }
     }
     
@@ -273,7 +290,11 @@ t_link_group_users where ref_id_users = 1))*/
         this.loadEvent();
     }
     
-    
+    @FXML
+    public void handleFermerApplication(ActionEvent event)
+    {
+        mainView.getScene().getWindow().hide();
+    }
 
     @Override
     public void handle(WindowEvent event) 

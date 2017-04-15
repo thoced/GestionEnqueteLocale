@@ -6,6 +6,7 @@
 package RecherchePackage;
 
 import ModelPackage.ConnectionSQL;
+import ModelPackage.ModelDossier;
 import ModelPackage.ModelRecherche;
 import ModelPackage.ModelUser;
 import java.net.URL;
@@ -47,6 +48,8 @@ public class RechercheViewController implements Initializable {
     private TableColumn<ModelRecherche,String> columnDocument;
     
     private ModelUser user;
+    
+    private ModelDossier dossierToView = null;
     
     private ObservableList<ModelRecherche> oRecherches;
     
@@ -91,8 +94,7 @@ public class RechercheViewController implements Initializable {
                 model.setTitre(result.getString("t_document.titre"));
                 model.getDossier().setId(result.getLong("t_folders.id"));
                 model.getDossier().setNomDossier(result.getString("t_folders.nom"));
-                
-                
+                model.setParent(this);
                 // ajout
                 oRecherches.add(model);
                
@@ -104,9 +106,29 @@ public class RechercheViewController implements Initializable {
         }
     }
     
+    @FXML
+    public void handleQuitter(ActionEvent event)
+    {
+        rechercheField.getScene().getWindow().hide();
+    }
+    
     public void load(ModelUser user)
     {
         this.user = user;
     }
+
+    public ModelDossier getDossierToView()
+    {
+        return dossierToView;
+    }
+
+    public void setDossierToView(ModelDossier dossierToView) 
+    {
+        this.dossierToView = dossierToView;
+    }
+    
+    
+    
+   
     
 }

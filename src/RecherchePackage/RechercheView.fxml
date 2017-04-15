@@ -18,7 +18,7 @@
         </columns>
       </TableView>
       <Button layoutX="32.0" layoutY="265.0" mnemonicParsing="false" onAction="#handleRecherche" style="-fx-background-color: orange;" text="Recherche" />
-      <Button defaultButton="true" layoutX="874.0" layoutY="551.0" mnemonicParsing="false" text="Quitter" />
+      <Button defaultButton="true" layoutX="874.0" layoutY="551.0" mnemonicParsing="false" onAction="#handleQuitter" text="Quitter" />
       <Label layoutX="32.0" layoutY="23.0" prefHeight="14.0" prefWidth="102.0" text="Zone de recherche:" />
    </children>
 </AnchorPane>
