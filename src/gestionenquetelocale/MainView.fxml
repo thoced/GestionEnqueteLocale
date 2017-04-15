@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.shape.*?>
@@ -57,5 +58,16 @@
             </AnchorPane>
          </content>
       </TitledPane>
+      <Label layoutX="677.0" layoutY="528.0" prefHeight="40.0" prefWidth="331.0" text="Gestion d'enquête Locale" textFill="#263965" AnchorPane.bottomAnchor="200.0" AnchorPane.rightAnchor="16.0">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <Label layoutX="915.0" layoutY="568.0" text="Version 0.2 Alpha" AnchorPane.bottomAnchor="183.0" AnchorPane.rightAnchor="16.0" />
+      <ImageView fx:id="logoPolice" fitHeight="128.0" fitWidth="128.0" layoutX="779.0" layoutY="384.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="256.0" AnchorPane.rightAnchor="117.0">
+         <viewport>
+            <Rectangle2D height="400.0" width="400.0" />
+         </viewport>
+      </ImageView>
    </children>
 </AnchorPane>

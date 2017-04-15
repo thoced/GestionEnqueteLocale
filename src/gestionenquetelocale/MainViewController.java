@@ -38,6 +38,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -62,6 +64,8 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
     private TableColumn<ModelEvent,String> columnInformation;
     @FXML
     private TableColumn<ModelEvent,String> columnNameDossier;
+    @FXML
+    private ImageView logoPolice;
     // data
     private ModelDossier currentDossier;
     // date user
@@ -243,7 +247,11 @@ public class MainViewController implements Initializable, ChangeListener<Boolean
             columnInformation.setCellValueFactory(cellData->cellData.getValue().informationProperty());
             columnNameDossier.setCellValueFactory(cellData->cellData.getValue().nameFolderProperty());
            
-       
+            // logo police
+           Image ima = new Image(this.getClass().getResourceAsStream("/AssetsPackage/logo_police.png"));
+           logoPolice.setImage(ima);
+            
+           
     }    
     
     private void loadEvent()
