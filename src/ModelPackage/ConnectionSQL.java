@@ -13,6 +13,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  *
@@ -23,21 +25,23 @@ public class ConnectionSQL
     private static Connection con;
     
     private static String url = "jdbc:mysql://localhost:3306/db_gel";
-    private static String user = "test";
-    private static String password = "test";
+    private static String user = "gel";
+    private static String password = "gel";
     
     public ConnectionSQL() throws SQLException, ClassNotFoundException, FileNotFoundException, IOException
     {
       // chargement du fichier de configuration
         Properties properties = new Properties();
-        FileInputStream input = new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") + "managertconfig" + System.getProperty("file.separator") + "managert.ini");
+        FileInputStream input = new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") + "gelconfig" + System.getProperty("file.separator") + "gel.ini");
         properties.load(input);
         url = properties.getProperty("url_database");
  
     }
     
-    public static void Connect() throws SQLException, ClassNotFoundException
+    public static void Connect() throws SQLException,ClassNotFoundException
     {
+        try
+        {
       // For Mysql
        Class.forName("com.mysql.jdbc.Driver");
         // For hsqldb
@@ -45,6 +49,14 @@ public class ConnectionSQL
         // For SqlLite
         //Class.forName("org.sqlite.JDBC");
        con = DriverManager.getConnection(url, user, password);
+        }catch(SQLException sqe)
+        {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Connection failure");
+            alert.setContentText("Probleme de connection : " + sqe.getMessage());
+            alert.showAndWait();
+            throw sqe;
+        }
         
     }
     
